@@ -1,0 +1,77 @@
+---
+import { ArrowUpRight, ArrowRight, ChevronDown, Menu, X } from 'lucide-astro';
+import DemoReturn from '../components/DemoReturn.astro';
+import { constructionCopy, constructionPaths } from '../data/construction';
+import { siteConfig } from '../data/siteConfig';
+import type { Locale } from '../data/i18n';
+import '../styles/construction-demo.css';
+interface Props { lang: Locale; title?: string; description?: string; path?: string; alternatePath?: string; }
+const { lang, title, description, path = constructionPaths[lang], alternatePath = constructionPaths[lang === 'tr' ? 'en' : 'tr'] } = Astro.props;
+const c = constructionCopy[lang];
+const home = constructionPaths[lang];
+const policy = `${home}/${lang === 'tr' ? 'demo-bilgileri' : 'demo-information'}`;
+const sectionIds = ['projects', 'expertise', 'company', 'contact'];
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#202722" />
+    <title>{title || c.title}</title>
+    <meta name="description" content={description || c.description} />
+    <link rel="canonical" href={new URL(path, siteConfig.url)} />
+    <link rel="alternate" hreflang={lang === 'tr' ? 'en' : 'tr'} href={new URL(alternatePath, siteConfig.url)} />
+    <link rel="icon" href="/brand/favicon-32.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title || c.title} />
+    <meta property="og:description" content={description || c.description} />
+    <meta property="og:url" content={new URL(path, siteConfig.url)} />
+    <meta property="og:image" content={new URL('/demos/kavren/kavakli-1536.webp', siteConfig.url)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="kv-body">
+    <a class="kv-skip" href="#main">{lang === 'tr' ? 'İçeriğe geç' : 'Skip to content'}</a>
+    <header class="kv-header" data-kv-header>
+      <a class="kv-brand" href={home} aria-label={lang === 'tr' ? 'Kavren ana sayfa' : 'Kavren home'}><strong>KAVREN<span aria-hidden="true">/</span></strong><small>{c.descriptor}</small></a>
+      <nav class="kv-nav" id="kv-navigation" aria-label={lang === 'tr' ? 'Ana menü' : 'Main navigation'}>
+        {c.nav.map((label, i) => <a href={`${home}#${sectionIds[i]}`}>{label}</a>)}
+        <small class="kv-menu-location">İSTANBUL / TÜRKİYE</small>
+      </nav>
+      <div class="kv-header-controls">
+        <a class="kv-language" href={alternatePath} hreflang={lang === 'tr' ? 'en' : 'tr'} aria-label={lang === 'tr' ? 'Switch to English' : 'Türkçeye geç'}>{lang === 'tr' ? 'EN' : 'TR'}</a>
+        <button class="kv-menu-button" aria-label={c.menu} aria-controls="kv-navigation" aria-expanded="false" data-kv-menu><Menu class="kv-menu-open" size={23}/><X class="kv-menu-close" size={23}/></button>
+      </div>
+    </header>
+    <slot />
+    <footer class="kv-footer">
+      <div class="kv-container kv-footer-top"><p>{c.footer}</p><a href={`${home}#contact`} class="kv-text-link">{c.contactLabel}<ArrowUpRight size={20}/></a></div>
+      <div class="kv-container kv-footer-wordmark" aria-hidden="true">KAVREN<span>/</span></div>
+      <div class="kv-container kv-footer-bottom"><p>{c.demo}</p><div><a href={policy}>{c.legal}</a><span>© 2026 KAVREN</span></div></div>
+    </footer>
+    <DemoReturn lang={lang} />
+    <dialog class="kv-dialog" id="kv-enquiry-dialog" aria-labelledby="kv-enquiry-title">
+      <button class="kv-dialog-close" data-kv-close aria-label={c.close}><X size={24}/></button>
+      <p class="kv-eyebrow">KAVREN / {c.contactLabel}</p>
+      <h2 id="kv-enquiry-title">{c.formTitle}</h2>
+      <p class="kv-dialog-intro">{c.formIntro}</p>
+      <form data-kv-form data-success={c.success} inert>
+        <div class="kv-form-pair"><label>{c.name}<input name="name" autocomplete="name" required maxlength="80" /></label><label>{c.company}<input name="company" autocomplete="organization" maxlength="100" /></label></div>
+        <label>{c.emailLabel}<input name="email" type="email" autocomplete="email" required maxlength="160" /></label>
+        <label>{c.subject}<span class="kv-select"><select name="subject">{c.inquiry.map((label, i) => <option value={i}>{label}</option>)}</select><ChevronDown size={18} aria-hidden="true"/></span></label>
+        <label>{c.message}<textarea name="message" rows="3" required maxlength="600"></textarea></label>
+        <p class="kv-form-note">{c.formNote}</p>
+        <label class="kv-check"><input type="checkbox" name="notice" required/><span>{c.notice} <a href={policy} target="_blank" rel="noopener">{c.noticeLink}<ArrowUpRight size={13}/></a></span></label>
+        <button class="kv-button" type="submit">{c.send}<ArrowRight size={18}/></button>
+        <output hidden tabindex="-1" role="status" aria-live="polite"></output>
+      </form>
+      <noscript>{c.formNote}</noscript>
+    </dialog>
+    <dialog class="kv-dialog kv-contact-dialog" id="kv-contact-dialog" aria-labelledby="kv-contact-title">
+      <button class="kv-dialog-close" data-kv-close aria-label={c.close}><X size={24}/></button>
+      <p class="kv-eyebrow">MIFER DIGITAL / DEMO</p><h2 id="kv-contact-title">{c.contactLabel}</h2><p>{c.phoneDemo}</p>
+      <button class="kv-text-link" data-kv-enquiry="0">{c.inquiryAction}<ArrowUpRight size={20}/></button>
+    </dialog>
+    <script>import '../scripts/construction-demo';</script>
+  </body>
+</html>

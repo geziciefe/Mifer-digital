@@ -1,0 +1,42 @@
+---
+import { ArrowLeft } from 'lucide-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import DemoCard from './DemoCard.astro';
+import { demos } from '../data/demos';
+import { content, locales, type Locale } from '../data/i18n';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = content[lang];
+const alt: Locale = lang === 'tr' ? 'en' : 'tr';
+---
+<BaseLayout
+  lang={lang}
+  title={`${t.workPage.label} | Mifer Digital`}
+  description={t.workPage.summary}
+  canonicalPath={locales[lang].workPath}
+  alternatePath={locales[alt].workPath}
+>
+  <Header lang={lang} alternatePath={locales[alt].workPath} />
+  <main class="work-page">
+    <section class="work-page-hero">
+      <div class="container-shell work-page-hero-inner work-page-hero-clean">
+        <div class="work-page-hero-copy">
+          <h1 data-reveal>{t.workPage.title}</h1>
+          <p>{t.workPage.summary}</p>
+          <small class="work-demo-note">{t.work.demoNote}</small>
+        </div>
+      </div>
+    </section>
+    <section class="work-page-list">
+      <div class="container-shell work-grid work-grid-page">
+        {demos.map((demo, index) => <DemoCard demo={demo} lang={lang} featured={index === 0} />)}
+      </div>
+      <div class="container-shell work-back-wrap">
+        <a class="big-inline-link" data-nav-link data-prefetch-link href={locales[lang].homePath}><ArrowLeft size={21} />{t.workPage.back}</a>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  name: string;
+  alt: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { name, alt, sizes = '100vw', eager = false, class: className } = Astro.props;
+---
+<img
+  class={className}
+  src={`/demos/kavren/${name}-1536.webp`}
+  srcset={`/demos/kavren/${name}-640.webp 640w, /demos/kavren/${name}-960.webp 960w, /demos/kavren/${name}-1536.webp 1536w`}
+  sizes={sizes} width="1536" height="1024" alt={alt}
+  loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async"
+/>

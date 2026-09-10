@@ -1,0 +1,479 @@
+---
+import SalonLayout from '../layouts/SalonLayout.astro';
+import { siteConfig } from '../data/siteConfig';
+
+interface Props { lang: 'tr' | 'en'; }
+const { lang } = Astro.props;
+
+const copy = {
+  tr: {
+    metaTitle: 'Veyra Atelier | İstanbul Hair Atelier',
+    metaDescription: 'Veyra Atelier; kesim, renklendirme ve kişiye özel saç bakımı için hazırlanmış premium salon deneyimi.',
+    path: '/tr/kuafor-demo',
+    altPath: '/en/hair-salon-demo',
+    menu: 'Menü',
+    close: 'Kapat',
+    book: 'RANDEVU AL',
+    brand: 'VEYRA ATELIER',
+    brandLocation: 'İSTANBUL',
+    menuItems: [['Ana sayfa', '#home'], ['Hikâyemiz', '#about'], ['Hizmetler', '#services'], ['Salon', '#salon'], ['Randevu', '#booking']],
+    scroll: 'Keşfetmek için kaydır',
+    award: 'SAÇINIZIN EN İYİ HALİ',
+    intro: 'İstanbul’un ritmini, kişisel stilinizle buluşturan yeni nesil kuaför deneyimi.',
+    introNote: 'Kesimden renge, her detay yüzünüze, yaşamınıza ve saçınızın gerçek ihtiyacına göre tasarlanır.',
+    storyLabel: 'BİZİM YAKLAŞIMIMIZ',
+    storyTitle: 'Sadece saçı değil, nasıl hissettiğinizi de değiştiriyoruz.',
+    storyBody: 'Veyra Atelier’de iyi görünmenin tek bir formülü yok. Önce sizi dinliyor, sonra karakterinizi taşıyan doğru kesimi, rengi ve bakımı birlikte kuruyoruz.',
+    craftLabel: '01 / UZMANLIK',
+    craftTitle: 'Kişiye özel kesim',
+    craftBody: 'Yüz hattınız, saç dokunuz ve günlük rutininiz birlikte değerlendirilir. Salondan çıktığınız gün kadar, haftalar sonra da iyi duran kesimler tasarlarız.',
+    colourLabel: '02 / RENK',
+    colourTitle: 'Boyutlu ve canlı renk',
+    colourBody: 'Balayage, sarı tonları, parlaklık ve yaratıcı renklerde saç bütünlüğünü koruyan, kontrollü bir süreç uygularız.',
+    careLabel: '03 / BAKIM',
+    careTitle: 'Saçın ihtiyacına göre bakım',
+    careBody: 'Nem, güç ve parlaklık ihtiyacını analiz eder; gereksiz işlem yerine gerçekten fark yaratan bakımı seçeriz.',
+    campaignLabel: 'VEYRA COLOR COLLECTION / 26',
+    campaignTitle: 'Renk, hareket ve iyi hissetme hali.',
+    campaignLink: 'KOLEKSİYONU KEŞFET',
+    servicesEyebrow: 'FİYAT MENÜSÜ',
+    servicesTitle: 'İmza hizmetler',
+    servicesIntro: 'Tüm fiyatlar görünür, karar vermek kolay. Saç uzunluğu ve işlem yoğunluğu için sizi başlamadan önce bilgilendiririz.',
+    services: [
+      {
+        title: 'KESİM & ŞEKİLLENDİRME',
+        note: 'Formunuzu koruyan, size özel bitişler.',
+        items: [['Kadın kesim & fön', '₺1.600'], ['Erkek kesim', '₺1.000'], ['Fön', '₺700'], ['Topuz & özel gün', '₺1.500']]
+      },
+      {
+        title: 'RENK & IŞIK',
+        note: 'Teninize ve saç geçmişinize göre planlanır.',
+        items: [['Dip boya', '₺1.800'], ['Komple renk', '₺3.200'], ['Toner / cila', '₺1.400'], ['Balayage', '₺4.500'], ['Işıltı', '₺3.600']]
+      },
+      {
+        title: 'BAKIM RİTÜELLERİ',
+        note: 'Saçın gerçekten ihtiyacı olan bakım.',
+        items: [['Bağ onarıcı bakım', '₺1.250'], ['Yoğun nem bakımı', '₺950'], ['Keratin uygulaması', '₺3.000'], ['Saç derisi ritüeli', '₺850']]
+      },
+      {
+        title: 'DOKUNUŞLAR',
+        note: 'Görünümü tamamlayan küçük ama etkili detaylar.',
+        items: [['Kahkül kesimi', '₺450'], ['Örgü', '₺650'], ['Çocuk kesimi', '₺700'], ['Hızlı şekillendirme', '₺600']]
+      }
+    ],
+    priceNote: 'Fiyatlar demo amaçlıdır; uygulama öncesi saç uzunluğu ve yoğunluğuna göre netleştirilir.',
+    salonEyebrow: 'MALTEPE / İSTANBUL',
+    salonTitle: 'Şehrin içinde kendinize ayırdığınız sakin bir alan.',
+    salonBody: 'Randevular arasında koşturmadığınız, kahvenizi bitirebildiğiniz ve her detayın sizin için düşünüldüğü bir salon.',
+    hours: 'Pzt–Cmt 09.00–20.00',
+    directions: 'YOL TARİFİ',
+    bookingEyebrow: 'RANDEVU',
+    bookingTitle: 'Yeni saçınızla tanışalım.',
+    bookingBody: 'Bilgilerinizi bırakın; ekibimiz uygun saatleri paylaşmak için sizinle iletişime geçsin.',
+    name: 'Ad soyad',
+    phone: 'Telefon',
+    service: 'Hizmet seçin',
+    serviceOptions: ['Kesim & şekillendirme', 'Balayage & ışıltı', 'Renklendirme', 'Bakım ritüeli'],
+    note: 'Kısa notunuz',
+    send: 'RANDEVU TALEBİ GÖNDER',
+    sent: 'TALEBİNİZ ALINDI — YAKINDA ARAYACAĞIZ',
+    back: 'MİFER DIGITAL’E DÖN',
+    whatsapp: 'WhatsApp’tan yaz',
+    whatsappKicker: 'RANDEVU HATTI',
+    followEyebrow: 'BİZİ TAKİP EDİN',
+    followTitle: 'En yeni renkler, kesimler ve dönüşümler.',
+    followBody: 'Bu alan salonunuzun Instagram’daki en yeni çalışmalarını gösterir. Buraya kendi fotoğraflarınız gelecek.',
+    followLink: 'INSTAGRAM’DA GÖR',
+    galleryItems: ['KESİM', 'RENK', 'DETAY', 'DOKU', 'EKİP', 'SALON'],
+    privacy: 'Veyra Atelier kurgusal bir markadır. Mifer Digital tarafından hazırlanmış bir demo çalışmadır.'
+  },
+  en: {
+    metaTitle: 'Veyra Atelier Hair Design | Istanbul Hair Atelier',
+    metaDescription: 'A premium salon experience by Veyra Atelier Hair Design, created around precise cuts, dimensional colour and personal hair care.',
+    path: '/en/hair-salon-demo',
+    altPath: '/tr/kuafor-demo',
+    menu: 'Menu',
+    close: 'Close',
+    book: 'BOOK NOW',
+    brand: 'VEYRA ATELIER',
+    brandLocation: 'ISTANBUL',
+    menuItems: [['Home', '#home'], ['Our story', '#about'], ['Services', '#services'], ['Salon', '#salon'], ['Booking', '#booking']],
+    scroll: 'Scroll to discover',
+    award: 'YOUR HAIR AT ITS VERY BEST',
+    intro: 'A new kind of salon experience, bringing Istanbul’s rhythm together with your personal style.',
+    introNote: 'From cut to colour, every detail is shaped around your face, your life and what your hair truly needs.',
+    storyLabel: 'OUR APPROACH',
+    storyTitle: 'We change more than your hair. We change how you feel.',
+    storyBody: 'There is no single formula for looking your best. We listen first, then build the cut, colour and care that genuinely feels like you.',
+    craftLabel: '01 / CRAFT',
+    craftTitle: 'A cut made for you',
+    craftBody: 'We consider your face, texture and daily routine together, creating cuts that look as good weeks later as they do when you leave.',
+    colourLabel: '02 / COLOUR',
+    colourTitle: 'Dimensional, living colour',
+    colourBody: 'From balayage and blonding to gloss and creative colour, every process is controlled to protect the integrity of your hair.',
+    careLabel: '03 / CARE',
+    careTitle: 'Care with a purpose',
+    careBody: 'We read what your hair needs for moisture, strength and shine, choosing the treatment that will actually make a difference.',
+    campaignLabel: 'VEYRA COLOR COLLECTION / 26',
+    campaignTitle: 'Colour, movement and the feeling of your best self.',
+    campaignLink: 'EXPLORE THE COLLECTION',
+    servicesEyebrow: 'PRICE MENU',
+    servicesTitle: 'Signature services',
+    servicesIntro: 'Every price is visible, so choosing feels simple. We confirm any adjustment for hair length or density before we begin.',
+    services: [
+      {
+        title: 'CUT & FINISH',
+        note: 'Personal shapes designed to grow out beautifully.',
+        items: [['Cut & blow-dry', '₺1,600'], ['Men’s cut', '₺1,000'], ['Blow-dry', '₺700'], ['Event styling', '₺1,500']]
+      },
+      {
+        title: 'COLOUR & LIGHT',
+        note: 'Planned around your tone and hair history.',
+        items: [['Root colour', '₺1,800'], ['Full colour', '₺3,200'], ['Toner / gloss', '₺1,400'], ['Balayage', '₺4,500'], ['Highlights', '₺3,600']]
+      },
+      {
+        title: 'CARE RITUALS',
+        note: 'Only what your hair genuinely needs.',
+        items: [['Bond repair', '₺1,250'], ['Deep moisture', '₺950'], ['Keratin service', '₺3,000'], ['Scalp ritual', '₺850']]
+      },
+      {
+        title: 'FINISHING TOUCHES',
+        note: 'Small details with a visible difference.',
+        items: [['Fringe trim', '₺450'], ['Braiding', '₺650'], ['Children’s cut', '₺700'], ['Express styling', '₺600']]
+      }
+    ],
+    priceNote: 'Prices are shown for this demo and are confirmed according to hair length and density before the service.',
+    salonEyebrow: 'MALTEPE / ISTANBUL',
+    salonTitle: 'A calm space for yourself, right in the city.',
+    salonBody: 'A salon where you are never rushed between appointments, can finish your coffee, and every detail has been considered for you.',
+    hours: 'Mon–Sat 09:00–20:00',
+    directions: 'DIRECTIONS',
+    bookingEyebrow: 'BOOKING',
+    bookingTitle: 'Let’s meet your new hair.',
+    bookingBody: 'Leave your details and our team will get in touch with available times.',
+    name: 'Full name',
+    phone: 'Phone',
+    service: 'Choose a service',
+    serviceOptions: ['Cut & finish', 'Balayage & highlights', 'Colour', 'Care ritual'],
+    note: 'A short note',
+    send: 'SEND BOOKING REQUEST',
+    sent: 'REQUEST RECEIVED — WE WILL CALL YOU SOON',
+    back: 'BACK TO MIFER DIGITAL',
+    whatsapp: 'Chat on WhatsApp',
+    whatsappKicker: 'BOOKING LINE',
+    followEyebrow: 'FOLLOW US',
+    followTitle: 'Fresh colour, considered cuts and real transformations.',
+    followBody: 'This area brings your latest Instagram work into the salon story. Your own photographs will live here.',
+    followLink: 'VIEW INSTAGRAM',
+    galleryItems: ['CUT', 'COLOUR', 'DETAIL', 'TEXTURE', 'TEAM', 'SALON'],
+    privacy: 'Veyra Atelier is a fictional brand. A demo project by Mifer Digital.'
+  }
+} as const;
+
+const c = copy[lang];
+const homePath = lang === 'tr' ? '/tr' : '/en';
+const whatsappText = encodeURIComponent(lang === 'tr' ? 'Merhaba Veyra Atelier, randevu almak istiyorum.' : 'Hello Veyra Atelier Hair Design, I would like to book an appointment.');
+const whatsappHref = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}?text=${whatsappText}`;
+---
+<SalonLayout
+  lang={lang}
+  title={c.metaTitle}
+  description={c.metaDescription}
+  canonicalPath={c.path}
+  alternatePath={c.altPath}
+>
+  <div class="salon-site" data-salon-site>
+    <header class="salon-header" data-salon-header>
+      <button class="salon-menu-toggle salon-offset-button" type="button" data-salon-menu-open aria-controls="salon-menu" aria-expanded="false" aria-label={c.menu}>
+        <span></span><span></span><span></span>
+      </button>
+
+      <a class="salon-header-brand" href="#home" aria-label={c.brand}>
+        <span>{c.brand}</span>
+        <small>{c.brandLocation}</small>
+      </a>
+
+      <div class="salon-header-actions">
+        <a class="salon-lang" href={c.altPath} hreflang={lang === 'tr' ? 'en' : 'tr'} aria-label={lang === 'tr' ? 'Switch to English' : 'Türkçeye geç'}>
+          <span class:list={[lang === 'tr' && 'active']}>TR</span><i></i><span class:list={[lang === 'en' && 'active']}>EN</span>
+        </a>
+        <a class="salon-book-button salon-offset-button" href="#booking">{c.book}</a>
+      </div>
+    </header>
+
+    <div id="salon-menu" class="salon-menu" data-salon-menu aria-hidden="true">
+      <div class="salon-menu-top">
+        <div class="salon-menu-wordmark"><span>{c.brand}</span><small>{c.brandLocation}</small></div>
+        <button type="button" data-salon-menu-close aria-label={c.close}><span></span><span></span></button>
+      </div>
+      <nav aria-label={c.menu}>
+        {c.menuItems.map(([label, href], index) => (
+          <a href={href} data-salon-menu-link><small>0{index + 1}</small><span>{label}</span><b aria-hidden="true">↗</b></a>
+        ))}
+      </nav>
+      <div class="salon-menu-foot"><span>{lang === 'tr' ? 'Maltepe · İstanbul' : 'Maltepe · Istanbul'}</span><span>{c.hours}</span></div>
+    </div>
+
+    <a class="salon-whatsapp" href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={c.whatsapp}>
+      <span class="salon-whatsapp-orbit" aria-hidden="true"><i></i><b>✦</b></span>
+      <span class="salon-whatsapp-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.92 9.92 0 1 0 12.04 2Zm0 17.99a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.08.96.98-3-.2-.31A8.1 8.1 0 1 1 12.04 20Z"/></svg>
+      </span>
+      <span class="salon-whatsapp-copy"><small>{c.whatsappKicker}</small><strong>{c.whatsapp}</strong></span>
+      <span class="salon-whatsapp-arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <main>
+      <section id="home" class="salon-hero" data-salon-hero>
+        <video autoplay muted loop playsinline preload="metadata" poster="/demos/mifer-kuafor/hero-poster.webp" data-salon-video>
+          <source src="/demos/mifer-kuafor/hero-loop.mp4" type="video/mp4" />
+        </video>
+        <div class="salon-hero-shade"></div>
+        <div class="salon-hero-center" aria-label={`${c.brand}, ${c.brandLocation}`}>
+          <div class="salon-monogram"><span>V</span><i></i><b>A</b></div>
+          <h1><span>{c.brand}</span><small>{c.brandLocation}</small></h1>
+        </div>
+        <a class="salon-scroll-cue" href="#about"><span>{c.scroll}</span><i>↓</i></a>
+      </section>
+
+      <div class="salon-wordmark-strip" aria-hidden="true">
+        <span>{c.brand}</span><small>{c.brandLocation}</small>
+      </div>
+
+      <section id="about" class="salon-intro salon-paper">
+        <div class="salon-intro-copy">
+          <p class="salon-eyebrow" data-salon-reveal>{c.award}</p>
+          <h2 data-salon-reveal>{c.intro}</h2>
+          <p data-salon-reveal>{c.introNote}</p>
+        </div>
+        <div class="salon-intro-composition">
+          <figure class="salon-framed-image salon-framed-image-dark" data-salon-reveal>
+            <img src="/demos/mifer-kuafor/hero-poster.webp" alt={lang === 'tr' ? 'Veyra Atelier salon iç mekânı' : 'Veyra Atelier Hair Design salon interior'} loading="lazy" />
+          </figure>
+          <article class="salon-intro-card" data-salon-reveal>
+            <span>{c.storyLabel}</span>
+            <h3>{c.storyTitle}</h3>
+            <p>{c.storyBody}</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="services" class="salon-story salon-paper" data-portrait-section>
+        <div class="salon-story-copy">
+          <article data-salon-reveal>
+            <span>{c.craftLabel}</span>
+            <h3>{c.craftTitle}</h3>
+            <p>{c.craftBody}</p>
+          </article>
+          <article data-salon-reveal>
+            <span>{c.colourLabel}</span>
+            <h3>{c.colourTitle}</h3>
+            <p>{c.colourBody}</p>
+          </article>
+          <article data-salon-reveal>
+            <span>{c.careLabel}</span>
+            <h3>{c.careTitle}</h3>
+            <p>{c.careBody}</p>
+          </article>
+        </div>
+        <div class="salon-portrait-rail" aria-hidden="true">
+          <div class="salon-portrait-frame" data-salon-portrait>
+            <div class="salon-portrait-outline"></div>
+            <img src="/demos/mifer-kuafor/pink-hair-model.webp" alt="" loading="lazy" />
+            <span>COLOR<br />STORY<br />/ 26</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="salon-campaign" data-salon-reveal>
+        <img src="/demos/mifer-kuafor/curls-campaign.webp" alt={lang === 'tr' ? 'Veyra renk koleksiyonu için kıvırcık saç modeli' : 'Curly hair model for the Veyra colour collection'} loading="lazy" />
+        <div class="salon-campaign-wash"></div>
+        <div class="salon-campaign-card">
+          <span>{c.campaignLabel}</span>
+          <h2>{c.campaignTitle}</h2>
+          <a href="#booking">{c.campaignLink}<i>↗</i></a>
+        </div>
+      </section>
+
+      <section class="salon-service-menu salon-paper">
+        <div class="salon-service-head" data-salon-reveal>
+          <p class="salon-eyebrow">{c.servicesEyebrow}</p>
+          <h2>{c.servicesTitle}</h2>
+          <p>{c.servicesIntro}</p>
+        </div>
+        <div class="salon-price-categories">
+          {c.services.map((category, index) => (
+            <article class="salon-price-category" data-salon-reveal style={`--delay:${index * 70}ms`}>
+              <header>
+                <small>0{index + 1}</small>
+                <div><h3>{category.title}</h3><p>{category.note}</p></div>
+              </header>
+              <div class="salon-price-lines">
+                {category.items.map(([service, price]) => (
+                  <a href="#booking"><span>{service}</span><i aria-hidden="true"></i><strong>{price}</strong></a>
+                ))}
+              </div>
+            </article>
+          ))}
+          <p class="salon-price-note">{c.priceNote}</p>
+        </div>
+      </section>
+
+      <section id="salon" class="salon-location">
+        <div class="salon-location-image" data-salon-reveal>
+          <img src="/demos/mifer-kuafor/hero-poster.webp" alt={lang === 'tr' ? 'Veyra Atelier salonu' : 'Veyra Atelier Hair Design salon'} loading="lazy" />
+        </div>
+        <div class="salon-location-copy" data-salon-reveal>
+          <p class="salon-eyebrow">{c.salonEyebrow}</p>
+          <h2>{c.salonTitle}</h2>
+          <p>{c.salonBody}</p>
+          <div><span>{c.hours}</span><a href="https://maps.google.com/?q=Maltepe%20Istanbul" target="_blank" rel="noopener noreferrer">{c.directions}<i>↗</i></a></div>
+        </div>
+      </section>
+
+      <section id="booking" class="salon-booking">
+        <div class="salon-booking-intro" data-salon-reveal>
+          <p class="salon-eyebrow">{c.bookingEyebrow}</p>
+          <h2>{c.bookingTitle}</h2>
+          <p>{c.bookingBody}</p>
+        </div>
+        <form class="salon-booking-form" data-salon-booking-form data-success={c.sent}>
+          <label><span>{c.name}</span><input type="text" name="name" autocomplete="name" required /></label>
+          <label><span>{c.phone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required /></label>
+          <label class="salon-form-wide"><span>{c.service}</span><select name="service" required><option value="" selected disabled>{c.service}</option>{c.serviceOptions.map((option) => <option>{option}</option>)}</select></label>
+          <label class="salon-form-wide"><span>{c.note}</span><textarea name="note" rows="3"></textarea></label>
+          <button class="salon-form-wide salon-submit salon-offset-button" type="submit">{c.send}<i>↗</i></button>
+        </form>
+      </section>
+
+      <section class="salon-follow salon-paper" aria-labelledby="salon-follow-title">
+        <header class="salon-follow-head" data-salon-reveal>
+          <p class="salon-eyebrow">{c.followEyebrow}</p>
+          <h2 id="salon-follow-title">{c.followTitle}</h2>
+          <div>
+            <p>{c.followBody}</p>
+            <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer">{c.followLink}<span aria-hidden="true">↗</span></a>
+          </div>
+        </header>
+        <div class="salon-social-grid" aria-label={c.followEyebrow}>
+          {c.galleryItems.map((item, index) => (
+            <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" class={`salon-social-tile salon-social-tile-${index + 1}`} data-salon-reveal style={`--delay:${index * 55}ms`}>
+              <small>{String(index + 1).padStart(2, '0')} / 06</small>
+              <span>{item}</span>
+              <b>{lang === 'tr' ? 'FOTOĞRAFINIZ' : 'YOUR PHOTO'}</b>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+
+    <footer class="salon-footer">
+      <div class="salon-footer-brand"><span>{c.brand}</span><small>{c.brandLocation}</small></div>
+      <div class="salon-footer-contact"><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><a href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+      <a class="salon-footer-back" href={homePath}>← {c.back}</a>
+      <p>{c.privacy}</p>
+    </footer>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-salon-site]');
+      if (!root || root.dataset.ready === 'true') return;
+      root.dataset.ready = 'true';
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const header = root.querySelector('[data-salon-header]');
+      const hero = root.querySelector('[data-salon-hero]');
+      const video = root.querySelector('[data-salon-video]');
+      const menu = root.querySelector('[data-salon-menu]');
+      const menuOpen = root.querySelector('[data-salon-menu-open]');
+      const menuClose = root.querySelector('[data-salon-menu-close]');
+      const portraitSection = root.querySelector('[data-portrait-section]');
+      const portrait = root.querySelector('[data-salon-portrait]');
+
+      const closeMenu = () => {
+        menu?.classList.remove('is-open');
+        menu?.setAttribute('aria-hidden', 'true');
+        menuOpen?.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('salon-menu-open');
+      };
+      const openMenu = () => {
+        menu?.classList.add('is-open');
+        menu?.setAttribute('aria-hidden', 'false');
+        menuOpen?.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('salon-menu-open');
+        window.setTimeout(() => menuClose?.focus(), 240);
+      };
+      menuOpen?.addEventListener('click', openMenu);
+      menuClose?.addEventListener('click', closeMenu);
+      root.querySelectorAll('[data-salon-menu-link]').forEach((link) => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
+
+      const revealItems = [...root.querySelectorAll('[data-salon-reveal]')];
+      if (reduced || !('IntersectionObserver' in window)) {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+        revealItems.forEach((item) => observer.observe(item));
+      }
+
+      let ticking = false;
+      const paint = () => {
+        const y = window.scrollY;
+        const heroHeight = hero?.getBoundingClientRect().height || window.innerHeight;
+        header?.classList.toggle('is-solid', y > heroHeight * .72);
+        if (!reduced && hero) {
+          const progress = Math.min(1, y / Math.max(heroHeight, 1));
+          hero.style.setProperty('--hero-shift', `${progress * 44}px`);
+        }
+        if (!reduced && portraitSection && portrait) {
+          const rect = portraitSection.getBoundingClientRect();
+          const travel = Math.max(1, rect.height - window.innerHeight);
+          const progress = Math.max(0, Math.min(1, -rect.top / travel));
+          portrait.style.setProperty('--portrait-shift', `${progress * 120}px`);
+          portrait.style.setProperty('--portrait-rotate', `${-1.8 + progress * 3.6}deg`);
+        }
+        ticking = false;
+      };
+      const requestPaint = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(paint);
+      };
+      window.addEventListener('scroll', requestPaint, { passive: true });
+      window.addEventListener('resize', requestPaint, { passive: true });
+      paint();
+
+      if (video instanceof HTMLVideoElement) {
+        video.muted = true;
+        video.play().catch(() => root.classList.add('video-fallback'));
+      }
+
+      root.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', (event) => {
+          const id = anchor.getAttribute('href');
+          if (!id || id === '#') return;
+          const target = document.querySelector(id);
+          if (!target) return;
+          event.preventDefault();
+          target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: id === '#booking' ? 'center' : 'start' });
+        });
+      });
+
+      const form = root.querySelector('[data-salon-booking-form]');
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!(form instanceof HTMLFormElement) || !form.reportValidity()) return;
+        const button = form.querySelector('button[type="submit"]');
+        if (button) button.textContent = form.dataset.success || '✓';
+        form.classList.add('is-sent');
+      });
+    })();
+  </script>
+</SalonLayout>

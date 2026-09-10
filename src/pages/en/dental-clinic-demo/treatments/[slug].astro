@@ -1,0 +1,7 @@
+---
+import DentalArticle from '../../../../components/DentalArticle.astro';
+import {treatments} from '../../../../data/dental';
+export function getStaticPaths(){return treatments.map(treatment=>({params:{slug:treatment.enSlug},props:{treatment}}));}
+const {treatment}=Astro.props;
+---
+<DentalArticle lang="en" treatment={treatment}/>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1147 1030" role="img" aria-label="Mifer Digital mark">
+  <defs>
+    <linearGradient id="miferBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0069E8"/>
+      <stop offset="1" stop-color="#0057D8"/>
+    </linearGradient>
+    <linearGradient id="miferGreen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3DB44D"/>
+      <stop offset="1" stop-color="#2FAE3D"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#miferBlue)" d="M48 50 47 817 285 981 284 503 573 698 573 394Z"/>
+  <path fill="url(#miferGreen)" d="M1099 49 575 394 575 697 863 504 862 981 1100 817Z"/>
+</svg>

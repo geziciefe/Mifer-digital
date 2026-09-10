@@ -1,0 +1,18 @@
+---
+import { ArrowLeft } from 'lucide-astro';
+import ConstructionLayout from '../layouts/ConstructionLayout.astro';
+import { constructionCopy, constructionPaths } from '../data/construction';
+import type { Locale } from '../data/i18n';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const c = constructionCopy[lang];
+const paths = { tr: `${constructionPaths.tr}/demo-bilgileri`, en: `${constructionPaths.en}/demo-information` };
+---
+<ConstructionLayout lang={lang} title={`${c.policyTitle} — Kavren`} path={paths[lang]} alternatePath={paths[lang === 'tr' ? 'en' : 'tr']}>
+  <main id="main" class="kv-container kv-policy">
+    <a class="kv-breadcrumb" href={constructionPaths[lang]}><ArrowLeft size={18}/>{lang === 'tr' ? 'Kavren ana sayfa' : 'Kavren home'}</a>
+    <p class="kv-eyebrow">MIFER DIGITAL / KAVREN</p><h1>{c.policyTitle}</h1>
+    <p>{c.policyText}</p><h2>{lang === 'tr' ? 'İletişim formu' : 'Contact form'}</h2><p>{c.policyForm}</p>
+    <h2>{lang === 'tr' ? 'Veri ve yayın bilgileri' : 'Data and publication information'}</h2><p>{c.policyData}</p><small>{c.updated}</small>
+  </main>
+</ConstructionLayout>

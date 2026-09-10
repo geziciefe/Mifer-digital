@@ -1,0 +1,85 @@
+---
+import { X, ArrowUpRight, Mail, Instagram } from 'lucide-astro';
+import Logo from './Logo.astro';
+import { content, type Locale } from '../data/i18n';
+import { contactLinks, siteConfig } from '../data/siteConfig';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = content[lang].contactForm;
+---
+<div id="contact-panel" class="contact-panel" aria-hidden="true" data-recipient={siteConfig.email} data-mail-subject={t.mailSubject} data-mail-fields={JSON.stringify(t.mailFields)}>
+  <div class="contact-panel-backdrop" data-contact-close></div>
+  <section class="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title">
+    <header class="contact-dialog-header">
+      <a class="contact-dialog-brand" href={lang === 'tr' ? '/tr' : '/en'} aria-label="Mifer Digital">
+        <Logo compact class="contact-dialog-mark" />
+        <span>MIFER DIGITAL</span>
+      </a>
+      <button class="contact-close" type="button" data-contact-close aria-label={t.close}><X size={23} strokeWidth={1.55} /></button>
+    </header>
+
+    <div class="contact-dialog-body">
+      <div class="contact-panel-lead">
+        <h2 id="contact-dialog-title">{t.title}</h2>
+        <p class="contact-intro-summary">{t.summary}</p>
+
+        <div class="contact-direct-links" aria-label={t.directLabel}>
+          <a href={`mailto:${siteConfig.email}`}>
+            <span class="contact-direct-icon"><Mail size={18} strokeWidth={1.5} /></span>
+            <span><strong>{siteConfig.email}</strong></span>
+            <ArrowUpRight size={18} strokeWidth={1.45} />
+          </a>
+
+          {contactLinks.whatsapp ? (
+            <a class="contact-direct-social contact-direct-whatsapp" href={contactLinks.whatsapp} target="_blank" rel="noreferrer">
+              <span class="contact-direct-icon whatsapp-mini" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.92 9.92 0 1 0 12.04 2Zm0 17.99a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.08.96.98-3-.2-.31A8.1 8.1 0 1 1 12.04 20Z"/></svg>
+              </span>
+              <span><strong>{lang === 'tr' ? 'WhatsApp’tan yaz' : 'Message on WhatsApp'}</strong></span>
+              <ArrowUpRight size={18} strokeWidth={1.45} />
+            </a>
+          ) : (
+            <div class="contact-direct-unavailable" aria-disabled="true" title={lang === 'tr' ? 'Gerçek WhatsApp numarası eklendiğinde aktif olacak' : 'Activates when the real WhatsApp number is added'}>
+              <span class="contact-direct-icon whatsapp-mini" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.92 9.92 0 1 0 12.04 2Zm0 17.99a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.08.96.98-3-.2-.31A8.1 8.1 0 1 1 12.04 20Z"/></svg></span>
+              <span><strong>WhatsApp</strong></span>
+            </div>
+          )}
+
+          {contactLinks.instagram ? (
+            <a class="contact-direct-social contact-direct-instagram" href={contactLinks.instagram} target="_blank" rel="noreferrer">
+              <span class="contact-direct-icon"><Instagram size={18} strokeWidth={1.55} /></span>
+              <span><strong>{lang === 'tr' ? 'Instagram’da gör' : 'See our Instagram'}</strong></span>
+              <ArrowUpRight size={18} strokeWidth={1.45} />
+            </a>
+          ) : (
+            <div class="contact-direct-unavailable" aria-disabled="true" title={lang === 'tr' ? 'Gerçek Instagram adresi eklendiğinde aktif olacak' : 'Activates when the real Instagram URL is added'}>
+              <span class="contact-direct-icon"><Instagram size={18} strokeWidth={1.55} /></span>
+              <span><strong>Instagram</strong></span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="contact-form-stage">
+        <div class="contact-form-stage-head">
+          <strong>{t.formLabel}</strong>
+        </div>
+        <form id="contact-form" class="project-form">
+          <label class="field"><span>{t.name}</span><input name="name" autocomplete="name" required /></label>
+          <label class="field"><span>{t.business}</span><input name="business" autocomplete="organization" required /></label>
+          <label class="field"><span>{t.email}</span><input type="email" name="email" autocomplete="email" required /></label>
+          <label class="field field-phone">
+            <span>{t.phone}</span>
+            <span class="phone-input-shell"><b>+90</b><input type="tel" name="phone" autocomplete="tel-national" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="5XXXXXXXXX" required /></span>
+          </label>
+          <label class="field"><span>{t.website}</span><input name="website" inputmode="url" placeholder={t.websitePlaceholder} /></label>
+          <label class="field"><span>{t.instagram}</span><input name="instagram" inputmode="url" placeholder={t.instagramPlaceholder} /></label>
+          <label class="field field-wide field-message"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label>
+          <label class="consent field-wide"><input type="checkbox" name="consent" required /><span>{t.consent}</span></label>
+          <button class="form-submit field-wide" type="submit">{t.submit}<ArrowUpRight size={18} /></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

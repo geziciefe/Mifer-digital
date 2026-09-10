@@ -1,0 +1,40 @@
+---
+import { ArrowLeft, ArrowUpRight, Phone, Menu, X } from 'lucide-astro';
+import { dentalCopy, dentalPaths, type DentalLang } from '../data/dental';
+import { siteConfig } from '../data/siteConfig';
+import '../styles/dental-demo.css';
+import DemoReturn from './DemoReturn.astro';
+interface Props {lang:DentalLang; title?:string; path?:string; alternatePath?:string;}
+const {lang,title,path=dentalPaths[lang],alternatePath=dentalPaths[lang==='tr'?'en':'tr']}=Astro.props;
+const c=dentalCopy[lang]; const home=dentalPaths[lang];
+const sections=['treatments','dentist','clinic','journal','contact'];
+---
+<!doctype html>
+<html lang={lang}>
+ <head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title || `Avelis — ${lang==='tr'?'Nişantaşı Ağız ve Diş Sağlığı':'Dental Care in Nişantaşı'}`}</title>
+  <meta name="description" content={c.heroText} /><meta name="theme-color" content="#112d40" />
+  <link rel="canonical" href={new URL(path,siteConfig.url)} /><link rel="alternate" hreflang={lang==='tr'?'en':'tr'} href={new URL(alternatePath,siteConfig.url)} />
+  <link rel="icon" href="/brand/favicon-32.png" />
+  <meta property="og:type" content="website" /><meta property="og:title" content={title || 'Avelis — Dental Care, Istanbul'} /><meta property="og:description" content={c.heroText} /><meta property="og:url" content={new URL(path,siteConfig.url)} /><meta property="og:image" content={new URL('/demos/mifer-smile/clinic-hero.webp',siteConfig.url)} /><meta name="twitter:card" content="summary_large_image" />
+ </head>
+ <body class="av-body">
+  <a class="av-skip" href="#main">{lang==='tr'?'İçeriğe geç':'Skip to content'}</a>
+  <header class="av-header">
+   <a class="av-brand" href={home} aria-label="Avelis Dental Care"><span>avelis<span class="av-brand-dot">.</span></span><small>DENTAL CARE · ISTANBUL</small></a>
+   <nav id="av-nav" class="av-nav" aria-label={c.menu}>{c.nav.map((label,i)=><a href={`${home}#${sections[i]}`}>{label}</a>)}<a class="av-menu-return" href={`/${lang}#work`}><ArrowLeft size={16}/>{c.back}</a></nav>
+   <div class="av-header-end"><a class="av-language" href={alternatePath} hreflang={lang==='tr'?'en':'tr'} aria-label={lang==='tr'?'Switch to English':'Türkçeye geç'}>{lang==='tr'?'EN':'TR'}</a><a class="av-header-book" href={`${home}#appointment`}>{c.book}<ArrowUpRight size={17}/></a><button class="av-menu" aria-label={c.menu} aria-controls="av-nav" aria-expanded="false"><Menu class="av-menu-open" size={23}/><X class="av-menu-close" size={23}/></button></div>
+  </header>
+  <slot />
+  <footer class="av-footer">
+   <div class="av-wrap av-footer-top"><a class="av-brand" href={home}><span>avelis.</span><small>DENTAL CARE · ISTANBUL</small></a><p>{c.footer}</p><a class="av-text-link" href={`${home}#appointment`}>{c.book}<ArrowUpRight size={22}/></a></div>
+   <div class="av-wrap av-footer-bottom"><div><p>{c.disclaimer}</p><small>{c.updated}<br/>{c.editor} · <a href="mailto:iletisim@miferdigital.com">iletisim@miferdigital.com</a></small></div><nav aria-label={c.legal}><a href={`${home}/${lang==='tr'?'kvkk':'privacy'}`}>{c.privacy}</a><a href={`${home}/${lang==='tr'?'cerez-politikasi':'cookie-policy'}`}>{c.cookies}</a><a href={`${home}/${lang==='tr'?'yasal-bilgilendirme':'legal'}`}>{c.legal}</a></nav></div>
+   <div class="av-wrap av-credit"><span>© 2026 AVELIS</span><a href={`/${lang}#work`}>{c.demo}<ArrowUpRight size={14}/></a></div>
+  </footer>
+  <DemoReturn lang={lang} />
+  <div class="av-mobile-dock"><button data-av-contact aria-label={c.call}><Phone size={17}/><span>{c.call}</span></button><a href={`${home}#appointment`}>{c.book}<ArrowUpRight size={18}/></a></div>
+  <dialog class="av-dialog" id="av-contact-dialog"><button data-av-close aria-label={c.close}><X size={24}/></button><small>AVELIS · DEMO</small><h2>{c.contactDemo}</h2><p>{c.contactDemoText}</p><a class="av-button" href={`${home}#appointment`} data-av-dialog-book>{c.book}<ArrowUpRight size={18}/></a></dialog>
+  <script>import '../scripts/dental-demo';</script>
+ </body>
+</html>

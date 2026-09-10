@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import '../styles/work-showcase.css';
+import { siteConfig } from '../data/siteConfig';
+import { locales, type Locale } from '../data/i18n';
+import CookieBanner from '../components/CookieBanner.astro';
+import Logo from '../components/Logo.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  lang?: Locale;
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  alternatePath?: string;
+}
+
+const {
+  lang = 'tr',
+  title = 'Mifer Digital',
+  description = 'Mifer Digital — independent digital studio in Istanbul.',
+  canonicalPath = locales[lang].homePath,
+  alternatePath = locales[lang === 'tr' ? 'en' : 'tr'].homePath
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, siteConfig.url).toString();
+const alternateLocale: Locale = lang === 'tr' ? 'en' : 'tr';
+const alternateUrl = new URL(alternatePath, siteConfig.url).toString();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteConfig.brand,
+  url: siteConfig.url,
+  email: siteConfig.email,
+  areaServed: 'Worldwide',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: siteConfig.email,
+    contactType: 'customer service',
+    availableLanguage: ['Turkish', 'English']
+  }
+};
+---
+<!doctype html>
+<html lang={locales[lang].htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={locales[lang].htmlLang} href={canonicalUrl} />
+    <link rel="alternate" hreflang={locales[alternateLocale].htmlLang} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={`${siteConfig.url}/tr`} />
+    <link rel="prefetch" href={alternatePath} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={locales[lang].ogLocale} />
+    <meta property="og:site_name" content={siteConfig.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteConfig.url}/brand/mifer-logo.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add('mifer-js');</script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <div class="route-progress" data-route-progress aria-hidden="true" transition:persist="mifer-route-progress"><span></span></div>
+    <div class="route-loader" data-route-loader hidden aria-hidden="true" transition:persist="mifer-route-loader">
+      <div class="route-loader-scene">
+        <span class="route-loader-ring" aria-hidden="true"></span>
+        <span class="route-loader-orb" aria-hidden="true"></span>
+        <div class="route-loader-lockup" aria-label="Mifer Digital loading">
+          <Logo compact class="route-loader-mark" />
+          <Wordmark class="route-loader-wordmark" />
+          <span class="route-loader-line" aria-hidden="true"></span>
+          <span class="route-loader-kicker" aria-hidden="true">MIFER / WORK</span>
+        </div>
+      </div>
+    </div>
+    <slot />
+    <CookieBanner lang={lang} />
+    <script>
+      import '../scripts/runtime.js';
+    </script>
+  </body>
+</html>

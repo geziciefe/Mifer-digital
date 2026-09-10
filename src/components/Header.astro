@@ -1,0 +1,66 @@
+---
+import { Menu, X } from 'lucide-astro';
+import Logo from './Logo.astro';
+import ContactPanel from './ContactPanel.astro';
+import { content, locales, type Locale } from '../data/i18n';
+
+interface Props {
+  lang: Locale;
+  alternatePath?: string;
+  revealAfterScroll?: boolean;
+}
+const { lang, alternatePath = locales[lang === 'tr' ? 'en' : 'tr'].homePath, revealAfterScroll = false } = Astro.props;
+const t = content[lang];
+const home = locales[lang].homePath;
+const work = locales[lang].workPath;
+---
+<header class:list={["site-header", revealAfterScroll && "site-header-reveal"]} data-site-header>
+  <div class="header-inner">
+    <nav class="desktop-nav nav-left" aria-label="Primary navigation">
+      <a data-nav-link data-section-link href={`${home}#services`}>{t.nav.services}</a>
+      <a data-nav-link data-prefetch-link href={work}>{t.nav.work}</a>
+      <a data-nav-link data-section-link href={`${home}#approach-start`}>{t.nav.approach}</a>
+      <a data-nav-link data-section-link href={`${home}#about`}>{t.nav.about}</a>
+    </nav>
+
+    <a href={home} class="brand-lockup-center" data-nav-link data-prefetch-link aria-label="Mifer Digital ana sayfa">
+      <span class="brand-lockup-visual">
+        <Logo compact class="header-brand-mark" />
+        <span class="header-brand-name">mifer</span>
+        <span class="header-brand-sub">digital</span>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <a
+        class="lang-switch-round"
+        data-nav-link
+        data-prefetch-link
+        data-lang-switch
+        data-lang={lang}
+        href={alternatePath}
+        hreflang={lang === 'tr' ? 'en' : 'tr'}
+        aria-label={`${locales[lang].switchLabel} diline geç`}
+        title={`${locales[lang].switchLabel} diline geç`}
+      >
+        <span class="lang-code">{locales[lang].label}</span>
+      </a>
+      <button class="header-contact" type="button" data-contact-open>{t.nav.contact}</button>
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label={t.nav.menu}>
+        <Menu id="menu-open" size={22} strokeWidth={1.6} />
+        <X id="menu-close" class="hidden" size={22} strokeWidth={1.6} />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu hidden">
+    <nav class="container-shell mobile-nav" aria-label="Mobile navigation">
+      <a data-nav-link data-section-link href={`${home}#services`}>{t.nav.services}</a>
+      <a data-nav-link data-prefetch-link href={work}>{t.nav.work}</a>
+      <a data-nav-link data-section-link href={`${home}#approach-start`}>{t.nav.approach}</a>
+      <a data-nav-link data-section-link href={`${home}#about`}>{t.nav.about}</a>
+      <button type="button" data-contact-open>{t.nav.contact}</button>
+    </nav>
+  </div>
+</header>
+<ContactPanel lang={lang} />

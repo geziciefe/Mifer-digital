@@ -1,0 +1,33 @@
+---
+import type { Locale } from '../data/i18n';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const copy = lang === 'tr'
+  ? {
+      eyebrow: 'Çerez tercihleri',
+      text: 'Siteyi çalıştırmak için zorunlu depolamayı kullanıyoruz. İsteğe bağlı ölçüm araçları yalnızca izin verirseniz çalışır.',
+      essential: 'Yalnızca zorunlu',
+      accept: 'Tümünü kabul et',
+      details: 'Tercihinizi footer’daki Çerez ayarları bağlantısından değiştirebilirsiniz.'
+    }
+  : {
+      eyebrow: 'Cookie preferences',
+      text: 'We use essential storage to keep the site working. Optional measurement tools only run if you allow them.',
+      essential: 'Essential only',
+      accept: 'Accept all',
+      details: 'You can change this later from Cookie settings in the footer.'
+    };
+---
+<div class="cookie-banner" data-cookie-banner hidden>
+  <div class="cookie-inner">
+    <div class="cookie-copy">
+      <span class="cookie-eyebrow">{copy.eyebrow}</span>
+      <p>{copy.text}</p>
+      <small>{copy.details}</small>
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn cookie-essential" data-cookie-choice="essential">{copy.essential}</button>
+      <button type="button" class="cookie-btn cookie-accept" data-cookie-choice="all">{copy.accept}</button>
+    </div>
+  </div>
+</div>

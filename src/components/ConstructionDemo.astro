@@ -1,0 +1,48 @@
+---
+import { ArrowDown, ArrowUpRight, Plus, Phone, Mail } from 'lucide-astro';
+import ConstructionLayout from '../layouts/ConstructionLayout.astro';
+import ConstructionImage from './ConstructionImage.astro';
+import { constructionCopy, constructionProjects, projectPath, projectArea } from '../data/construction';
+import type { Locale } from '../data/i18n';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const c = constructionCopy[lang];
+const hero = constructionProjects[0];
+const projects = [constructionProjects[1], constructionProjects[2], constructionProjects[0]];
+const lines = (text: string) => text.split('\n');
+---
+<ConstructionLayout lang={lang}>
+  <main id="main">
+    <section class="kv-hero" aria-labelledby="kv-hero-title">
+      <div class="kv-hero-photo"><ConstructionImage name="kavakli" alt={hero.alt[lang]} eager /></div>
+      <div class="kv-container kv-hero-inner">
+        <p class="kv-hero-kicker">{c.eyebrow}</p>
+        <div class="kv-hero-message"><h1 id="kv-hero-title">{c.heroA}<br/><span>{c.heroB}</span></h1><div><p>{c.heroText}</p><a class="kv-text-link" href="#projects">{c.explore}<ArrowDown size={20}/></a></div></div>
+        <div class="kv-hero-foot"><a href={projectPath(hero, lang)}><span>{c.heroProject}</span><strong>{hero.name[lang]}</strong><ArrowUpRight size={22}/></a><span>{c.heroYear}</span></div>
+      </div>
+    </section>
+
+    <section class="kv-metrics kv-container" aria-label={lang === 'tr' ? 'Sayılarla Kavren' : 'Kavren in numbers'}>
+      {c.stats.map(([value, unit, label]) => <div><p><strong>{value}</strong><span>{unit}</span></p><h2>{label}</h2></div>)}
+    </section>
+
+    <section class="kv-projects kv-section kv-container" id="projects" aria-labelledby="kv-projects-title">
+      <div class="kv-section-head" data-kv-reveal><div><p class="kv-eyebrow">{c.portfolio}</p><h2 id="kv-projects-title">{lines(c.projectTitle).map(line => <span>{line}</span>)}</h2></div><p>{c.projectIntro}</p></div>
+      <div class="kv-project-toolbar"><div class="kv-filters" role="group" aria-label={c.filterLabel} data-kv-filters hidden>{c.filters.map((label, i) => <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-kv-filter={['all', 'completed', 'ongoing'][i]}>{label}<span>{[3, 2, 1][i]}</span></button>)}</div><p class="kv-results" aria-live="polite" data-kv-results data-label={c.results}>3 {c.results}</p></div>
+      <div class="kv-project-grid" data-kv-project-grid>
+        {projects.map((project, i) => <article class:list={['kv-project', `kv-project-${i + 1}`]} data-kv-project data-status={project.status} data-kv-reveal>
+          <a class="kv-project-image" href={projectPath(project, lang)} aria-label={`${project.name[lang]} — ${c.viewProject}`}><ConstructionImage name={project.image} alt={project.alt[lang]} sizes={i === 0 ? '(max-width:760px) 100vw, 65vw' : '(max-width:760px) 100vw, 50vw'}/><span class="kv-project-open" aria-hidden="true"><ArrowUpRight size={27}/></span></a>
+          <div class="kv-project-copy"><div class="kv-project-type"><span>{project.category[lang]}</span><span class:list={['kv-status', project.status === 'ongoing' && 'kv-status-active']}>{project.status === 'ongoing' ? c.ongoing : c.completed}</span></div><h3><a href={projectPath(project, lang)}>{project.name[lang]}</a></h3><div class="kv-project-meta"><span>{project.location[lang]}</span><span>{projectArea(project, lang)}</span><span>{project.year}</span></div>{i === 2 && <a class="kv-text-link" href={projectPath(project, lang)}>{c.viewProject}<ArrowUpRight size={20}/></a>}</div>
+        </article>)}
+      </div>
+    </section>
+
+    <section class="kv-expertise" id="expertise"><div class="kv-container kv-expertise-grid"><header data-kv-reveal><p class="kv-eyebrow">{c.expertiseLabel}</p><h2>{lines(c.expertiseTitle).map(line => <span>{line}</span>)}</h2><p>{c.expertiseIntro}</p><a class="kv-text-link" href="#contact">{c.contactLabel}<ArrowUpRight size={20}/></a></header><div class="kv-expertise-list">{c.expertise.map(([title, text], i) => <details name="kavren-expertise" open={i === 0} data-kv-reveal><summary><span class="kv-index">0{i + 1}</span><h3>{title}</h3><Plus size={21} strokeWidth={1.5}/></summary><p>{text}</p></details>)}</div></div></section>
+
+    <section class="kv-approach kv-section" aria-labelledby="kv-approach-title"><div class="kv-container kv-approach-head" data-kv-reveal><p class="kv-eyebrow">{c.approachLabel}</p><div><h2 id="kv-approach-title">{lines(c.approachTitle).map(line => <span>{line}</span>)}</h2><p>{c.approachText}</p></div></div><figure class="kv-site-photo" data-kv-reveal><ConstructionImage name="saha" alt={c.siteAlt}/><figcaption class="kv-container"><span>{c.siteCaption}</span><span>KAVREN / 2026</span></figcaption></figure><ol class="kv-container kv-process">{c.approach.map(([title, text], i) => <li data-kv-reveal><span class="kv-index">0{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
+
+    <section class="kv-company kv-section kv-container" id="company"><div class="kv-company-head" data-kv-reveal><p class="kv-eyebrow">{c.companyLabel}</p><h2>{lines(c.companyTitle).map(line => <span>{line}</span>)}</h2><div><p>{c.companyText}</p><p>{c.companyNote}</p></div></div><ol class="kv-history">{c.milestones.map(([year, text]) => <li data-kv-reveal><span>{year}</span><p>{text}</p></li>)}</ol><div class="kv-responsibility" data-kv-reveal><h3>{c.responsibility}</h3><p>{c.responsibilityText}</p></div></section>
+
+    <section class="kv-contact" id="contact"><div class="kv-container kv-contact-grid"><div data-kv-reveal><p class="kv-eyebrow">{c.contactLabel}</p><h2>{lines(c.contactTitle).map(line => <span>{line}</span>)}</h2><p class="kv-contact-intro">{c.contactText}</p><div class="kv-office"><h3>{c.hq}</h3><address>{lines(c.address).map(line => <span>{line}</span>)}</address><small>{c.addressNote}</small><div><button class="kv-contact-method" data-kv-contact><Phone size={17}/>{c.phone}</button><button class="kv-contact-method" data-kv-contact><Mail size={17}/>{c.email}</button></div></div></div><div class="kv-inquiry-list">{c.inquiry.map((title, i) => <article data-kv-reveal><span class="kv-index">0{i + 1}</span><h3>{title}</h3><p>{c.inquiryText[i]}</p><button class="kv-text-link" data-kv-enquiry={i}>{c.inquiryAction}<ArrowUpRight size={20}/></button></article>)}</div></div></section>
+  </main>
+</ConstructionLayout>

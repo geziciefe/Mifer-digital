@@ -1,0 +1,42 @@
+---
+import '../styles/salon-demo.css';
+import DemoReturn from '../components/DemoReturn.astro';
+
+interface Props {
+  lang: 'tr' | 'en';
+  title: string;
+  description: string;
+  canonicalPath: string;
+  alternatePath: string;
+}
+
+const { lang, title, description, canonicalPath, alternatePath } = Astro.props;
+const origin = 'https://miferdigital.com';
+const canonicalUrl = new URL(canonicalPath, origin).toString();
+const alternateUrl = new URL(alternatePath, origin).toString();
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0b0a" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={lang === 'tr' ? 'tr-TR' : 'en'} href={canonicalUrl} />
+    <link rel="alternate" hreflang={lang === 'tr' ? 'en' : 'tr-TR'} href={alternateUrl} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${origin}/demos/mifer-kuafor/hero-poster.webp`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add('salon-js');</script>
+  </head>
+  <body>
+    <slot />
+    <DemoReturn lang={lang} />
+  </body>
+</html>

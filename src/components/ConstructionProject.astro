@@ -1,0 +1,32 @@
+---
+import { ArrowLeft, ArrowUpRight } from 'lucide-astro';
+import ConstructionLayout from '../layouts/ConstructionLayout.astro';
+import ConstructionImage from './ConstructionImage.astro';
+import { constructionCopy, constructionPaths, constructionProjects, projectArea, projectPath, type Project } from '../data/construction';
+import type { Locale } from '../data/i18n';
+interface Props { lang: Locale; project: Project; }
+const { lang, project } = Astro.props;
+const c = constructionCopy[lang];
+const next = constructionProjects[(constructionProjects.findIndex(item => item.slug.tr === project.slug.tr) + 1) % constructionProjects.length];
+const other = lang === 'tr' ? 'en' : 'tr';
+const metadata = [[c.location, project.location[lang]], [c.category, project.category[lang]], [c.area, projectArea(project, lang)], [c.date, project.year]];
+---
+<ConstructionLayout lang={lang} title={`${project.name[lang]} — Kavren`} description={project.introduction[lang]} path={projectPath(project, lang)} alternatePath={projectPath(project, other)}>
+  <main id="main" class="kv-project-page">
+    <div class="kv-container">
+      <a class="kv-breadcrumb" href={`${constructionPaths[lang]}#projects`}><ArrowLeft size={18}/>{c.backProjects}</a>
+      <div class="kv-project-heading"><h1>{project.name[lang]}</h1><span class:list={['kv-status', project.status === 'ongoing' && 'kv-status-active']}>{project.status === 'ongoing' ? c.ongoing : c.completed}</span></div>
+      <dl class="kv-case-meta">{metadata.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+    </div>
+    <figure class="kv-case-hero"><ConstructionImage name={project.image} alt={project.alt[lang]} eager /></figure>
+    <div class="kv-container kv-case-content">
+      <section data-kv-reveal aria-labelledby="kv-case-overview"><h2 id="kv-case-overview">{c.overview}</h2><p class="kv-case-intro">{project.introduction[lang]}</p><p>{project.brief[lang]}</p></section>
+      <dl class="kv-case-facts" data-kv-reveal>{project.facts[lang].map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+    </div>
+    <div class="kv-container kv-case-delivery">
+      <section data-kv-reveal><h2>{c.scope}</h2><ul>{project.scope[lang].map(item => <li>{item}</li>)}</ul></section>
+      <section data-kv-reveal><h2>{c.engineering}</h2><p>{project.engineering[lang]}</p><a class="kv-text-link" href={`${constructionPaths[lang]}#contact`}>{c.contactLabel}<ArrowUpRight size={20}/></a></section>
+    </div>
+    <nav class="kv-container kv-next" aria-label={c.nextProject}><a href={projectPath(next, lang)}><ConstructionImage name={next.image} alt="" sizes="170px"/><div><span>{c.nextProject}</span><h2>{next.name[lang]}</h2></div><ArrowUpRight size={40} strokeWidth={1.3}/></a></nav>
+  </main>
+</ConstructionLayout>

@@ -1,0 +1,48 @@
+---
+import { ArrowUpRight } from 'lucide-astro';
+import type { Demo } from '../data/demos';
+import { content, type Locale } from '../data/i18n';
+interface Props { demo: Demo; lang: Locale; featured?: boolean; }
+const { demo, lang, featured = false } = Astro.props;
+const t = content[lang];
+const demoUrl = demo.liveUrl?.[lang];
+const theme = {
+  blue: { base: 'demo-blue', word: 'LOCAL' },
+  green: { base: 'demo-green', word: 'SALON' },
+  navy: { base: 'demo-navy', word: 'BUILD' },
+  gold: { base: 'demo-gold', word: 'SMILE' },
+  oxide: { base: 'demo-navy', word: 'KAVREN' }
+}[demo.accent];
+---
+<article class:list={["work-card", `work-card-${demo.accent}`, featured && "work-card-featured"]} data-reveal>
+  <div class="work-visual" data-parallax>
+    {demo.thumbnail ? (
+      <img src={demo.thumbnail} alt="" loading="lazy" />
+    ) : (
+      <div class={`demo-art ${theme.base}`}>
+        <div class="demo-art-top"><span>{demo.title[lang]}</span></div>
+        <div class="demo-art-word">{theme.word}</div>
+        <div class="demo-browser">
+          <div class="demo-browser-bar"><i></i><i></i><i></i></div>
+          <div class="demo-browser-body">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="demo-art-disc"></div>
+      </div>
+    )}
+  </div>
+  <div class="work-copy">
+    <span class="work-sector">{demo.sector[lang]}</span>
+    <h3>{demo.title[lang]}</h3>
+    <p>{demo.summary[lang]}</p>
+    <ul class="work-feature-list">
+      {demo.tags[lang].map((tag) => <li>{tag}</li>)}
+    </ul>
+    <div class="work-status">
+      {demo.status === 'live' && demoUrl ? (
+        <a class="work-demo-link" href={demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]} (${lang === 'tr' ? 'demo, yeni sekmede açılır' : 'demo, opens in a new tab'})`}>{demo.action[lang]}<ArrowUpRight size={19} /></a>
+      ) : <span>{t.work.coming}</span>}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,6 @@
+---
+import DentalPolicy from '../../../components/DentalPolicy.astro';
+export function getStaticPaths(){return [{params:{policy:'privacy'},props:{kind:'privacy' as const}},{params:{policy:'cookie-policy'},props:{kind:'cookies' as const}},{params:{policy:'legal'},props:{kind:'legal' as const}}];}
+const {kind}=Astro.props;
+---
+<DentalPolicy lang="en" kind={kind}/>
