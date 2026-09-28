@@ -11,7 +11,7 @@ const theme = {
   green: { base: 'demo-green', word: 'SALON' },
   navy: { base: 'demo-navy', word: 'BUILD' },
   gold: { base: 'demo-gold', word: 'SMILE' },
-  oxide: { base: 'demo-navy', word: 'KAVREN' }
+  oxide: { base: 'demo-navy', word: 'KAVREN YAPI' }
 }[demo.accent];
 ---
 <article class:list={["work-card", `work-card-${demo.accent}`, featured && "work-card-featured"]} data-reveal>
@@ -41,7 +41,7 @@ const theme = {
     </ul>
     <div class="work-status">
       {demo.status === 'live' && demoUrl ? (
-        <a class="work-demo-link" href={demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]} (${lang === 'tr' ? 'demo, yeni sekmede açılır' : 'demo, opens in a new tab'})`}>{demo.action[lang]}<ArrowUpRight size={19} /></a>
+        <a class="work-demo-link" href={demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]} (${lang === 'tr' ? 'demo, yeni sekmede açılır' : 'demo, opens in a new tab'})`}>{demo.action[lang]} · {lang === 'tr' ? 'Yeni sekme' : 'New tab'}<ArrowUpRight size={19} /></a>
       ) : <span>{t.work.coming}</span>}
     </div>
   </div>

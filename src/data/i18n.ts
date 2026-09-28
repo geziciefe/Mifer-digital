@@ -52,21 +52,21 @@ export const content = {
     },
     intro: {
       label: 'Ne yapıyoruz',
-      title: 'Web sitesi, arama görünürlüğü ve marka hissi. Hepsini tek bir büyüme fikri etrafında kuruyoruz.',
+      title: 'Tek bir dijital sistem',
       capabilities: [
-        ['Netleştiririz', 'Markanın dijitalde ne söylemesi ve nasıl görünmesi gerektiğini belirleriz.'],
-        ['Tasarlayıp üretiriz', 'Arayüzü, içeriği ve geliştirmeyi aynı sistem içinde birlikte ele alırız.'],
-        ['Görünür kılarız', 'SEO ve Google altyapısını tasarımın doğal bir parçası olarak kurarız.']
+        ['İşiniz doğru anlaşılsın', 'Ne sunduğunuzu ve kime hitap ettiğinizi açıkça anlatan, markanıza ait bir web sitesi.'],
+        ['Aramalarda bulunabilsin', 'İlgili aramalarda keşfedilmeyi destekleyen, düzenli içerik ve sağlam bir sayfa yapısı.'],
+        ['İletişim kolaylaşsın', 'Ziyaretçinin sorusuna yanıt bulup size ulaşabildiği, açık ve kısa bir yol.']
       ]
     },
     services: {
       label: 'Hizmetler',
-      title: 'Tasarım, teknoloji ve görünürlük. Markanızın dijital çekirdeğini tek sistem olarak kuruyoruz.',
+      title: 'Web sitesi, görünürlük ve destek.',
       items: [
-        ['01', 'Web Tasarım & Geliştirme', 'Markanıza özel web siteleri tasarlayıp geliştiriyoruz. Hazır şablon kullanmıyoruz; yapıyı işletmenize, hedef kitlenize ve ihtiyaçlarınıza göre kuruyoruz.'],
-        ['02', 'SEO & Google Görünürlüğü', 'Teknik SEO, içerik yapısı ve arama görünürlüğünü sonradan eklenen bir katman değil, sitenin temeli olarak kuruyoruz.'],
-        ['03', 'Google Maps & Yerel Vitrin', 'Google Business Profile, konum, yorumlar ve iletişim kanallarını aynı güven veren dijital görünümde birleştiriyoruz.'],
-        ['04', 'Bakım & Sürekli Geliştirme', 'Site yayına çıktıktan sonra içerik, görsel, performans ve yeni özellik ihtiyaçlarında sistemi canlı tutuyoruz.']
+        ['Web tasarım ve geliştirme', 'İşletmenize özel sayfa tasarımı, içerik yerleşimi ve mobil uyumlu site geliştirme. Ziyaretçinin bilgiye ve iletişime kolayca ulaşacağı bir yapı.', 'TASARIM · GELİŞTİRME'],
+        ['Google ve yerel görünürlük', 'Uygun işletmeler için Google İşletme Profili kurulumu veya düzenlenmesi; kategori, konum, çalışma saatleri ve iletişim bilgilerinin tutarlılığı.', 'İŞLETME PROFİLİ · HARİTALAR'],
+        ['Bakım ve geliştirme', 'Yayın sonrası içerik ve görsel güncellemeleri, performans kontrolleri ve ihtiyaç duyulan yeni özellikler. Kapsam, işletmenizin ihtiyacına göre belirlenir.', 'GÜNCELLEME · DESTEK'],
+        ['SEO ve arama görünürlüğü', 'Sayfa başlıkları, açıklamalar, içerik hiyerarşisi ve teknik kontroller. Arama motorlarının sitenizi anlamasını destekleyen temel düzenlemeler.', 'İÇERİK · TEKNİK ALTYAPI']
       ]
     },
     work: {
@@ -76,24 +76,25 @@ export const content = {
       summary: 'Her sektörün kullanıcı alışkanlığı, güven dili ve dönüşüm yolu farklı. Seçili çalışmalarımızda aynı şablonu tekrar etmek yerine her marka için ayrı bir dijital dünya kuruyoruz.',
       all: 'Tüm çalışmaları incele',
       concept: 'Tasarım çalışması',
-      demoNote: 'Demo çalışmalardır. Marka isimleri kurgusaldır.',
       coming: 'Canlı demo yakında',
       open: 'Canlı demoyu aç'
     },
     approach: {
       label: 'Yaklaşım',
-      title: 'Net düşünürüz. Hızlı üretiriz. Markanızı sahipleniriz.',
+      title: 'İlk görüşmeden yayına.',
       items: [
-        ['01', 'Anlarız', 'İşletmeyi, müşteriyi ve mevcut dijital görünümü inceleriz.'],
-        ['02', 'Kurgularız', 'İçerik mimarisini, görsel sistemi ve kullanıcı akışını tasarlarız.'],
-        ['03', 'Üretiriz', 'Tasarladığımız yapıyı hızlı, erişilebilir ve performanslı geliştiririz.'],
-        ['04', 'Büyütürüz', 'Yayın sonrası ölçer, günceller ve ihtiyaç oldukça sistemi geliştiririz.']
+        ['Netleştiririz', 'İşletmenizi ve müşterilerinizi tanır; sitenin amacını, içeriğini ve önceliklerini birlikte belirleriz.'],
+        ['Tasarlarız', 'Bu kararları sayfa düzenine, markanızın görsel diline ve ziyaretçinin izleyeceği anlaşılır bir yola dönüştürürüz.'],
+        ['Üretiriz', 'Tasarımı çalışan, mobil uyumlu ve hızlı bir siteye dönüştürür; bağlantıları ve temel kullanım akışlarını kontrol ederiz.'],
+        ['Görünür kılarız', 'Sayfa başlıklarını, içerik düzenini ve teknik arama altyapısını hazırlar; uygun projelerde Google İşletme Profilini düzenleriz.']
       ]
     },
     about: {
       label: 'Mifer hakkında',
-      title: 'Projeyi uzaktan izlemiyoruz. Fikirden yayına kadar doğrudan içindeyiz.',
-      body: 'Mifer Digital, İstanbul merkezli bir dijital stüdyo. Aynı anda az sayıda projeye odaklanıyor; strateji, tasarım, geliştirme ve görünürlüğü aynı masada çözüyoruz. Böylece kararlar hızlanıyor, işin karakteri kaybolmuyor ve sonuç markanıza gerçekten ait hissediliyor.',
+      kicker: 'BAĞIMSIZ DİJİTAL STÜDYO · İSTANBUL',
+      title: 'İşinizi tanıyan bir dijital ekip.',
+      body: 'Mifer Digital, Maltepe, İstanbul merkezli bir dijital ekip. Mühendisler, yazılımcılar ve tasarımcılardan oluşan ekibimiz, işletmenizin ihtiyaçlarını birlikte değerlendirir; tasarımı ve teknik üretimi aynı süreçte yürütür. Projenizde çalışan kişilerle doğrudan iletişim kurarsınız. İşin kapsamı ve sorumlulukları baştan bellidir; sorularınızın ve üstlendiğimiz işin takibini yaparız.',
+      disciplines: ['STRATEJİ', 'TASARIM', 'KOD', 'GÖRÜNÜRLÜK'],
       ribbon: 'STRATEJİ / TASARIM / GELİŞTİRME / GÖRÜNÜRLÜK / DOĞRUDAN ÜRETİM / '
     },
     contact: {
@@ -101,6 +102,7 @@ export const content = {
       titleA: 'BİR ŞEYLERİ',
       titleB: 'DAHA İYİ YAPALIM',
       mail: 'E-posta gönder',
+      sectionLocation: 'Maltepe, İstanbul',
       location: 'Maltepe, İstanbul · Dünya genelinde projeler',
       whatsapp: 'WhatsApp’tan yaz',
       instagram: 'Instagram’da gör'
@@ -160,21 +162,21 @@ export const content = {
     },
     intro: {
       label: 'What we do',
-      title: 'Website, search visibility and brand presence. We build all three around one clear growth idea.',
+      title: 'One connected digital system',
       capabilities: [
-        ['Define the direction', 'We decide what the brand should say and how it should show up online.'],
-        ['Design and build', 'Interface, content and development move together as one connected system.'],
-        ['Make it visible', 'SEO and Google foundations are built into the experience from day one.']
+        ['Make your business clear', 'A website that explains what you offer and who it is for, with a look that feels like your brand.'],
+        ['Support discovery', 'Organised content and a sound page structure that help people find you through relevant searches.'],
+        ['Make contact easier', 'A clear, short path from finding an answer to getting in touch with your business.']
       ]
     },
     services: {
       label: 'Services',
-      title: 'Design, technology and visibility. We build the digital core of your brand as one system.',
+      title: 'Websites, visibility and support.',
       items: [
-        ['01', 'Web Design & Development', 'We design and build websites specifically for your brand. No off-the-shelf templates; the structure is shaped around your business, audience and goals.'],
-        ['02', 'SEO & Search Visibility', 'Technical SEO, content structure and discoverability are built into the foundation rather than bolted on at the end.'],
-        ['03', 'Google Maps & Local Presence', 'We connect Google Business Profile, location, reviews and contact channels into one trustworthy digital presence.'],
-        ['04', 'Maintenance & Continuous Growth', 'After launch, we keep the system current with content, visuals, performance work and new features when needed.']
+        ['Web design and development', 'Custom page design, content layouts and responsive development. A website that makes information easy to find and contact easy to make.', 'DESIGN · DEVELOPMENT'],
+        ['Google and local visibility', 'Google Business Profile setup or updates for eligible businesses, with consistent categories, location, opening hours and contact details.', 'BUSINESS PROFILE · MAPS'],
+        ['Maintenance and development', 'Content and image updates, performance checks and new features after launch. The scope is agreed around what your business needs.', 'UPDATES · SUPPORT'],
+        ['SEO and search visibility', 'Page titles, descriptions, content hierarchy and technical checks. Practical foundations that help search engines understand your website.', 'CONTENT · TECHNICAL FOUNDATIONS']
       ]
     },
     work: {
@@ -184,24 +186,25 @@ export const content = {
       summary: 'Every industry has a different audience, trust signal and path to conversion. Our selected studies explore a distinct digital world for each brand instead of repeating one template.',
       all: 'View all work',
       concept: 'Design study',
-      demoNote: 'Demo projects. Brand names are fictional.',
       coming: 'Live demo coming soon',
       open: 'Open live demo'
     },
     approach: {
       label: 'Approach',
-      title: 'Think clearly. Move fast. We take ownership of your brand.',
+      title: 'From first conversation to launch.',
       items: [
-        ['01', 'Understand', 'We study the business, its customers and the current digital presence.'],
-        ['02', 'Shape', 'We define the content architecture, visual system and user journey.'],
-        ['03', 'Build', 'We turn the design into a fast, accessible and performance-focused product.'],
-        ['04', 'Grow', 'After launch, we measure, update and evolve the system as the business grows.']
+        ['Clarify', 'We get to know your business and customers, then agree on the purpose, content and priorities of the website.'],
+        ['Design', 'We turn those decisions into page layouts, a visual language for your brand and a clear journey for visitors.'],
+        ['Build', 'We turn the design into a working, responsive and fast website, checking links and the main user journeys.'],
+        ['Support discovery', 'We prepare page titles, content structure and technical search foundations, including Google Business Profile where appropriate.']
       ]
     },
     about: {
       label: 'About Mifer',
-      title: 'We do not watch from the sidelines. We stay close from first idea to launch.',
-      body: 'Mifer Digital is a digital studio based in Istanbul. We focus on a small number of projects at a time, bringing strategy, design, development and visibility to the same table. Decisions move faster, the character of the work stays intact, and the result feels genuinely yours.',
+      kicker: 'INDEPENDENT DIGITAL STUDIO · ISTANBUL',
+      title: 'A digital team that knows your business.',
+      body: 'Mifer Digital is a digital team based in Maltepe, Istanbul. Our engineers, software developers and designers consider your business needs together, bringing design and technical delivery into one process. You speak directly with the people working on your project. Scope and responsibilities are clear from the start, and we follow through on questions and commitments.',
+      disciplines: ['STRATEGY', 'DESIGN', 'CODE', 'VISIBILITY'],
       ribbon: 'STRATEGY / DESIGN / DEVELOPMENT / VISIBILITY / DIRECT PRODUCTION / '
     },
     contact: {
@@ -209,6 +212,7 @@ export const content = {
       titleA: 'LET’S MAKE',
       titleB: 'SOMETHING BETTER',
       mail: 'Send an email',
+      sectionLocation: 'Maltepe, Istanbul',
       location: 'Maltepe, Istanbul · Projects worldwide',
       whatsapp: 'Message us on WhatsApp',
       instagram: 'See our Instagram'

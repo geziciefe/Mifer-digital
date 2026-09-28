@@ -51,7 +51,7 @@ export const demos: Demo[] = [
     accent: 'blue'
   },
   {
-    title: { tr: 'Kavren', en: 'Kavren' },
+    title: { tr: 'Kavren Yapı', en: 'Kavren Yapı' },
     action: { tr: 'Projeleri keşfet', en: 'Explore the projects' },
     sector: { tr: 'İnşaat & taahhüt', en: 'Construction & contracting' },
     summary: {

@@ -1,7 +1,7 @@
 import type { Locale } from './i18n';
 
 export const constructionPaths = { tr: '/tr/insaat-demo', en: '/en/construction-demo' };
-export const constructionBrand = 'Kavren';
+export const constructionBrand = 'Kavren Yapı';
 export type ProjectStatus = 'completed' | 'ongoing';
 export type Project = {
   slug: Record<Locale, string>;
@@ -38,7 +38,7 @@ export const constructionProjects: Project[] = [
       en: 'The shared basement, superstructures and landscape were organised into coordinated work packages. Separating vehicle and pedestrian routes keeps the shared outdoor spaces connected.'
     },
     scope: { tr: ['Proje geliştirme', 'Betonarme üstyapı', 'Mekanik ve elektrik uygulamaları', 'Cephe, ince işler ve peyzaj'], en: ['Project development', 'Reinforced-concrete superstructure', 'Mechanical and electrical works', 'Façades, fit-out and landscape'] },
-    facts: { tr: [['Konut sayısı', '200'], ['Blok sayısı', '5'], ['İşveren', 'Kavren Proje Geliştirme'], ['Üstlenilen rol', 'Geliştirici / Ana yüklenici']], en: [['Homes', '200'], ['Buildings', '5'], ['Developer', 'Kavren Development'], ['Our role', 'Developer / Main contractor']] },
+    facts: { tr: [['Konut sayısı', '200'], ['Blok sayısı', '5'], ['İşveren', 'Kavren Yapı Proje Geliştirme'], ['Üstlenilen rol', 'Geliştirici / Ana yüklenici']], en: [['Homes', '200'], ['Buildings', '5'], ['Developer', 'Kavren Yapı Development'], ['Our role', 'Developer / Main contractor']] },
     engineering: {
       tr: 'Tekrarlanan yapı elemanları için kalıp döngüleri, ekip dağılımı ve tedarik takvimi birlikte yönetildi. Cephe birleşimleri ve ıslak hacim detayları örnek uygulama üzerinden değerlendirilerek saha ekiplerine aktarıldı.',
       en: 'Formwork cycles, team allocation and procurement were coordinated around the repeating structural elements. Façade junctions and wet-area details were reviewed through sample installations before wider execution.'
@@ -60,7 +60,7 @@ export const constructionProjects: Project[] = [
       en: 'Working in a dense urban setting called for controlled deliveries and a carefully sequenced logistics plan. Shell-and-core work was coordinated with the programme for tenant fit-out.'
     },
     scope: { tr: ['Ana yüklenicilik', 'Betonarme ve çelik imalatlar', 'Cephe koordinasyonu', 'Tesisat ve devreye alma'], en: ['Main contracting', 'Concrete and steel works', 'Façade coordination', 'Building services and commissioning'] },
-    facts: { tr: [['Yapı sistemi', 'Betonarme'], ['Kullanım', 'Ofis / Ticari'], ['İşveren', 'Kavren Ticari Yatırımlar'], ['Üstlenilen rol', 'Ana yüklenici']], en: [['Structure', 'Concrete frame'], ['Use', 'Office / Commercial'], ['Client', 'Kavren Commercial Investments'], ['Our role', 'Main contractor']] },
+    facts: { tr: [['Yapı sistemi', 'Betonarme'], ['Kullanım', 'Ofis / Ticari'], ['İşveren', 'Kavren Yapı Ticari Yatırımlar'], ['Üstlenilen rol', 'Ana yüklenici']], en: [['Structure', 'Concrete frame'], ['Use', 'Office / Commercial'], ['Client', 'Kavren Yapı Commercial Investments'], ['Our role', 'Main contractor']] },
     engineering: {
       tr: 'Mekanik, elektrik ve taşıyıcı sistem geçişleri imalat öncesi üç boyutlu koordinasyonla kontrol edildi. Kat bazlı kontrol listeleri ve kademeli devreye alma planı, teslim hazırlığının temelini oluşturdu.',
       en: 'Mechanical, electrical and structural interfaces were reviewed through three-dimensional coordination before installation. Floor-by-floor inspections and staged commissioning formed the basis of handover planning.'
@@ -82,7 +82,7 @@ export const constructionProjects: Project[] = [
       en: 'Loading areas, heavy-vehicle circulation and internal flows were planned together. The structure and envelope are complete; commissioning and site acceptance activities are now in progress.'
     },
     scope: { tr: ['Anahtar teslim taahhüt', 'Çelik taşıyıcı sistem', 'Endüstriyel zemin ve altyapı', 'Teknik sistemler / Devreye alma'], en: ['Turnkey contracting', 'Steel structure', 'Industrial floors and infrastructure', 'Technical systems / Commissioning'] },
-    facts: { tr: [['Yükleme noktası', '24'], ['Güncel aşama', 'Devreye alma'], ['İşveren', 'Kavren Endüstriyel Yatırımlar'], ['Planlanan teslim', '2027 / İlk çeyrek']], en: [['Loading bays', '24'], ['Current stage', 'Commissioning'], ['Client', 'Kavren Industrial Investments'], ['Planned handover', 'Q1 / 2027']] },
+    facts: { tr: [['Yükleme noktası', '24'], ['Güncel aşama', 'Devreye alma'], ['İşveren', 'Kavren Yapı Endüstriyel Yatırımlar'], ['Planlanan teslim', '2027 / İlk çeyrek']], en: [['Loading bays', '24'], ['Current stage', 'Commissioning'], ['Client', 'Kavren Yapı Industrial Investments'], ['Planned handover', 'Q1 / 2027']] },
     engineering: {
       tr: 'Çelik montaj sırası, çatı ve cephe kaplama işleriyle eş güdümlü yürütüldü. Zemin uygulamaları, yükleme bölgeleri ve teknik sistem testleri için ayrı kabul noktaları tanımlandı.',
       en: 'Steel erection was sequenced with roof and façade installation. Separate acceptance checkpoints were established for the floors, loading areas and technical-system tests.'
@@ -96,8 +96,8 @@ export const projectImage = (project: Project, width = 1536) => `/demos/kavren/$
 
 export const constructionCopy = {
   tr: {
-    title: 'Kavren — İnşaat, Taahhüt ve Proje Geliştirme',
-    description: 'Kavren yapı geliştirme ve taahhüt konsepti. Konut, ticari ve endüstriyel projeler; mühendislikten saha uygulamasına.',
+    title: 'Kavren Yapı — İnşaat, Taahhüt ve Proje Geliştirme',
+    description: 'Kavren Yapı yapı geliştirme ve taahhüt konsepti. Konut, ticari ve endüstriyel projeler; mühendislikten saha uygulamasına.',
     descriptor: 'İNŞAAT & TAAHHÜT', nav: ['Projeler', 'Uzmanlık', 'Kurumsal', 'İletişim'], menu: 'Menüyü aç', close: 'Kapat',
     eyebrow: 'İstanbul merkezli. 1998’den beri.', heroA: 'Mühendislikten', heroB: 'sahaya.',
     heroText: 'Konut, ticari ve endüstriyel yapılarda proje geliştirme ve anahtar teslim taahhüt.',
@@ -105,7 +105,7 @@ export const constructionCopy = {
     stats: [['28', 'yıl', 'Mühendislik deneyimi'], ['46', 'proje', 'Tamamlanan iş'], ['780.000', 'm²', 'Toplam inşaat alanı'], ['4', 'proje', 'Devam eden uygulama']],
     portfolio: 'Proje portföyü', projectTitle: 'Ölçek değişir.\nDisiplin değişmez.', projectIntro: 'Farklı ihtiyaçlar, farklı yapılar. Geliştirmeden teslim aşamasına kadar üstlendiğimiz işlerden bir seçki.',
     filters: ['Tüm projeler', 'Tamamlanan', 'Devam eden'], filterLabel: 'Projeleri durumuna göre filtrele', results: 'proje gösteriliyor',
-    completed: 'Tamamlandı', ongoing: 'Devam ediyor', viewProject: 'Proje detayları', project: 'Proje',
+    completed: 'Tamamlandı', ongoing: 'Devam ediyor', viewProject: 'Projeyi İncele', project: 'Proje',
     expertiseLabel: 'Faaliyet alanları', expertiseTitle: 'Her yapının\ngereğini biliyoruz.',
     expertiseIntro: 'Yatırımın amacı, teknik ihtiyaçları ve uygulama koşulları aynı masada değerlendirilir.',
     expertise: [
@@ -119,8 +119,8 @@ export const constructionCopy = {
     approachText: 'Bir yapının niteliği, görünmeyen kararlarla başlar. Tasarım koordinasyonunu, imalat sırasını ve kontrol süreçlerini birlikte yönetiriz.',
     approach: [['Planlama', 'İş paketleri, kritik tedarikler ve saha lojistiği uygulamadan önce netleşir.'], ['Koordinasyon', 'Mimari, statik ve tesisat ekipleri aynı iş programı üzerinde çalışır.'], ['Kontrol & teslim', 'Malzeme onayları, saha kontrolleri ve devreye alma kayıtları teslim dosyasında bir araya gelir.']],
     siteCaption: 'Taşıyıcı sistem / Saha koordinasyonu', siteAlt: 'Betonarme taşıyıcı sistem imalatı sırasında korumalı çalışma alanı ve saha ekibi; temsili şantiye',
-    companyLabel: 'Kavren hakkında', companyTitle: '28 yılda büyüyen\nbir uygulama kültürü.',
-    companyText: '1998’de İstanbul’da başlayan Kavren, ilk konut taahhütlerinden ticari ve endüstriyel yapılara uzanan bir uygulama birikimine sahip. Proje geliştirme ile saha yönetimini aynı organizasyonda buluşturuyoruz.',
+    companyLabel: 'Kavren Yapı hakkında', companyTitle: '28 yılda büyüyen\nbir uygulama kültürü.',
+    companyText: '1998’de İstanbul’da başlayan Kavren Yapı, ilk konut taahhütlerinden ticari ve endüstriyel yapılara uzanan bir uygulama birikimine sahip. Proje geliştirme ile saha yönetimini aynı organizasyonda buluşturuyoruz.',
     companyNote: 'İşin başında kurulan planın, teslim edilen yapıda karşılığını bulmasına odaklanıyoruz.',
     milestones: [['1998', 'İstanbul’da kuruluş'], ['2011', 'Ticari yapılara açılım'], ['2020', 'Endüstriyel uygulamalar'], ['2026', 'Marmara’da 4 aktif proje']],
     responsibility: 'Sorumluluk, uygulamanın içinde.', responsibilityText: 'İş güvenliği planlaması, atıkların ayrıştırılması, malzeme takibi ve kaynak kullanımı saha organizasyonunun parçasıdır. Projeye özgü hedefleri, uygulanabilir iş paketlerine dönüştürürüz.',
@@ -131,17 +131,17 @@ export const constructionCopy = {
     name: 'Ad soyad', company: 'Şirket (isteğe bağlı)', emailLabel: 'E-posta', subject: 'Görüşme konusu', message: 'Kısa mesajınız', send: 'Talebi önizle',
     notice: 'Demo bilgilendirmesini okudum.', noticeLink: 'Demo ve gizlilik bilgileri',
     formNote: 'Bu bir konsept formudur. Bilgileriniz gönderilmez veya kaydedilmez.', success: 'Demo tamamlandı. Bilgileriniz gönderilmedi ve kaydedilmedi; gerçek bir talep oluşturulmadı.',
-    phoneDemo: 'Kavren kurgusal bir şirket konseptidir. Telefon ve e-posta bağlantıları, gerçek şirket bilgileriyle yayına hazırlanırken etkinleştirilir.',
-    footer: 'İnşaat. Taahhüt. Proje geliştirme.', demo: 'Mifer Digital tarafından hazırlanmış konsept çalışma. Kavren, projeleri, geçmişi ve sayısal verileri kurgusaldır; görseller temsilidir.',
+    phoneDemo: 'Kavren Yapı kurgusal bir şirket konseptidir. Telefon ve e-posta bağlantıları, gerçek şirket bilgileriyle yayına hazırlanırken etkinleştirilir.',
+    footer: 'İnşaat. Taahhüt. Proje geliştirme.', demo: 'Mifer Digital tarafından hazırlanmış konsept çalışma. Kavren Yapı, projeleri, geçmişi ve sayısal verileri kurgusaldır; görseller temsilidir.',
     legal: 'Demo & gizlilik', backProjects: 'Projelere dön', overview: 'Proje özeti', scope: 'Üstlendiğimiz kapsam', engineering: 'Uygulama notları', location: 'Konum', area: 'İnşaat alanı', date: 'Uygulama dönemi', category: 'Proje türü', status: 'Durum', nextProject: 'Sıradaki proje',
-    policyTitle: 'Demo ve gizlilik bilgileri', policyText: 'Kavren, Mifer Digital’in tasarım ve geliştirme yaklaşımını göstermek için oluşturulmuş kurgusal bir inşaat şirketidir. Bu sitedeki şirket, proje, tarih, konum ve sayısal bilgiler gerçek ticari faaliyetleri temsil etmez. Fotoğraflar bu konsept için üretilmiştir.',
+    policyTitle: 'Demo ve gizlilik bilgileri', policyText: 'Kavren Yapı, Mifer Digital’in tasarım ve geliştirme yaklaşımını göstermek için oluşturulmuş kurgusal bir inşaat şirketidir. Bu sitedeki şirket, proje, tarih, konum ve sayısal bilgiler gerçek ticari faaliyetleri temsil etmez. Fotoğraflar bu konsept için üretilmiştir.',
     policyForm: 'İletişim formu yalnızca arayüzü denemek içindir. Form verileri sunucuya gönderilmez, tarayıcıda kalıcı olarak saklanmaz ve üçüncü kişilerle paylaşılmaz. Gönderim yerine yerel bir örnek sonuç gösterilir; alanlar temizlenir.',
     policyData: 'Bu demo kodu analiz, reklam veya takip çerezi kurmaz. Gerçek şirket yayını için ticari bilgiler, veri sorumlusu aydınlatma metni, iletişim uç noktaları ve gerekli sözleşmeler ayrıca hazırlanmalıdır.',
     updated: 'Son güncelleme: 7 Eylül 2026'
   },
   en: {
-    title: 'Kavren — Construction, Contracting & Development',
-    description: 'A construction and development concept for Kavren. Residential, commercial and industrial projects, from engineering to delivery.',
+    title: 'Kavren Yapı — Construction, Contracting & Development',
+    description: 'A construction and development concept for Kavren Yapı. Residential, commercial and industrial projects, from engineering to delivery.',
     descriptor: 'CONSTRUCTION & CONTRACTING', nav: ['Projects', 'Expertise', 'Company', 'Contact'], menu: 'Open menu', close: 'Close',
     eyebrow: 'Based in Istanbul. Since 1998.', heroA: 'Engineering.', heroB: 'Delivered.',
     heroText: 'Project development and turnkey contracting for residential, commercial and industrial buildings.',
@@ -149,7 +149,7 @@ export const constructionCopy = {
     stats: [['28', 'years', 'Engineering experience'], ['46', 'projects', 'Completed commissions'], ['780,000', 'm²', 'Total construction area'], ['4', 'projects', 'Currently on site']],
     portfolio: 'Project portfolio', projectTitle: 'Different scales.\nOne discipline.', projectIntro: 'Different buildings, different demands. A selection of projects we have taken from development through to delivery.',
     filters: ['All projects', 'Completed', 'In progress'], filterLabel: 'Filter projects by status', results: 'projects shown',
-    completed: 'Completed', ongoing: 'In progress', viewProject: 'View project', project: 'Project',
+    completed: 'Completed', ongoing: 'In progress', viewProject: 'Explore project', project: 'Project',
     expertiseLabel: 'Our expertise', expertiseTitle: 'Built around\nthe brief.',
     expertiseIntro: 'Investment goals, technical requirements and site conditions are considered together.',
     expertise: [
@@ -163,8 +163,8 @@ export const constructionCopy = {
     approachText: 'A building’s quality starts with decisions you cannot see. We bring design coordination, construction sequencing and inspection together.',
     approach: [['Planning', 'Work packages, critical procurement and site logistics are established before construction.'], ['Coordination', 'Architectural, structural and building-services teams work to one programme.'], ['Control & handover', 'Material approvals, inspections and commissioning records come together in the handover documentation.']],
     siteCaption: 'Structural works / Site coordination', siteAlt: 'Protected working area and site team inside a reinforced-concrete structure; concept construction photograph',
-    companyLabel: 'About Kavren', companyTitle: '28 years of\npractical experience.',
-    companyText: 'Established in Istanbul in 1998, Kavren grew from residential contracting into commercial and industrial construction. Today, project development and site delivery sit within the same organisation.',
+    companyLabel: 'About Kavren Yapı', companyTitle: '28 years of\npractical experience.',
+    companyText: 'Established in Istanbul in 1998, Kavren Yapı grew from residential contracting into commercial and industrial construction. Today, project development and site delivery sit within the same organisation.',
     companyNote: 'Our focus is on making the plan agreed at the start visible in the building we hand over.',
     milestones: [['1998', 'Established in Istanbul'], ['2011', 'Commercial construction'], ['2020', 'Industrial delivery'], ['2026', '4 active Marmara projects']],
     responsibility: 'Responsibility on site.', responsibilityText: 'Safety planning, waste separation, material traceability and resource use are part of site management. Project-specific goals are translated into practical work packages.',
@@ -175,10 +175,10 @@ export const constructionCopy = {
     name: 'Full name', company: 'Company (optional)', emailLabel: 'Email', subject: 'Enquiry type', message: 'Your message', send: 'Preview enquiry',
     notice: 'I have read the demo information.', noticeLink: 'Demo and privacy information',
     formNote: 'This is a concept form. Your details are not sent or stored.', success: 'Demo complete. Your details were not sent or stored, and no actual enquiry was created.',
-    phoneDemo: 'Kavren is a fictional company concept. Phone and email connections are enabled when verified company details are added for a real launch.',
-    footer: 'Construction. Contracting. Development.', demo: 'A concept by Mifer Digital. Kavren, its projects, history and figures are fictional. Images are illustrative.',
+    phoneDemo: 'Kavren Yapı is a fictional company concept. Phone and email connections are enabled when verified company details are added for a real launch.',
+    footer: 'Construction. Contracting. Development.', demo: 'A concept by Mifer Digital. Kavren Yapı, its projects, history and figures are fictional. Images are illustrative.',
     legal: 'Demo & privacy', backProjects: 'Back to projects', overview: 'Project overview', scope: 'Scope of work', engineering: 'Delivery notes', location: 'Location', area: 'Construction area', date: 'Project period', category: 'Sector', status: 'Status', nextProject: 'Next project',
-    policyTitle: 'Demo and privacy information', policyText: 'Kavren is a fictional construction company created to demonstrate Mifer Digital’s design and development approach. Company details, projects, dates, locations and figures do not represent real commercial activity. Images were generated for this concept.',
+    policyTitle: 'Demo and privacy information', policyText: 'Kavren Yapı is a fictional construction company created to demonstrate Mifer Digital’s design and development approach. Company details, projects, dates, locations and figures do not represent real commercial activity. Images were generated for this concept.',
     policyForm: 'The contact form demonstrates the interface only. Form values are not sent to a server, stored persistently in the browser or shared with third parties. A local example result is displayed and the fields are cleared.',
     policyData: 'This demo code does not add analytics, advertising or tracking cookies. A real company launch requires verified business details, a controller-specific privacy notice, configured contact services and any necessary agreements.',
     updated: 'Last updated: 7 September 2026'

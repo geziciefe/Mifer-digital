@@ -1,7 +1,7 @@
 ---
 import { ArrowUpRight, ArrowRight, ChevronDown, Menu, X } from 'lucide-astro';
 import DemoReturn from '../components/DemoReturn.astro';
-import { constructionCopy, constructionPaths } from '../data/construction';
+import { constructionCopy, constructionPaths, constructionProjects, projectPath } from '../data/construction';
 import { siteConfig } from '../data/siteConfig';
 import type { Locale } from '../data/i18n';
 import '../styles/construction-demo.css';
@@ -33,7 +33,7 @@ const sectionIds = ['projects', 'expertise', 'company', 'contact'];
   <body class="kv-body">
     <a class="kv-skip" href="#main">{lang === 'tr' ? 'İçeriğe geç' : 'Skip to content'}</a>
     <header class="kv-header" data-kv-header>
-      <a class="kv-brand" href={home} aria-label={lang === 'tr' ? 'Kavren ana sayfa' : 'Kavren home'}><strong>KAVREN<span aria-hidden="true">/</span></strong><small>{c.descriptor}</small></a>
+      <a class="kv-brand" href={home} aria-label={lang === 'tr' ? 'Kavren Yapı ana sayfa' : 'Kavren Yapı home'}><strong>KAVREN YAPI<span aria-hidden="true">/</span></strong><small>{c.descriptor}</small></a>
       <nav class="kv-nav" id="kv-navigation" aria-label={lang === 'tr' ? 'Ana menü' : 'Main navigation'}>
         {c.nav.map((label, i) => <a href={`${home}#${sectionIds[i]}`}>{label}</a>)}
         <small class="kv-menu-location">İSTANBUL / TÜRKİYE</small>
@@ -45,14 +45,18 @@ const sectionIds = ['projects', 'expertise', 'company', 'contact'];
     </header>
     <slot />
     <footer class="kv-footer">
-      <div class="kv-container kv-footer-top"><p>{c.footer}</p><a href={`${home}#contact`} class="kv-text-link">{c.contactLabel}<ArrowUpRight size={20}/></a></div>
-      <div class="kv-container kv-footer-wordmark" aria-hidden="true">KAVREN<span>/</span></div>
-      <div class="kv-container kv-footer-bottom"><p>{c.demo}</p><div><a href={policy}>{c.legal}</a><span>© 2026 KAVREN</span></div></div>
+      <div class="kv-container kv-footer-grid">
+        <div class="kv-footer-identity"><a href={home} class="kv-brand"><strong>KAVREN YAPI<span aria-hidden="true">/</span></strong></a><p>{c.footer}</p><span>İSTANBUL · 1998</span></div>
+        <nav aria-label={lang === 'tr' ? 'Kurumsal bağlantılar' : 'Company links'}><h2>{c.companyLabel}</h2>{c.nav.map((label, i) => <a href={`${home}#${sectionIds[i]}`}>{label}<ArrowUpRight size={14}/></a>)}</nav>
+        <nav aria-label={lang === 'tr' ? 'Seçili projeler' : 'Selected projects'}><h2>{c.portfolio}</h2>{constructionProjects.map(project => <a href={projectPath(project,lang)}>{project.name[lang]}<ArrowUpRight size={14}/></a>)}</nav>
+        <div class="kv-footer-office"><h2>{c.hq}</h2><p>{c.address.split('\n').map(line=><span>{line}</span>)}</p><button class="kv-text-link" data-kv-enquiry="0">{c.inquiryAction}<ArrowUpRight size={17}/></button></div>
+      </div>
+      <div class="kv-container kv-footer-bottom"><p>{c.demo}</p><div><a href={policy}>{c.legal}</a><span>© 2026 KAVREN YAPI</span></div></div>
     </footer>
     <DemoReturn lang={lang} />
     <dialog class="kv-dialog" id="kv-enquiry-dialog" aria-labelledby="kv-enquiry-title">
       <button class="kv-dialog-close" data-kv-close aria-label={c.close}><X size={24}/></button>
-      <p class="kv-eyebrow">KAVREN / {c.contactLabel}</p>
+      <p class="kv-eyebrow">KAVREN YAPI / {c.contactLabel}</p>
       <h2 id="kv-enquiry-title">{c.formTitle}</h2>
       <p class="kv-dialog-intro">{c.formIntro}</p>
       <form data-kv-form data-success={c.success} inert>

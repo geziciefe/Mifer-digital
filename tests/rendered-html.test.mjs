@@ -144,3 +144,76 @@ test('demo contact forms are inert until enhanced and do not declare a remote su
     for (const dialog of dialogs) assert.ok(attr(dialog, 'aria-labelledby'));
   }
 });
+
+const withClass = (page, token) => page.nodes.filter(n => (attr(n, 'class') || '').split(/\s+/).includes(token));
+
+test('targeted demo content revisions retain discoverable actions in both languages', () => {
+  for (const [lang, salon, dental, construction] of [
+    ['tr', '/tr/kuafor-demo', '/tr/dis-klinigi-demo', '/tr/insaat-demo'],
+    ['en', '/en/hair-salon-demo', '/en/dental-clinic-demo', '/en/construction-demo']
+  ]) {
+    const av = pageFor(dental);
+    const map = av.nodes.find(n => n.tagName === 'iframe');
+    assert.match(attr(map, 'data-consent-src'), /google\.com\/maps\?.*output=embed/);
+    assert.equal(has(map, 'src'), false, 'map must not contact Google before permission');
+    assert.equal(has(map, 'hidden'), true);
+    assert.equal(av.nodes.filter(n => has(n, 'data-av-map')).length, 0);
+    assert.doesNotMatch(text(withClass(av, 'av-journal-list')[0]), /\b0[123]\b/);
+    const salonPage = pageFor(salon);
+    assert.ok(salonPage.nodes.find(n => n.tagName === 'img' && attr(n, 'src')?.endsWith('editorial-portrait.webp')));
+    assert.doesNotMatch(text(withClass(salonPage, 'salon-story-copy')[0]), /\b0[123]\b/);
+    assert.doesNotMatch(text(withClass(salonPage, 'salon-price-categories')[0]), /\b0[1234]\b/);
+    assert.equal(withClass(salonPage, 'salon-social-tile').length, 6, 'preserve lower Instagram composition');
+    const kv = pageFor(construction);
+    assert.equal(withClass(kv, 'kv-footer-wordmark').length, 0);
+    assert.doesNotMatch(text(withClass(kv, 'kv-expertise-list')[0]), /\b0\d\b/);
+    assert.doesNotMatch(text(withClass(kv, 'kv-inquiry-list')[0]), /\b0\d\b/);
+    const actions = withClass(kv, 'kv-project-cta');
+    assert.equal(actions.length, 3);
+    actions.forEach(action => assert.equal(text(action).trim(), lang === 'tr' ? 'Projeyi İncele' : 'Explore project'));
+    const counters = kv.nodes.filter(n => has(n, 'data-kv-count'));
+    assert.deepEqual(counters.map(n => attr(n, 'data-kv-count')), ['28', '46', '780000', '4']);
+    counters.forEach(n => assert.equal(text(n), attr(n, 'data-kv-final')));
+  }
+  for (const page of constructionPages) {
+    assert.doesNotMatch(text(page.nodes.find(n => n.tagName === 'body')), /\bKavren\b(?! Yapı)|\bKAVREN\b(?! YAPI)/);
+  }
+});
+
+test('Work is a distinct linked exhibition while homepage keeps its selected-work teaser', () => {
+  for (const [lang, route] of [['tr', '/tr/demo-calismalar'], ['en', '/en/demo-work']]) {
+    const work = pageFor(route);
+    assert.equal(withClass(work, 'work-exhibition').length, 1);
+    assert.equal(withClass(work, 'work-card').length, 0);
+    assert.equal(withClass(work, 'wx-project-window').length, 3);
+    assert.equal(withClass(work, 'wx-chapter').length, 3);
+    assert.equal(withClass(pageFor(`/${lang}`), 'work-card').length, 3);
+    if (lang === 'en') assert.doesNotMatch(text(work.nodes.find(n => n.tagName === 'body')), /\bworks\b/i);
+  }
+});
+
+test('Mifer v1.6 editorial sections render without legacy sequence numbers or misleading controls', () => {
+  for (const route of ['/tr', '/en']) {
+    const page = pageFor(route);
+    const intro = withClass(page, 'intro-process')[0];
+    const services = withClass(page, 'service-list')[0];
+    const approach = withClass(page, 'approach-manifesto')[0];
+    const about = withClass(page, 'about-constellation-v161')[0];
+    assert.ok(intro, `${route}: editorial intro process`);
+    assert.ok(services, `${route}: services`);
+    assert.ok(approach, `${route}: editorial approach`);
+    assert.ok(about, `${route}: about disciplines`);
+    assert.doesNotMatch(text(intro), /\b0[1234]\b/, `${route}: intro numbering`);
+    assert.doesNotMatch(text(services), /\b0[1234]\b/, `${route}: services numbering`);
+    assert.doesNotMatch(text(approach), /\b0[1234]\b/, `${route}: approach numbering`);
+    assert.equal(withClass(page, 'service-action').length, 0, `${route}: no fake service buttons`);
+    assert.equal(withClass(page, 'service-meta').length, 4, `${route}: service metadata`);
+    assert.equal(withClass(page, 'approach-statement').length, 4, `${route}: four approach statements`);
+    assert.equal(withClass(page, 'about-discipline-v161').length, 4, `${route}: four connected disciplines`);
+    assert.equal(withClass(page, 'work-demo-note').length, 0, `${route}: no selected-work demo label`);
+    const location = text(withClass(page, 'contact-location')[0]).trim();
+    assert.equal(location, route === '/tr' ? 'Maltepe, İstanbul' : 'Maltepe, Istanbul');
+  }
+  assert.equal(withClass(pageFor('/tr/demo-calismalar'), 'work-demo-note').length, 0);
+  assert.equal(withClass(pageFor('/en/demo-work'), 'work-demo-note').length, 0);
+});

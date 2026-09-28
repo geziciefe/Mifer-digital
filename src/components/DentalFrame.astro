@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight, Phone, Menu, X } from 'lucide-astro';
 import { dentalCopy, dentalPaths, type DentalLang } from '../data/dental';
 import { siteConfig } from '../data/siteConfig';
 import '../styles/dental-demo.css';
+import CookieBanner from './CookieBanner.astro';
 import DemoReturn from './DemoReturn.astro';
 interface Props {lang:DentalLang; title?:string; path?:string; alternatePath?:string;}
 const {lang,title,path=dentalPaths[lang],alternatePath=dentalPaths[lang==='tr'?'en':'tr']}=Astro.props;
@@ -31,7 +32,8 @@ const sections=['treatments','dentist','clinic','journal','contact'];
    <div class="av-wrap av-footer-top"><a class="av-brand" href={home}><span>avelis.</span><small>DENTAL CARE · ISTANBUL</small></a><p>{c.footer}</p><a class="av-text-link" href={`${home}#appointment`}>{c.book}<ArrowUpRight size={22}/></a></div>
    <div class="av-wrap av-footer-bottom"><div><p>{c.disclaimer}</p><small>{c.updated}<br/>{c.editor} · <a href="mailto:iletisim@miferdigital.com">iletisim@miferdigital.com</a></small></div><nav aria-label={c.legal}><a href={`${home}/${lang==='tr'?'kvkk':'privacy'}`}>{c.privacy}</a><a href={`${home}/${lang==='tr'?'cerez-politikasi':'cookie-policy'}`}>{c.cookies}</a><a href={`${home}/${lang==='tr'?'yasal-bilgilendirme':'legal'}`}>{c.legal}</a></nav></div>
    <div class="av-wrap av-credit"><span>© 2026 AVELIS</span><a href={`/${lang}#work`}>{c.demo}<ArrowUpRight size={14}/></a></div>
-  </footer>
+  <button type="button" data-cookie-settings>{lang==='tr'?'Çerez tercihleri':'Cookie preferences'}</button></footer>
+  <CookieBanner lang={lang} />
   <DemoReturn lang={lang} />
   <div class="av-mobile-dock"><button data-av-contact aria-label={c.call}><Phone size={17}/><span>{c.call}</span></button><a href={`${home}#appointment`}>{c.book}<ArrowUpRight size={18}/></a></div>
   <dialog class="av-dialog" id="av-contact-dialog"><button data-av-close aria-label={c.close}><X size={24}/></button><small>AVELIS · DEMO</small><h2>{c.contactDemo}</h2><p>{c.contactDemoText}</p><a class="av-button" href={`${home}#appointment`} data-av-dialog-book>{c.book}<ArrowUpRight size={18}/></a></dialog>

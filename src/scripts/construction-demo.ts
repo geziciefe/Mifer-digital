@@ -90,6 +90,43 @@ if (body && !body.dataset.kvInitialized) {
   if (form) form.inert = false;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Preserve the rendered final values without JS; animate once when visible.
+  const counters = document.querySelectorAll<HTMLElement>('[data-kv-count]');
+  const numberFormat = new Intl.NumberFormat(english ? 'en-GB' : 'tr-TR');
+  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+    const active = new Map<HTMLElement, number>();
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const element = entry.target as HTMLElement;
+        counterObserver.unobserve(element);
+        const target = Number(element.dataset.kvCount);
+        element.style.width = `${element.getBoundingClientRect().width}px`;
+        element.style.display = 'inline-block';
+        const started = performance.now();
+        const tick = (now: number) => {
+          const progress = Math.min((now - started) / 1450, 1);
+          if (progress === 1 || reducedMotion.matches) {
+            element.textContent = element.dataset.kvFinal || String(target);
+            element.style.removeProperty('width');
+            active.delete(element);
+            return;
+          }
+          element.textContent = numberFormat.format(Math.round(target * (1 - Math.pow(1 - progress, 3))));
+          active.set(element, requestAnimationFrame(tick));
+        };
+        active.set(element, requestAnimationFrame(tick));
+      });
+    }, { threshold: .65 });
+    counters.forEach(element => counterObserver.observe(element));
+    const finishCounters = () => {
+      active.forEach((id, element) => { cancelAnimationFrame(id); element.textContent = element.dataset.kvFinal || ''; element.style.removeProperty('width'); });
+      active.clear();
+      counterObserver.disconnect();
+    };
+    reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) finishCounters(); });
+    window.addEventListener('pagehide', finishCounters, { once: true });
+  }
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {

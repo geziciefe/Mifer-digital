@@ -1,3 +1,4 @@
+import { initPackages } from './packages';
 /* Mifer runtime: one lightweight lifecycle for both normal loads and Astro client navigation. */
 let pageController;
 let firstPageLoad = true;
@@ -12,204 +13,15 @@ function scheduleTimeout(callback, delay, signal) {
   return id;
 }
 
-function initNavigationUX(signal, reducedMotion, saveData) {
-  const progress = document.querySelector('[data-route-progress]');
-  const loader = document.querySelector('[data-route-loader]');
-  const prefetched = new Set();
-  let finishTimer = 0;
-  let loaderTimer = 0;
-  let progressRaf = 0;
-  let minimumVisibleMs = 180;
-
-  const showLoader = (mode = 'default') => {
-    if (!loader) return;
-    window.clearTimeout(loaderTimer);
-    loader.dataset.mode = mode;
-    loader.hidden = false;
-    requestAnimationFrame(() => loader.classList.add('is-visible'));
-  };
-
-  const hideLoader = (fast = false) => {
-    if (!loader) return;
-    window.clearTimeout(loaderTimer);
-    loader.classList.remove('is-visible');
-    loaderTimer = window.setTimeout(() => {
-      if (!loader.classList.contains('is-visible')) { loader.hidden = true; loader.dataset.mode = 'default'; }
-    }, fast ? 180 : 320);
-  };
-
-  const normalizedPath = (pathname) => {
-    const clean = pathname.replace(/\/+$/, '');
-    return clean || '/';
-  };
-
-  const stopProgressLoop = () => {
-    if (progressRaf) cancelAnimationFrame(progressRaf);
-    progressRaf = 0;
-  };
-
-  const paintProgress = (value) => {
-    if (!progress) return;
-    progress.style.setProperty('--route-progress', String(Math.max(0, Math.min(1, value))));
-  };
-
-  const startProgress = (withOverlay = false, minVisibleMs = 180, mode = 'default') => {
-    minimumVisibleMs = minVisibleMs;
-    window.__miferNavigationMinVisibleMs = minVisibleMs;
-    window.__miferNavigationMode = mode;
-    if (withOverlay) showLoader(mode);
-    if (!progress) return;
-    window.clearTimeout(finishTimer);
-    window.clearTimeout(loaderTimer);
-    stopProgressLoop();
-    progress.classList.remove('is-finishing');
-    progress.classList.add('is-running');
-    document.documentElement.classList.add('is-navigating');
-
-    const startedAt = performance.now();
-    window.__miferNavigationStartedAt = startedAt;
-    paintProgress(.035);
-
-    const tick = (now) => {
-      if (!document.documentElement.classList.contains('is-navigating')) return;
-      // Creep toward 88%, but never visually "finish" before Astro actually swaps and paints.
-      // ~50% around 1.3s, ~72% around 2.8s, then progressively slower.
-      const elapsed = Math.max(0, now - startedAt);
-      const value = .035 + .845 * (1 - Math.exp(-elapsed / 1700));
-      paintProgress(Math.min(.88, value));
-      progressRaf = requestAnimationFrame(tick);
-    };
-    progressRaf = requestAnimationFrame(tick);
-  };
-
-  const finishProgress = (fast = false) => {
-    const startedAt = Number(window.__miferNavigationStartedAt || 0);
-    const elapsed = startedAt ? performance.now() - startedAt : 999;
-    const requestedMinimum = Number(window.__miferNavigationMinVisibleMs || minimumVisibleMs || 180);
-    const minVisible = fast ? 90 : requestedMinimum;
-    const wait = Math.max(0, minVisible - elapsed);
-
-    window.clearTimeout(finishTimer);
-    finishTimer = window.setTimeout(() => {
-      stopProgressLoop();
-      document.documentElement.classList.remove('is-navigating');
-      if (!progress) return;
-      progress.classList.remove('is-running');
-      progress.classList.add('is-finishing');
-      paintProgress(1);
-      hideLoader(fast);
-      finishTimer = window.setTimeout(() => {
-        progress.classList.remove('is-finishing');
-        paintProgress(0);
-        window.__miferNavigationStartedAt = 0;
-        window.__miferNavigationMinVisibleMs = 0;
-        window.__miferNavigationMode = 'default';
-      }, fast ? 150 : 240);
-    }, wait);
-  };
-
-  // Expose a tiny lifecycle bridge for the global Astro events below.
-  window.__miferNavigationFinish = finishProgress;
-  signal.addEventListener('abort', () => {
-    if (window.__miferNavigationFinish === finishProgress) delete window.__miferNavigationFinish;
-    window.clearTimeout(finishTimer);
-    window.clearTimeout(loaderTimer);
-    stopProgressLoop();
-    // During an Astro route swap the old page lifecycle is aborted before the new one
-    // is initialised. Keep the persistent loader visible across that hand-off; otherwise
-    // it flashes for a few frames and disappears exactly when the user needs feedback.
-    if (!document.documentElement.classList.contains('is-navigating')) hideLoader(true);
-  }, { once: true });
-
-  const prefetch = (anchor) => {
-    if (saveData || !anchor || !(anchor instanceof HTMLAnchorElement)) return;
-    let url;
-    try { url = new URL(anchor.href, window.location.href); } catch (_) { return; }
-    if (url.origin !== window.location.origin) return;
-    if (normalizedPath(url.pathname) === normalizedPath(window.location.pathname) && url.hash) return;
-    url.hash = '';
-    const key = url.href;
-    if (prefetched.has(key)) return;
-    prefetched.add(key);
-    // Warm the browser cache. Production/static output benefits most; dev mode may re-render routes.
-    fetch(key, { credentials: 'same-origin', priority: 'low' }).catch(() => {});
-  };
-
-  qsa('a[data-prefetch-link], a[data-section-link]').forEach((anchor) => {
-    anchor.addEventListener('pointerenter', () => prefetch(anchor), { passive: true, signal });
-    anchor.addEventListener('focus', () => prefetch(anchor), { passive: true, signal });
-    anchor.addEventListener('pointerdown', () => prefetch(anchor), { passive: true, signal });
+// Astro owns navigation, history and scroll restoration. No custom history entries.
+function initNavigationUX(signal) {
+  qsa('a[data-nav-link]').forEach(anchor => {
+    if (anchor.target === '_blank' || anchor.hasAttribute('download')) return;
+    anchor.addEventListener('pointerdown', () => {
+      anchor.classList.add('is-pressing');
+      scheduleTimeout(() => anchor.classList.remove('is-pressing'), 150, signal);
+    }, { passive: true, signal });
   });
-
-  document.addEventListener('pointerdown', (event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-    const anchor = target.closest('a[data-nav-link]');
-    if (!anchor) return;
-    anchor.classList.add('is-pressing');
-    if (anchor.matches('[data-lang-switch]')) anchor.classList.add('is-switching');
-    scheduleTimeout(() => anchor.classList.remove('is-pressing'), 170, signal);
-  }, { capture: true, passive: true, signal });
-
-  document.addEventListener('click', (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-    const anchor = target.closest('a[data-nav-link]');
-    if (!anchor || !(anchor instanceof HTMLAnchorElement)) return;
-
-    let url;
-    try { url = new URL(anchor.href, window.location.href); } catch (_) { return; }
-    if (url.origin !== window.location.origin) return;
-
-    const samePath = normalizedPath(url.pathname) === normalizedPath(window.location.pathname);
-    const section = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
-
-    if (samePath && !url.hash) {
-      event.preventDefault();
-      anchor.classList.add('is-activating');
-      startProgress();
-      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
-      history.replaceState(null, '', url.pathname + url.search);
-      scheduleTimeout(() => {
-        anchor.classList.remove('is-activating', 'is-switching');
-        finishProgress(true);
-      }, reducedMotion ? 70 : 420, signal);
-      return;
-    }
-
-    // Same-page section links should react instantly instead of entering the router pipeline.
-    if (samePath && section) {
-      event.preventDefault();
-      anchor.classList.add('is-activating');
-      startProgress();
-      section.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
-      history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`);
-      scheduleTimeout(() => {
-        anchor.classList.remove('is-activating');
-        finishProgress(true);
-      }, reducedMotion ? 70 : 500, signal);
-      return;
-    }
-
-    // Cross-page navigation keeps Astro's ClientRouter, but the visual acknowledgement
-    // has a route-aware minimum duration. Work deliberately gets a fuller reveal;
-    // language changes get a shorter but still perceptible transition.
-    anchor.classList.add('is-activating');
-    const isLanguageSwitch = anchor.matches('[data-lang-switch]');
-    const isWorkDestination = /\/(demo-calismalar|demo-work)\/?$/.test(url.pathname);
-    if (isLanguageSwitch) anchor.classList.add('is-switching');
-    startProgress(
-      true,
-      isWorkDestination ? 1180 : (isLanguageSwitch ? 620 : 420),
-      isWorkDestination ? 'work' : (isLanguageSwitch ? 'language' : 'default')
-    );
-    // Safety valve only. Normal completion is driven by astro:page-load below.
-    scheduleTimeout(() => {
-      anchor.classList.remove('is-activating', 'is-switching');
-      if (document.documentElement.classList.contains('is-navigating')) finishProgress();
-    }, 10000, signal);
-  }, { capture: true, signal });
 }
 function initHeroShader(signal, reducedMotion, saveData) {
   const canvas = document.querySelector('[data-hero-shader]');
@@ -245,8 +57,8 @@ function initHeroShader(signal, reducedMotion, saveData) {
 
     void main(void) {
       vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-      float t = time * 0.064;
-      float lineWidth = 0.00165;
+      float t = time * 0.084;
+      float lineWidth = 0.00185;
       vec3 energy = vec3(0.0);
 
       for (int j = 0; j < 3; j++) {
@@ -256,7 +68,7 @@ function initHeroShader(signal, reducedMotion, saveData) {
         }
       }
 
-      float glow = clamp(dot(energy, vec3(0.333)) * 0.72, 0.0, 1.0);
+      float glow = clamp(dot(energy, vec3(0.333)) * 0.81, 0.0, 1.0);
       float split = clamp(0.48 + uv.x * 0.18 + sin(t * 4.0 + uv.y * 2.0) * 0.08, 0.0, 1.0);
       vec3 electricBlue = vec3(0.018, 0.22, 0.95);
       vec3 miferGreen = vec3(0.06, 0.62, 0.28);
@@ -331,7 +143,6 @@ function initHeroShader(signal, reducedMotion, saveData) {
     if (!inView || document.hidden || signal.aborted) return;
     if (now - lastFrame > 30) {
       lastFrame = now;
-      resize();
       gl.uniform2f(resolution, canvas.width, canvas.height);
       gl.uniform1f(time, (now - startedAt) * 0.003);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -365,6 +176,7 @@ function initHeroShader(signal, reducedMotion, saveData) {
     gl.deleteProgram(program);
     gl.deleteShader(vertexShader);
     gl.deleteShader(fragmentShader);
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
   }, { once: true });
 }
 
@@ -559,12 +371,14 @@ function initContact(signal) {
 
   const openPanel = () => {
     lastFocused = document.activeElement;
+    panel.inert = false;
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
     document.body.classList.add('contact-open');
     requestAnimationFrame(() => panel.querySelector('input')?.focus());
   };
   const closePanel = () => {
+    panel.inert = true;
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('contact-open');
@@ -577,6 +391,10 @@ function initContact(signal) {
     const opener = target.closest('[data-contact-open]');
     if (!opener) return;
     event.preventDefault();
+    if (opener.dataset.package) {
+      const message = form.querySelector('textarea[name="message"]');
+      if (message) message.value = opener.dataset.package;
+    }
     openPanel();
   }, { signal });
   qsa('[data-contact-close]', panel).forEach((closer) => closer.addEventListener('click', closePanel, { signal }));
@@ -601,42 +419,6 @@ function initContact(signal) {
   }, { signal });
 }
 
-function initCookie(signal) {
-  const key = 'mifer-cookie-consent';
-  const banner = document.querySelector('[data-cookie-banner]');
-  if (!banner) return;
-
-  const apply = (value) => {
-    document.documentElement.dataset.cookieConsent = value;
-    try { localStorage.setItem(key, value); } catch (_) {}
-    banner.classList.remove('is-visible');
-    scheduleTimeout(() => { banner.hidden = true; }, 260, signal);
-  };
-  const open = () => {
-    banner.hidden = false;
-    requestAnimationFrame(() => banner.classList.add('is-visible'));
-  };
-
-  let saved = null;
-  try { saved = localStorage.getItem(key); } catch (_) {}
-  if (saved === 'all' || saved === 'essential') {
-    document.documentElement.dataset.cookieConsent = saved;
-    banner.hidden = true;
-  } else {
-    scheduleTimeout(open, 550, signal);
-  }
-
-  qsa('[data-cookie-choice]', banner).forEach((button) => {
-    button.addEventListener('click', () => apply(button.dataset.cookieChoice), { signal });
-  });
-  qsa('[data-cookie-settings]').forEach((button) => {
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      open();
-    }, { signal });
-  });
-}
-
 function initPage() {
   if (pageController) pageController.abort();
   pageController = new AbortController();
@@ -656,33 +438,33 @@ function initPage() {
   initMagnetic(signal, reducedMotion, saveData);
   initMotionBudget(signal, reducedMotion, saveData);
   initContact(signal);
-  initCookie(signal);
+  initPackages(signal, reducedMotion, saveData);
 }
 
-document.addEventListener('astro:before-preparation', () => {
-  document.documentElement.classList.add('is-client-nav');
-});
-
-document.addEventListener('astro:before-swap', () => {
-  document.documentElement.classList.add('is-navigating');
-});
-
-document.addEventListener('astro:page-load', () => {
-  initPage();
-
-  // Do not finish the loading cue when the response merely arrived. Wait until the
-  // new DOM has styles, fonts and two paint opportunities so the user never sees the
-  // brief pre-reveal / font-settling state as the loading bar disappears.
-  const settle = async () => {
-    try {
-      if (document.fonts?.ready) await document.fonts.ready;
-    } catch (_) {}
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      window.setTimeout(() => window.__miferNavigationFinish?.(), 45);
-    }));
+let progressTimer;
+const endProgress = () => {
+  clearTimeout(progressTimer);
+  document.documentElement.classList.remove('is-navigating');
+  const bar = document.querySelector('[data-route-progress]');
+  bar?.classList.remove('is-running');
+  bar?.style.setProperty('--route-progress', '1');
+};
+document.addEventListener('astro:before-preparation', event => {
+  document.documentElement.classList.add('is-client-nav', 'is-navigating');
+  const bar = document.querySelector('[data-route-progress]');
+  bar?.style.setProperty('--route-progress', '.75');
+  bar?.classList.add('is-running');
+  clearTimeout(progressTimer);
+  progressTimer = window.setTimeout(endProgress, 8000);
+  const original = event.loader;
+  event.loader = async () => {
+    try { await original(); }
+    catch (error) { endProgress(); throw error; }
   };
-  settle();
 });
+document.addEventListener('astro:before-swap', () => { pageController?.abort(); });
+document.addEventListener('astro:page-load', () => { initPage(); endProgress(); });
+window.addEventListener('pageshow', endProgress);
 document.addEventListener('visibilitychange', () => {
   document.documentElement.classList.toggle('is-page-hidden', document.hidden);
 });

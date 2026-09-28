@@ -11,7 +11,7 @@ const next = constructionProjects[(constructionProjects.findIndex(item => item.s
 const other = lang === 'tr' ? 'en' : 'tr';
 const metadata = [[c.location, project.location[lang]], [c.category, project.category[lang]], [c.area, projectArea(project, lang)], [c.date, project.year]];
 ---
-<ConstructionLayout lang={lang} title={`${project.name[lang]} — Kavren`} description={project.introduction[lang]} path={projectPath(project, lang)} alternatePath={projectPath(project, other)}>
+<ConstructionLayout lang={lang} title={`${project.name[lang]} — Kavren Yapı`} description={project.introduction[lang]} path={projectPath(project, lang)} alternatePath={projectPath(project, other)}>
   <main id="main" class="kv-project-page">
     <div class="kv-container">
       <a class="kv-breadcrumb" href={`${constructionPaths[lang]}#projects`}><ArrowLeft size={18}/>{c.backProjects}</a>

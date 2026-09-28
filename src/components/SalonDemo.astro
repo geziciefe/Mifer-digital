@@ -1,4 +1,5 @@
 ---
+import { Instagram, ArrowUpRight } from 'lucide-astro';
 import SalonLayout from '../layouts/SalonLayout.astro';
 import { siteConfig } from '../data/siteConfig';
 
@@ -24,13 +25,13 @@ const copy = {
     storyLabel: 'BİZİM YAKLAŞIMIMIZ',
     storyTitle: 'Sadece saçı değil, nasıl hissettiğinizi de değiştiriyoruz.',
     storyBody: 'Veyra Atelier’de iyi görünmenin tek bir formülü yok. Önce sizi dinliyor, sonra karakterinizi taşıyan doğru kesimi, rengi ve bakımı birlikte kuruyoruz.',
-    craftLabel: '01 / UZMANLIK',
+    craftLabel: 'UZMANLIK',
     craftTitle: 'Kişiye özel kesim',
     craftBody: 'Yüz hattınız, saç dokunuz ve günlük rutininiz birlikte değerlendirilir. Salondan çıktığınız gün kadar, haftalar sonra da iyi duran kesimler tasarlarız.',
-    colourLabel: '02 / RENK',
+    colourLabel: 'RENK',
     colourTitle: 'Boyutlu ve canlı renk',
     colourBody: 'Balayage, sarı tonları, parlaklık ve yaratıcı renklerde saç bütünlüğünü koruyan, kontrollü bir süreç uygularız.',
-    careLabel: '03 / BAKIM',
+    careLabel: 'BAKIM',
     careTitle: 'Saçın ihtiyacına göre bakım',
     careBody: 'Nem, güç ve parlaklık ihtiyacını analiz eder; gereksiz işlem yerine gerçekten fark yaratan bakımı seçeriz.',
     campaignLabel: 'VEYRA COLOR COLLECTION / 26',
@@ -63,7 +64,7 @@ const copy = {
     ],
     priceNote: 'Fiyatlar demo amaçlıdır; uygulama öncesi saç uzunluğu ve yoğunluğuna göre netleştirilir.',
     salonEyebrow: 'MALTEPE / İSTANBUL',
-    salonTitle: 'Şehrin içinde kendinize ayırdığınız sakin bir alan.',
+    salonTitle: 'Şehrinizin içinde kendinize ayırdığınız sakin bir alan.',
     salonBody: 'Randevular arasında koşturmadığınız, kahvenizi bitirebildiğiniz ve her detayın sizin için düşünüldüğü bir salon.',
     hours: 'Pzt–Cmt 09.00–20.00',
     directions: 'YOL TARİFİ',
@@ -83,7 +84,7 @@ const copy = {
     followEyebrow: 'BİZİ TAKİP EDİN',
     followTitle: 'En yeni renkler, kesimler ve dönüşümler.',
     followBody: 'Bu alan salonunuzun Instagram’daki en yeni çalışmalarını gösterir. Buraya kendi fotoğraflarınız gelecek.',
-    followLink: 'INSTAGRAM’DA GÖR',
+    followLink: 'Instagram’da Gör',
     galleryItems: ['KESİM', 'RENK', 'DETAY', 'DOKU', 'EKİP', 'SALON'],
     privacy: 'Veyra Atelier kurgusal bir markadır. Mifer Digital tarafından hazırlanmış bir demo çalışmadır.'
   },
@@ -105,13 +106,13 @@ const copy = {
     storyLabel: 'OUR APPROACH',
     storyTitle: 'We change more than your hair. We change how you feel.',
     storyBody: 'There is no single formula for looking your best. We listen first, then build the cut, colour and care that genuinely feels like you.',
-    craftLabel: '01 / CRAFT',
+    craftLabel: 'CRAFT',
     craftTitle: 'A cut made for you',
     craftBody: 'We consider your face, texture and daily routine together, creating cuts that look as good weeks later as they do when you leave.',
-    colourLabel: '02 / COLOUR',
+    colourLabel: 'COLOUR',
     colourTitle: 'Dimensional, living colour',
     colourBody: 'From balayage and blonding to gloss and creative colour, every process is controlled to protect the integrity of your hair.',
-    careLabel: '03 / CARE',
+    careLabel: 'CARE',
     careTitle: 'Care with a purpose',
     careBody: 'We read what your hair needs for moisture, strength and shine, choosing the treatment that will actually make a difference.',
     campaignLabel: 'VEYRA COLOR COLLECTION / 26',
@@ -164,7 +165,7 @@ const copy = {
     followEyebrow: 'FOLLOW US',
     followTitle: 'Fresh colour, considered cuts and real transformations.',
     followBody: 'This area brings your latest Instagram work into the salon story. Your own photographs will live here.',
-    followLink: 'VIEW INSTAGRAM',
+    followLink: 'View on Instagram',
     galleryItems: ['CUT', 'COLOUR', 'DETAIL', 'TEXTURE', 'TEAM', 'SALON'],
     privacy: 'Veyra Atelier is a fictional brand. A demo project by Mifer Digital.'
   }
@@ -279,7 +280,7 @@ const whatsappHref = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '
         <div class="salon-portrait-rail" aria-hidden="true">
           <div class="salon-portrait-frame" data-salon-portrait>
             <div class="salon-portrait-outline"></div>
-            <img src="/demos/mifer-kuafor/pink-hair-model.webp" alt="" loading="lazy" />
+            <img src="/demos/mifer-kuafor/editorial-portrait.webp" srcset="/demos/mifer-kuafor/editorial-portrait-640.webp 640w, /demos/mifer-kuafor/editorial-portrait.webp 1000w" sizes="(max-width: 760px) 100vw, 45vw" width="1000" height="1500" alt="" loading="lazy" decoding="async" />
             <span>COLOR<br />STORY<br />/ 26</span>
           </div>
         </div>
@@ -305,7 +306,6 @@ const whatsappHref = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '
           {c.services.map((category, index) => (
             <article class="salon-price-category" data-salon-reveal style={`--delay:${index * 70}ms`}>
               <header>
-                <small>0{index + 1}</small>
                 <div><h3>{category.title}</h3><p>{category.note}</p></div>
               </header>
               <div class="salon-price-lines">
@@ -352,7 +352,7 @@ const whatsappHref = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '
           <h2 id="salon-follow-title">{c.followTitle}</h2>
           <div>
             <p>{c.followBody}</p>
-            <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer">{c.followLink}<span aria-hidden="true">↗</span></a>
+            <a class="salon-instagram-link" href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={30} strokeWidth={1.3}/><span><small>VEYRA ATELIER</small><strong>{c.followLink}</strong></span><ArrowUpRight size={22} strokeWidth={1.3}/></a>
           </div>
         </header>
         <div class="salon-social-grid" aria-label={c.followEyebrow}>

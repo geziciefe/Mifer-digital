@@ -1,10 +1,12 @@
 ---
 import { ArrowUpRight, Mail, Instagram } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Packages from './Packages.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import DemoCard from './DemoCard.astro';
 import Wordmark from './Wordmark.astro';
+import { blogPosts, blogPath } from '../data/blog';
 import { demos } from '../data/demos';
 import { content, locales, type Locale } from '../data/i18n';
 import { contactLinks, siteConfig } from '../data/siteConfig';
@@ -19,6 +21,10 @@ const topMotion = lang === 'tr'
 const bottomMotion = lang === 'tr'
   ? ['DENEYİM', 'SEO', 'MARKA', 'GELİŞTİRME']
   : ['EXPERIENCE', 'SEO', 'BRAND', 'BUILD'];
+const introSteps = lang === 'tr'
+  ? ['Web sitesi', 'Arama görünürlüğü', 'Marka hissi']
+  : ['Website', 'Search visibility', 'Brand presence'];
+const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected digital system';
 ---
 <BaseLayout
   lang={lang}
@@ -87,91 +93,103 @@ const bottomMotion = lang === 'tr'
     </section>
 
     <section class="intro-section section-pad">
-      <div class="container-shell intro-layout">
-        <div class="section-label intro-label">{t.intro.label}</div>
-        <div class="intro-main">
-          <h2 class="display-copy" data-reveal>{t.intro.title}</h2>
-          <div class="intro-capabilities">
-            {t.intro.capabilities.map(([title, text], index) => (
-              <a href="#services" class="intro-capability" data-reveal style={`--cap-index:${index}`}>
-                <div class="intro-cap-top"><span class="intro-cap-num">0{index + 1}</span><ArrowUpRight size={18} strokeWidth={1.45} /></div>
-                <div class="intro-cap-copy"><strong>{title}</strong><span>{text}</span></div>
-              </a>
-            ))}
+      <div class="container-shell intro-v161">
+        <div class="section-label section-label-centered section-label-wave intro-label">{t.intro.label}</div>
+        <div class="intro-composition" data-reveal>
+          <div class="intro-stair" aria-label={introSteps.join(', ')}>
+            {introSteps.map((step, index) => <span class={`intro-stair-line intro-stair-${index + 1}`}>{step}</span>)}
+          </div>
+          <div class="intro-unity">
+            
+            <strong>{introUnity}</strong>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="services" class="services-section section-pad">
-      <div class="container-shell">
-        <div class="section-head services-head">
-          <div class="section-label light">{t.services.label}</div>
-          <h2 data-reveal>{t.services.title}</h2>
-        </div>
-        <div class="service-list">
-          {t.services.items.map(([num, title, text], index) => (
-            <article class="service-row" data-reveal style={`--service-index:${index}`}>
-              <span class="service-num">{num}</span>
-              <h3>{title}</h3>
+        <div class="intro-process" aria-label={lang === 'tr' ? 'İşletmenize katkısı' : 'Benefits for your business'}>
+          {t.intro.capabilities.map(([title, text], index) => (
+            <article class="intro-process-item" data-reveal style={`--process-index:${index}`}>
+              <strong>{title}</strong>
               <p>{text}</p>
-              <span class="service-action" aria-hidden="true"><ArrowUpRight size={30} strokeWidth={1.15} /></span>
             </article>
           ))}
         </div>
       </div>
     </section>
 
+    <section id="services" class="services-section section-pad">
+      <div class="container-shell services-v161">
+        <div class="section-label section-label-centered section-label-wave light services-label">{t.services.label}</div>
+        <div class="services-head services-head-v161">
+          <h2 data-reveal>
+            {t.services.title}
+          </h2>
+        </div>
+        <div class="service-list">
+          {t.services.items.map(([title, text, meta], index) => (
+            <article class="service-row" data-reveal style={`--service-index:${index}`}>
+              <h3>{title}</h3>
+              <p>{text}</p>
+              <span class="service-meta">{meta}</span>
+            </article>
+          ))}
+        </div>
+        <a class="services-packages-link" href="#packages">{lang === 'tr' ? 'Kurulum ve destek paketleri' : 'Setup and support packages'} <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
     <section id="work" class="work-section section-pad">
       <div class="container-shell">
         <header class="work-heading work-heading-v10">
-          <div class="section-label">{t.work.label}</div>
+          <div class="section-label section-label-centered section-label-plain">{t.work.label}</div>
           <div class="work-heading-copy">
             <h2 data-reveal><span>{t.work.titleA}</span><span class="work-heading-accent">{t.work.titleB}</span></h2>
             <p>{t.work.summary}</p>
-            <small class="work-demo-note">{t.work.demoNote}</small>
           </div>
         </header>
         <div class="work-grid">
           {demos.map((demo, index) => <DemoCard demo={demo} lang={lang} featured={index === 0} />)}
         </div>
-        <div class="work-all-wrap"><a class="big-inline-link" data-nav-link data-prefetch-link href={locales[lang].workPath}>{t.work.all}<ArrowUpRight size={22} /></a></div>
+        <div class="work-all-wrap"><a class="big-inline-link" data-nav-link data-prefetch-link data-astro-prefetch href={locales[lang].workPath}>{t.work.all}<ArrowUpRight size={22} /></a></div>
       </div>
     </section>
+
+    <Packages lang={lang} />
 
     <section id="approach" class="approach-section section-pad">
-      <div class="container-shell">
-        <div id="approach-start" class="approach-head">
-          <div class="section-label">{t.approach.label}</div>
+      <div class="container-shell approach-v161">
+        <div id="approach-start" class="approach-head approach-head-v161">
+          <div class="section-label section-label-centered section-label-wave">{t.approach.label}</div>
           <h2 data-reveal>{t.approach.title}</h2>
         </div>
-        <ol class="approach-flow">
-          {t.approach.items.map(([num, title, text], index) => (
-            <li data-reveal style={`--approach-index:${index}`}>
-              <span class="approach-num">{num}</span>
-              <h3>{title}</h3>
+        <div class="approach-manifesto">
+          {t.approach.items.map(([title, text], index) => (
+            <article class="approach-statement" data-reveal style={`--approach-index:${index}`}>
+              <i aria-hidden="true"></i>
+              <h3><a data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, blogPosts[index])}>{title}<ArrowUpRight size={26} aria-hidden="true" /></a></h3>
               <p>{text}</p>
-              <span class="approach-dot" aria-hidden="true"></span>
-            </li>
+            </article>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
 
-    <section id="about" class="about-section section-pad">
-      <div class="container-shell about-grid">
-        <div class="section-label light">{t.about.label}</div>
-        <div class="about-content">
+    <section id="about" class="about-section about-v161 section-pad">
+      <div class="container-shell">
+        <div class="section-label section-label-centered section-label-wave light about-label-v161">{t.about.label}</div>
+        <div class="about-hero-v161">
+          <p class="about-kicker-v161">{t.about.kicker}</p>
           <h2 data-reveal>{t.about.title}</h2>
-          <p class="about-body" data-reveal>{t.about.body}</p>
-          <div class="about-proof" data-reveal>
-            <span>{lang === 'tr' ? 'STRATEJİ · TASARIM · KOD' : 'STRATEGY · DESIGN · CODE'}</span>
-            <span>{lang === 'tr' ? 'İSTANBUL’DAN DÜNYAYA' : 'ISTANBUL · WORLDWIDE'}</span>
+        </div>
+        <div class="about-stage-v161">
+          <div class="about-copy-v161" data-reveal>
+            <p>{t.about.body}</p>
+          </div>
+          <div class="about-constellation-v161" data-reveal aria-label={lang === 'tr' ? 'Mifer çalışma alanları' : 'Mifer disciplines'}>
+<div class="about-team-label">{lang === 'tr' ? 'BİRLİKTE ÇALIŞAN DİSİPLİNLER' : 'CONNECTED DISCIPLINES'}</div>
+            {t.about.disciplines.map((discipline, index) => (
+              <span class={`about-discipline-v161 about-discipline-v161-${index + 1}`}>{discipline}</span>
+            ))}
           </div>
         </div>
-      </div>
-      <div class="about-still-wordmark" aria-hidden="true">
-        <Wordmark variant="about-ghost" />
       </div>
     </section>
 
@@ -213,7 +231,7 @@ const bottomMotion = lang === 'tr'
             </button>
           )}
         </div>
-        <div class="contact-location">{t.contact.location}</div>
+        <div class="contact-location">{t.contact.sectionLocation}</div>
       </div>
     </section>
   </main>

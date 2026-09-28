@@ -1,42 +1,69 @@
 ---
-import { ArrowLeft } from 'lucide-astro';
+import { ArrowDown, ArrowUpRight, ArrowLeft } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import DemoCard from './DemoCard.astro';
 import { demos } from '../data/demos';
 import { content, locales, type Locale } from '../data/i18n';
+import '../styles/work-exhibition.css';
 interface Props { lang: Locale; }
 const { lang } = Astro.props;
 const t = content[lang];
 const alt: Locale = lang === 'tr' ? 'en' : 'tr';
+const tr = lang === 'tr';
+const sources = [
+ '/demos/mifer-kuafor/editorial-portrait-640.webp 640w, /demos/mifer-kuafor/editorial-portrait.webp 1000w',
+ '/demos/mifer-smile/clinic-hero-640.webp 640w, /demos/mifer-smile/clinic-hero-960.webp 960w, /demos/mifer-smile/clinic-hero.webp 1672w',
+ '/demos/kavren/kavakli-640.webp 640w, /demos/kavren/kavakli-960.webp 960w, /demos/kavren/kavakli-1536.webp 1536w'
+];
+const chapters = [
+  { id:'veyra', word:tr?'Stil.':'Style.', name:'Veyra Atelier', image:'/demos/mifer-kuafor/editorial-portrait.webp', detail:'/demos/mifer-kuafor/hero-poster.webp', theme:'atelier', caption:tr?'Kişisel bir ifade.':'A personal expression.', description:tr?'Editoryal bir dil, hareketli bir salon hikâyesi. Fiyat menüsünden randevuya, markanın karakterini taşıyan bir deneyim.':'An editorial voice and a salon story in motion. From the price menu to booking, every detail carries the brand’s character.', disciplines:tr?'Sanat yönetimi · Web tasarımı · Etkileşim':'Art direction · Web design · Interaction', imageAlt:tr?'Veyra Atelier için kestane tonlarında dalgalı saçlı editoryal portre':'Editorial portrait with sculpted chestnut waves for Veyra Atelier' },
+  { id:'avelis', word:tr?'Güven.':'Trust.', name:'Avelis', image:'/demos/mifer-smile/clinic-hero.webp', detail:'/demos/mifer-smile/digital-scanner.webp', theme:'clinic', caption:tr?'Sakin, açık, insana yakın.':'Calm, clear, human.', description:tr?'Hekimi, kliniği ve bakım sürecini tanımak için alan. Bilgiye kolay erişim ve yalın bir randevu akışı.':'Room to get to know the dentist, the clinic and the care process. Clear information and a straightforward appointment flow.', disciplines:tr?'Dijital kimlik · İçerik yapısı · Web tasarımı':'Digital identity · Content structure · Web design', imageAlt:tr?'Avelis kliniğinin gün ışığı alan tedavi odası':'Avelis clinic’s daylit treatment room' },
+  { id:'kavren', word:tr?'Ölçek.':'Scale.', name:'Kavren Yapı', image:'/demos/kavren/kavakli-1536.webp', detail:'/demos/kavren/saha-960.webp', theme:'structure', caption:tr?'İşi gösteren bir duruş.':'A presence built on the work.', description:tr?'Projelerin öne çıktığı kurumsal bir anlatı. Yapı ölçeği, mühendislik disiplini ve teslim edilen işin ayrıntıları.':'A corporate story led by the projects. Construction at scale, engineering discipline and the details behind delivery.', disciplines:tr?'Sanat yönetimi · Proje anlatımı · Geliştirme':'Art direction · Project storytelling · Development', imageAlt:tr?'Kavren Yapı Kavaklı konut gelişiminin cepheleri':'Facades of Kavren Yapı’s Kavaklı residential development' }
+];
 ---
-<BaseLayout
-  lang={lang}
-  title={`${t.workPage.label} | Mifer Digital`}
-  description={t.workPage.summary}
-  canonicalPath={locales[lang].workPath}
-  alternatePath={locales[alt].workPath}
->
-  <Header lang={lang} alternatePath={locales[alt].workPath} />
-  <main class="work-page">
-    <section class="work-page-hero">
-      <div class="container-shell work-page-hero-inner work-page-hero-clean">
-        <div class="work-page-hero-copy">
-          <h1 data-reveal>{t.workPage.title}</h1>
-          <p>{t.workPage.summary}</p>
-          <small class="work-demo-note">{t.work.demoNote}</small>
-        </div>
-      </div>
+<BaseLayout lang={lang} title={`${tr?'Çalışmalar':'Work'} | Mifer Digital`} description={t.workPage.summary} canonicalPath={locales[lang].workPath} alternatePath={locales[alt].workPath}>
+  <Header lang={lang} alternatePath={locales[alt].workPath}/>
+  <main class="work-exhibition" data-work-exhibition>
+    <section class="wx-intro" aria-labelledby="wx-title">
+      <div class="wx-intro-top"><span>MIFER DIGITAL / {tr?'SEÇİLİ ÇALIŞMALAR':'SELECTED WORK'}</span></div>
+      <h1 id="wx-title">{tr?'Çalışmalar':'Work'}<span>.</span></h1>
+      <div class="wx-intro-bottom"><p>{tr?'Her markanın':'Every brand has'}<br/><span>{tr?'kendi dünyası.':'a world of its own.'}</span></p><a href="#veyra">{tr?'İçeriye bak':'Take a closer look'}<ArrowDown size={22}/></a></div>
+      <nav class="wx-preview-strip" aria-label={tr?'Projeleri keşfet':'Explore the projects'}>{chapters.map((chapter,i)=><a href={`#${chapter.id}`} class={`wx-preview-card wx-preview-${chapter.id}`}><img src={chapter.image} srcset={sources[i]} sizes="(max-width:760px) 30vw, 32vw" alt="" width="440" height="260" loading={i===0?'eager':'lazy'} decoding="async"/><span class="wx-preview-caption"><span class={`wx-preview-brand wx-brand-${chapter.id}`}>{chapter.id === 'veyra' ? <><strong>VEYRA</strong><small>ATELIER</small></> : chapter.id === 'avelis' ? <><strong>avelis<span>.</span></strong><small>DENTAL CARE · ISTANBUL</small></> : <><strong>Kavren<span>Yapı</span></strong><small>İNŞAAT · MÜHENDİSLİK</small></>}</span><ArrowUpRight size={19}/></span></a>)}</nav>
     </section>
-    <section class="work-page-list">
-      <div class="container-shell work-grid work-grid-page">
-        {demos.map((demo, index) => <DemoCard demo={demo} lang={lang} featured={index === 0} />)}
-      </div>
-      <div class="container-shell work-back-wrap">
-        <a class="big-inline-link" data-nav-link data-prefetch-link href={locales[lang].homePath}><ArrowLeft size={21} />{t.workPage.back}</a>
-      </div>
-    </section>
+    <div class="wx-gallery">
+      <nav class="wx-index" aria-label={tr?'Çalışma dizini':'Work index'}>{chapters.map(chapter=><a href={`#${chapter.id}`} data-work-index={chapter.id}><span>{chapter.word}</span><small>{chapter.name}</small></a>)}</nav>
+      <div class="wx-chapters">{chapters.map((chapter,i)=><section id={chapter.id} class={`wx-chapter wx-${chapter.theme}`} data-work-chapter aria-labelledby={`${chapter.id}-title`}>
+        <div class="wx-chapter-heading" data-reveal><p>{demos[i].sector[lang]}</p><h2 id={`${chapter.id}-title`}>{chapter.name}</h2><span class="wx-chapter-theme" aria-hidden="true">{chapter.word}</span></div>
+        <a class="wx-project-window" href={demos[i].liveUrl![lang]} target="_blank" rel="noopener noreferrer" aria-label={`${chapter.name} — ${demos[i].action[lang]}`} data-reveal>
+          <img class="wx-primary-image" src={chapter.image} srcset={sources[i]} sizes="(max-width:760px) 90vw, 75vw" alt={chapter.imageAlt} width={i===0?1000:1536} height={i===0?1500:1024} loading="lazy" decoding="async"/>
+          <span class="wx-window-caption"><span>{demos[i].action[lang]} · {tr ? 'Yeni sekme' : 'New tab'}</span><ArrowUpRight size={25}/></span>
+        </a>
+        <div class="wx-chapter-foot" data-reveal><div><h3>{chapter.caption}</h3><p>{chapter.description}</p><small>{chapter.disciplines}</small></div><figure><img src={chapter.detail} alt={tr?`${chapter.name} tasarımından bir detay`:`A detail from ${chapter.name}`} width="600" height="400" loading="lazy" decoding="async"/><figcaption>{tr?'AYRINTIDA SAKLI.':'IN THE DETAILS.'}</figcaption></figure></div>
+      </section>)}</div>
+    </div>
+    <section class="wx-outro"><p>{tr?'Sıradaki farklı dünya':'The next different world'}</p><button type="button" data-contact-open>{tr?'Sizin markanız.':'Your brand.'}<ArrowUpRight/></button><a href={locales[lang].homePath} data-nav-link data-prefetch-link data-astro-prefetch><ArrowLeft size={19}/>{t.workPage.back}</a></section>
   </main>
-  <Footer lang={lang} />
+  <Footer lang={lang}/>
+  <script>
+    function initWorkIndex() {
+      const root=document.querySelector<HTMLElement>('[data-work-exhibition]');
+      if(!root || root.dataset.initialized || !('IntersectionObserver' in window)) return;
+      root.dataset.initialized='true';
+      const links=root.querySelectorAll<HTMLAnchorElement>('[data-work-index]');
+      const visible=new Map<Element,number>();
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>visible.set(entry.target,entry.isIntersecting?entry.intersectionRatio:0));
+        const current=[...visible].sort((a,b)=>b[1]-a[1])[0];
+        links.forEach(link=>{
+          if(current?.[1] && link.dataset.workIndex===current[0].id) link.setAttribute('aria-current','location');
+          else link.removeAttribute('aria-current');
+        });
+      },{threshold:[0,.1,.25,.5,.75],rootMargin:'-15% 0px -20% 0px'});
+      root.querySelectorAll('[data-work-chapter]').forEach(chapter=>observer.observe(chapter));
+      document.addEventListener('astro:before-swap',()=>observer.disconnect(),{once:true});
+    }
+    initWorkIndex();
+    document.addEventListener('astro:page-load',initWorkIndex);
+  </script>
 </BaseLayout>

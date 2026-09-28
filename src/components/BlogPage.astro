@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { ArrowUpRight } from 'lucide-astro';
+import { blogGuides } from '../data/blogGuides';
+import { siteConfig } from '../data/siteConfig';
+import { blogPosts, blogPath, type BlogPost } from '../data/blog';
+import { locales, type Locale } from '../data/i18n';
+import '../styles/blog.css';
+interface Props { lang: Locale; post?: BlogPost; }
+const { lang, post } = Astro.props;
+const alt: Locale = lang === 'tr' ? 'en' : 'tr';
+const article = post?.[lang];
+const home = locales[lang].homePath;
+const canonicalPath = post ? blogPath(lang, post) : `${home}/blog`;
+const alternatePath = post ? blogPath(alt, post) : `${locales[alt].homePath}/blog`;
+const title = article?.title ?? (lang === 'tr' ? 'Dijitalde doğru kararlar.' : 'Better decisions for your business online.');
+const description = article?.summary ?? (lang === 'tr' ? 'Web sitesi, SEO, Google Haritalar ve dijitalleşme hakkında işletme sahipleri için pratik rehberler.' : 'Practical guides to websites, SEO, Google Maps and digitalisation for business owners.');
+const url = new URL(canonicalPath, siteConfig.url).href;
+const schema = [
+  ...(article ? [{ '@context': 'https://schema.org', '@type': 'Article', headline: title, description, inLanguage: lang, mainEntityOfPage: url, publisher: { '@type': 'Organization', name: 'Mifer Digital', url: siteConfig.url } }] : []),
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: lang === 'tr' ? 'Ana sayfa' : 'Home', item: new URL(home, siteConfig.url).href },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL(`${home}/blog`, siteConfig.url).href },
+    ...(article ? [{ '@type': 'ListItem', position: 3, name: title, item: url }] : [])
+  ] }
+];
+---
+<BaseLayout lang={lang} title={`${article ? title : 'Blog'} | Mifer Digital`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath} article={Boolean(article)}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  <Header lang={lang} alternatePath={alternatePath} />
+  <main class="blog-main container-shell">
+    <a class="blog-back" data-nav-link href={article ? `${home}/blog` : `${home}#approach-start`}>← {article ? (lang === 'tr' ? 'Bloga dön' : 'Back to the blog') : (lang === 'tr' ? 'Yaklaşımımıza dön' : 'Back to our approach')}</a>
+    <header class="blog-heading">
+      <p class="blog-eyebrow">MIFER DIGITAL / BLOG</p>
+      <h1>{title}</h1>
+      <p class="blog-summary">{description}</p>
+    </header>
+    {article ? (
+      <article class="blog-article" aria-label={article.title}>
+        {article.sections.length > 3 && <nav class="blog-toc" aria-label={lang === 'tr' ? 'Bu yazıda' : 'In this guide'}><strong>{lang === 'tr' ? 'Bu yazıda' : 'In this guide'}</strong><ul>{article.sections.map((section, index) => <li><a href={`#section-${index}`}>{section.title}</a></li>)}</ul></nav>}
+        {article.sections.map((section, index) => <section id={`section-${index}`}><h2>{section.title}</h2>{section.paragraphs.map(text => <p>{text}</p>)}
+          {section.table && <div class="blog-table-scroll" tabindex="0" role="region" aria-label={section.title}><table><thead><tr>{section.table.headers.map(h => <th scope="col">{h}</th>)}</tr></thead><tbody>{section.table.rows.map(row => <tr>{row.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>}
+          {section.source && <aside class="blog-source"><span>{lang === 'tr' ? 'Kaynak' : 'Source'}</span><a href={section.source.url} target="_blank" rel="noopener noreferrer">{section.source.label} ↗</a></aside>}
+        </section>)}
+      </article>
+    ) : (
+      <div class="blog-grid">
+        {blogGuides.map(entry => <article class="blog-card">
+          <h2><a data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, entry)}>{entry[lang].title}<ArrowUpRight size={24} aria-hidden="true" /></a></h2>
+          <p>{entry[lang].summary}</p>
+        </article>)}
+      </div>
+    )}
+    {!article && <section class="blog-process"><h2>{lang === 'tr' ? 'Mifer ile çalışma süreci' : 'Working with Mifer'}</h2><div>{blogPosts.map(entry => <a data-nav-link data-astro-prefetch href={blogPath(lang, entry)}>{entry[lang].title}<ArrowUpRight size={20} aria-hidden="true" /></a>)}</div></section>}
+    <aside class="blog-contact">
+      <h2>{lang === 'tr' ? 'Sizin projenizi konuşalım.' : 'Let’s talk about your project.'}</h2>
+      <a data-nav-link data-section-link href={`${home}#${article?.target ?? "contact"}`}>{article?.cta ?? (lang === 'tr' ? 'Mifer ile iletişime geçin' : 'Get in touch with Mifer')} <ArrowUpRight size={20} aria-hidden="true" /></a>
+    </aside>
+  </main>
+  <Footer lang={lang} alternatePath={alternatePath} />
+</BaseLayout>

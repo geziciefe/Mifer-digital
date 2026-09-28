@@ -4,8 +4,8 @@ import Wordmark from './Wordmark.astro';
 import { contactLinks, siteConfig } from '../data/siteConfig';
 import { content, locales, type Locale } from '../data/i18n';
 
-interface Props { lang: Locale; }
-const { lang } = Astro.props;
+interface Props { lang: Locale; alternatePath?: string; }
+const { lang, alternatePath = locales[lang === 'tr' ? 'en' : 'tr'].homePath } = Astro.props;
 const t = content[lang];
 ---
 <footer class="footer-shell">
@@ -33,9 +33,9 @@ const t = content[lang];
   <div class="container-shell footer-bottom">
     <span>© {new Date().getFullYear()} Mifer Digital</span>
     <div class="footer-links">
-      <a data-nav-link data-prefetch-link href={locales[lang].workPath}>{t.nav.work}</a>
-      <a data-nav-link data-prefetch-link data-lang-switch href={lang === 'tr' ? '/en' : '/tr'}>{locales[lang].switchLabel}</a>
-      <button type="button" class="footer-cookie-link" data-cookie-settings>{lang === 'tr' ? 'Çerez ayarları' : 'Cookie settings'}</button>
+      <a data-nav-link data-prefetch-link data-astro-prefetch href={locales[lang].workPath}>{t.nav.work}</a>
+      <a data-nav-link data-prefetch-link data-astro-prefetch data-lang-switch href={alternatePath}>{locales[lang].switchLabel}</a>
+      <button type="button" class="footer-cookie-link" data-cookie-settings>{lang === 'tr' ? 'Çerez tercihleri' : 'Cookie preferences'}</button>
     </div>
   </div>
 </footer>
