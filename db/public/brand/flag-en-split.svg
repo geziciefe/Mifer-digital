@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" role="img" aria-label="Birleşik Krallık ve Amerika Birleşik Devletleri bayrakları">
+  <defs>
+    <clipPath id="left"><path d="M0 0h30v40H0z"/></clipPath>
+    <clipPath id="right"><path d="M30 0h30v40H30z"/></clipPath>
+  </defs>
+  <g clip-path="url(#left)">
+    <path fill="#012169" d="M0 0h60v40H0z"/>
+    <path stroke="#fff" stroke-width="9" d="m0 0 60 40M60 0 0 40"/>
+    <path stroke="#c8102e" stroke-width="4" d="m0 0 60 40M60 0 0 40"/>
+    <path stroke="#fff" stroke-width="14" d="M30 0v40M0 20h60"/>
+    <path stroke="#c8102e" stroke-width="8" d="M30 0v40M0 20h60"/>
+  </g>
+  <g clip-path="url(#right)">
+    <g transform="translate(30) scale(.5 1)">
+      <path fill="#fff" d="M0 0h60v40H0z"/>
+      <g fill="#b22234">
+        <path d="M0 0h60v3.077H0zM0 6.154h60v3.077H0zM0 12.308h60v3.077H0zM0 18.462h60v3.077H0zM0 24.615h60v3.077H0zM0 30.769h60v3.077H0zM0 36.923h60V40H0z"/>
+      </g>
+      <path fill="#3c3b6e" d="M0 0h25.2v21.54H0z"/>
+      <g fill="#fff">
+        <circle cx="3" cy="3" r="1"/><circle cx="8" cy="3" r="1"/><circle cx="13" cy="3" r="1"/><circle cx="18" cy="3" r="1"/><circle cx="23" cy="3" r="1"/>
+        <circle cx="5.5" cy="7" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15.5" cy="7" r="1"/><circle cx="20.5" cy="7" r="1"/>
+        <circle cx="3" cy="11" r="1"/><circle cx="8" cy="11" r="1"/><circle cx="13" cy="11" r="1"/><circle cx="18" cy="11" r="1"/><circle cx="23" cy="11" r="1"/>
+        <circle cx="5.5" cy="15" r="1"/><circle cx="10.5" cy="15" r="1"/><circle cx="15.5" cy="15" r="1"/><circle cx="20.5" cy="15" r="1"/>
+        <circle cx="3" cy="19" r="1"/><circle cx="8" cy="19" r="1"/><circle cx="13" cy="19" r="1"/><circle cx="18" cy="19" r="1"/><circle cx="23" cy="19" r="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

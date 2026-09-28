@@ -1,0 +1,57 @@
+---
+import type { Locale } from '../data/i18n';
+import { pricing } from '../data/pricing';
+import { Waves } from './ui/wave-background';
+import '../styles/packages.css';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const tr = lang === 'tr';
+const f = (n: number) => new Intl.NumberFormat(tr ? 'tr-TR' : 'en-GB').format(n);
+const content = tr ? [
+  { purpose: 'Küçük güncellemeler ve temel bakım için.', items: ['Temel teknik ve erişilebilirlik kontrolü', 'Proje yedeğinin korunması', 'Mevcut metin, görsel, bağlantı ve işletme bilgilerinde küçük güncellemeler'] },
+  { purpose: 'İçeriğini düzenli yenileyen işletmeler için.', items: ['Bakım’ın teknik kontrol ve yedek kapsamı', 'İçerik, görsel ve mevcut sayfa düzeninde küçük güncellemeler', 'Aylık mobil görünüm, temel yüklenme performansı ve kırık bağlantı kontrolü', 'Tamamlanan işlerin kısa özeti'] },
+  { purpose: 'Sitesini düzenli geliştirmek isteyen işletmeler için.', items: ['Güncel’in bakım ve rutin kontrol kapsamı', 'Aylık site ve temel SEO analizi; öncelikli 3 iyileştirme önerisi', 'Ayda en fazla 2 mevcut sayfada temel sayfa içi SEO iyileştirmesi', 'İhtiyaç ve erişim varsa ayda 1 Google İşletme Profili bilgi güncellemesi', 'Destek taleplerinde öncelikli değerlendirme', 'Gerçek bulgular ve mevcut ölçüm verilerine dayalı kısa rapor'] }
+] : [
+  { purpose: 'For small updates and essential maintenance.', items: ['Basic technical and availability checks', 'Retention of your project backup', 'Small updates to existing text, images, links and business information'] },
+  { purpose: 'For businesses that refresh their content regularly.', items: ['Care’s technical checks and backup coverage', 'Content, image and minor existing-page layout updates', 'Monthly checks of mobile presentation, basic loading performance and broken links', 'A concise summary of completed work'] },
+  { purpose: 'For businesses that want to improve their site regularly.', items: ['Maintain’s maintenance and routine checks', 'Monthly website and basic SEO analysis; 3 prioritised improvement recommendations', 'Basic on-page SEO improvements on up to 2 existing pages per month', 'Up to 1 Google Business Profile information update per month, when needed and access is available', 'Priority handling of support requests', 'A concise report based on actual findings and available measurement data'] }
+];
+---
+<section id="packages" class="packages-section section-pad" data-packages data-lang={lang} data-period="monthly">
+  <div class="package-waves" aria-hidden="true"><Waves client:load /></div>
+  <div class="container-shell package-content">
+    <div class="section-label section-label-centered">{tr ? 'Paketler' : 'Packages'}</div>
+    <header class="package-setup" data-reveal>
+      <div class="package-value"><span class="package-eyebrow">{tr ? 'TEK SEFERLİK WEB SİTESİ KURULUMU' : 'ONE-OFF WEBSITE SETUP'}</span>
+        <h2>{tr ? 'İşinize özel bir web sitesi.' : 'A website built around your business.'}</h2>
+        <p>{tr ? 'Özel tasarım, mobil uyum, temel arama altyapısı ve ziyaretçiyi size ulaştıran açık iletişim yolları.' : 'Custom design, mobile compatibility, basic search foundations and clear ways for visitors to get in touch.'}</p>
+        <a class="package-cta setup-cta" href={`/${lang}#contact`} data-contact-open data-package={tr ? 'Web sitesi kurulumu — 15.000 TL’den başlayan fiyatlarla' : 'Website setup — starting from TL 15,000'}>{tr ? 'Projemi konuşalım' : 'Let’s discuss my project'} <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="package-setup-price"><div class="setup-amount"><strong>{f(15000)} <span>TL</span></strong><span>{tr ? '’den başlayan fiyatlarla' : 'starting price'}</span></div>
+        <p>{tr ? '31 Aralık 2026’ya kadar standart tanıtım siteleri için. Kesin teklif, proje kapsamına göre belirlenir.' : 'For standard business websites until 31 December 2026. Your final quote depends on the project scope.'}</p>
+        <div class="package-handover"><strong>{tr ? 'İlk 14 gün sınırsız revize.' : 'Unlimited revisions for the first 14 days.'}</strong><p>{tr ? 'İlk tamamlanmış site tesliminden itibaren, anlaşılan proje kapsamındaki düzenlemeler için geçerlidir.' : 'Applies to refinements within the agreed project scope, starting from delivery of the first completed website.'}</p></div>
+      </div>
+      <p class="package-handover-scope">{tr ? 'Her yeni siteye dahil; destek paketi seçmeniz gerekmez ve aylık revize haklarından düşülmez. Yeni sayfa, özellik, entegrasyon veya kapsam değişikliği ayrıca tekliflenir.' : 'Included with every new website, with no support plan required. These revisions do not use monthly allowances. New pages, features, integrations or scope changes are quoted separately.'}</p>
+    </header>
+    <div class="package-support-heading"><div><span class="package-eyebrow">{tr ? 'İSTEĞE BAĞLI DEVAM EDEN DESTEK' : 'OPTIONAL ONGOING SUPPORT'}</span><h3>{tr ? 'Sitenizle birlikte ilerleyin.' : 'Keep your website moving forward.'}</h3><p>{tr ? 'Kurulum bedelinden ayrı. İhtiyacınıza uygun bir destek ritmi.' : 'Separate from setup. Choose the support that fits your business.'}</p></div>
+      <div class="package-billing"><fieldset class="package-period"><legend>{tr ? 'Destek ödeme dönemi' : 'Support billing period'}</legend><label><input type="radio" name="package-period" value="monthly" checked/><span>{tr ? 'Aylık' : 'Monthly'}</span></label><label><input type="radio" name="package-period" value="annual"/><span>{tr ? 'Yıllık' : 'Annual'}</span></label></fieldset><p>{tr ? 'Yıllık ödemede %25’e varan avantaj.' : 'Save up to 25% with annual billing.'}</p></div>
+    </div>
+    <p class="package-allowance-note">{tr ? 'Yıllık ödeme seçseniz de hizmetler ve revize hakları aylık olarak sunulur.' : 'Services and revision allowances remain monthly, even when you pay annually.'}</p>
+    <div class="package-grid">
+      {pricing.map((plan, i) => <article class:list={['package-card', { 'package-premium': i === 2 }]} data-plan={plan.id}>
+        <div class="package-card-badge">{i === 2 ? (tr ? 'En kapsamlı destek' : 'Our most comprehensive support') : (tr ? 'SÜREKLİ DESTEK' : 'ONGOING SUPPORT')}</div>
+        <h4>{plan.names[lang]}</h4><p class="package-purpose">{content[i].purpose}</p>
+        <div class="package-price-area" aria-live="polite" aria-atomic="true"><div class="package-price"><strong data-plan-price>{f(plan.monthly)} TL</strong><span data-plan-unit>{tr ? '/ay' : '/month'}</span></div>
+          <p class="package-payment" data-plan-payment>{tr ? 'Aylık ödeme' : 'Billed monthly'}</p>
+          <div class="package-discount" data-annual-only hidden><strong data-plan-discount></strong><span data-plan-saving></span></div>
+        </div>
+        <p class="package-revisions"><strong>{plan.revisions}</strong><span>{tr ? 'revize hakkı / ay' : 'revision requests / month'}</span></p>
+        <ul>{(i === 2 ? [content[i].items[1], content[i].items[2], content[i].items[4]] : content[i].items).map(item => <li>{item}</li>)}</ul>
+        {i === 2 && <><p class="package-separate">{tr ? 'Planlı analiz, raporlama ve belirtilen SEO çalışmaları, 12 küçük revize hakkından ayrıdır.' : 'Scheduled analysis, reporting and the listed SEO work are separate from your 12 small revision requests.'}</p><details class="package-plan-detail"><summary>{tr ? 'Gelişim’in tüm hizmetleri' : 'All Develop services'}</summary><ul>{content[i].items.map(item => <li>{item}</li>)}</ul></details><p class="package-upgrade" data-plan-comparison data-annual-only hidden></p></>}
+        <a class="package-cta" href={`/${lang}#contact`} data-contact-open data-plan-cta data-package={`${plan.names[lang]} — ${f(plan.monthly)} TL/${tr ? 'ay, aylık ödeme' : 'month, monthly billing'}`}>{tr ? `${plan.names.tr}${i === 0 ? '’ı' : '’i'} konuşalım` : `Discuss ${plan.names.en}`}<span aria-hidden="true">↗</span></a>
+      </article>)}
+    </div>
+    <aside class="package-annual-extra"><div><span class="package-eyebrow">{tr ? 'YILLIK GELİŞİM’E ÖZEL' : 'EXCLUSIVE TO ANNUAL DEVELOP'}</span><h4>{tr ? 'Bir planla başlayın. Birlikte değerlendirin.' : 'Start with a plan. Review it together.'}</h4></div><ul><li>{tr ? 'Başlangıç site incelemesi ve uygulanabilir 90 günlük iyileştirme planı' : 'Initial website review and a practical 90-day improvement plan'}</li><li>{tr ? 'Her çeyrekte 30 dakikalık değerlendirme görüşmesi' : 'One 30-minute review meeting per quarter'}</li></ul></aside>
+    <details class="package-scope"><summary>{tr ? 'Bir revize neleri kapsar?' : 'What counts as one revision?'}</summary><div><p>{tr ? 'Mevcut bir öğede küçük ve sınırları belirli tek bir değişikliktir: bir metin bloğunu güncellemek, görsel değiştirmek, iletişim bilgisini düzeltmek veya küçük bir yerleşim ayrıntısını düzenlemek gibi. Birbirinden bağımsız birkaç değişiklik içeren talep, otomatik olarak tek revize sayılmaz.' : 'One small, clearly scoped change to an existing element: updating a text block, replacing an image, changing contact information or adjusting a small layout detail. Several unrelated changes in one request do not automatically count as one revision.'}</p><p>{tr ? 'Haklar her paketin aylık toplamıdır; paketler birbirine eklenmez. Büyük yeniden tasarımlar, yeni işlevler, yeni sayfalar, kapsamlı metin yazımı ve üçüncü taraf maliyetleri ayrıca tekliflenir. Ek işe başlamadan önce kapsam ve ücret netleştirilir.' : 'Allowances are monthly totals for each plan, not cumulative. Major redesigns, new functionality, new pages, extensive copywriting and third-party costs require a separate quote. Scope and cost are agreed before extra work starts.'}</p></div></details>
+  </div>
+</section>

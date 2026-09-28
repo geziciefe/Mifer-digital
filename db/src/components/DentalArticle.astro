@@ -1,0 +1,12 @@
+---
+import { ArrowLeft, ArrowUpRight } from 'lucide-astro';
+import DentalFrame from './DentalFrame.astro';
+import {dentalCopy,dentalPaths,type DentalLang,type DentalTreatment} from '../data/dental';
+interface Props {lang:DentalLang;treatment:DentalTreatment;}
+const {lang,treatment:t}=Astro.props;const c=dentalCopy[lang];const other=lang==='tr'?'en':'tr';
+const path=`${dentalPaths[lang]}/${lang==='tr'?'tedaviler':'treatments'}/${lang==='tr'?t.slug:t.enSlug}`;
+const alternatePath=`${dentalPaths[other]}/${other==='tr'?'tedaviler':'treatments'}/${other==='tr'?t.slug:t.enSlug}`;
+---
+<DentalFrame lang={lang} title={`${t[lang]} — Avelis`} path={path} alternatePath={alternatePath}>
+ <main id="main" class="av-wrap av-article"><a class="av-text-link" href={`${dentalPaths[lang]}#treatments`}><ArrowLeft size={18}/>{c.all}</a><p class="av-eyebrow">{c.articleTitle}</p><h1>{t[lang]}</h1><p class="av-article-lead">{t.summary[lang]}</p><section><h2>{lang==='tr'?'Genel yaklaşım':'An overview'}</h2><p>{t.body[lang]}</p><p class="av-article-note">{c.articleNote}</p></section><section><h2>{c.questions}</h2><ul>{c.questionList.map(q=><li>{q}</li>)}</ul></section><p class="av-article-source">{c.source}: <a href={t.source} target="_blank" rel="noopener noreferrer">NHS</a><br/>{c.updated}</p><a class="av-button" href={`${dentalPaths[lang]}#appointment`}>{c.book}<ArrowUpRight size={18}/></a></main>
+</DentalFrame>

@@ -1,0 +1,11 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'default' | 'kinetic' | 'footer' | 'footer-ghost' | 'about-ghost';
+}
+const { class: className = '', variant = 'default' } = Astro.props;
+---
+<span class={`mifer-wordmark mifer-wordmark-${variant} ${className}`.trim()}>
+  <span class="mifer-wordmark-word">mifer</span>
+  <span class="mifer-wordmark-sub">digital</span>
+</span>

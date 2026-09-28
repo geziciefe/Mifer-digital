@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+import '../styles/work-showcase.css';
+import { siteConfig } from '../data/siteConfig';
+import { locales, type Locale } from '../data/i18n';
+import CookieBanner from '../components/CookieBanner.astro';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  lang?: Locale;
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  alternatePath?: string;
+  article?: boolean;
+}
+
+const {
+  lang = 'tr',
+  article = false,
+  title = 'Mifer Digital',
+  description = 'Mifer Digital — independent digital studio in Istanbul.',
+  canonicalPath = locales[lang].homePath,
+  alternatePath = locales[lang === 'tr' ? 'en' : 'tr'].homePath
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, siteConfig.url).toString();
+const alternateLocale: Locale = lang === 'tr' ? 'en' : 'tr';
+const alternateUrl = new URL(alternatePath, siteConfig.url).toString();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteConfig.url}/#website`,
+      url: siteConfig.url,
+      name: siteConfig.brand,
+      alternateName: ['MiferDigital', siteConfig.domain],
+      inLanguage: ['tr-TR', 'en'],
+      publisher: { '@id': `${siteConfig.url}/#organization` }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${siteConfig.url}/#organization`,
+      name: siteConfig.brand,
+      url: siteConfig.url,
+      email: siteConfig.email,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteConfig.url}/brand/mifer-digital-logo.png`
+      },
+      sameAs: [siteConfig.instagramUrl].filter(Boolean),
+      areaServed: 'Worldwide',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: siteConfig.email,
+        contactType: 'customer service',
+        availableLanguage: ['Turkish', 'English']
+      }
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { '@id': `${siteConfig.url}/#website` },
+      about: { '@id': `${siteConfig.url}/#organization` },
+      inLanguage: locales[lang].htmlLang
+    }
+  ]
+};
+---
+<!doctype html>
+<html lang={locales[lang].htmlLang} transition:animate="none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+    <meta name="google-site-verification" content="KlbRfK6HM8Dsz0eWRODwJOqd-n7NnD_YhQ6MNQFAG3Q" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={locales[lang].htmlLang} href={canonicalUrl} />
+    <link rel="alternate" hreflang={locales[alternateLocale].htmlLang} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={`${siteConfig.url}/tr`} />
+    <link rel="prefetch" href={alternatePath} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png" />
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:locale" content={locales[lang].ogLocale} />
+    <meta property="og:site_name" content={siteConfig.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteConfig.url}/brand/mifer-logo.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add('mifer-js');</script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <div class="route-progress" data-route-progress aria-hidden="true" transition:persist="mifer-route-progress"><span></span></div>
+    <slot />
+    <CookieBanner lang={lang} />
+    <script>
+      import '../scripts/runtime.js';
+    </script>
+  </body>
+</html>

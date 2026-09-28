@@ -1,0 +1,6 @@
+{
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "react" },
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "src/**/*.astro", "src/**/*.ts", "src/**/*.js", "src/components/ui/wave-background.tsx"],
+  "exclude": ["dist", "node_modules", "app", "build", "db", "worker", "tests",  "next.config.ts", "vite.config.ts", "drizzle.config.ts"]
+}

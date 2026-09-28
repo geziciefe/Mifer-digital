@@ -1,0 +1,31 @@
+---
+interface Props {
+  compact?: boolean;
+  class?: string;
+}
+const { compact = false, class: className = '' } = Astro.props;
+---
+{compact ? (
+  <svg
+    viewBox="0 0 1147 1030"
+    role="img"
+    aria-label="Mifer Digital"
+    class={className}
+    width="1147"
+    height="1030"
+    focusable="false"
+  >
+    <path fill="#0864EC" d="M48 50 47 817 285 981 284 503 573 698 573 394Z" />
+    <path fill="#38AA4D" d="M1099 49 575 394 575 697 863 504 862 981 1100 817Z" />
+  </svg>
+) : (
+  <img
+    src="/brand/mifer-logo.webp"
+    width="1065"
+    height="1095"
+    alt="Mifer Digital"
+    class={className}
+    loading="eager"
+    decoding="async"
+  />
+)}

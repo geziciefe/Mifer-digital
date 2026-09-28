@@ -1,0 +1,239 @@
+---
+import { ArrowUpRight, Mail, Instagram } from 'lucide-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Packages from './Packages.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import DemoCard from './DemoCard.astro';
+import Wordmark from './Wordmark.astro';
+import { blogPosts, blogPath } from '../data/blog';
+import { demos } from '../data/demos';
+import { content, locales, type Locale } from '../data/i18n';
+import { contactLinks, siteConfig } from '../data/siteConfig';
+
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const t = content[lang];
+const alt: Locale = lang === 'tr' ? 'en' : 'tr';
+const topMotion = lang === 'tr'
+  ? ['WEB', 'TASARIM', 'ARAMA', 'BÜYÜME']
+  : ['WEB', 'DESIGN', 'SEARCH', 'GROWTH'];
+const bottomMotion = lang === 'tr'
+  ? ['DENEYİM', 'SEO', 'MARKA', 'GELİŞTİRME']
+  : ['EXPERIENCE', 'SEO', 'BRAND', 'BUILD'];
+const introSteps = lang === 'tr'
+  ? ['Web sitesi', 'Arama görünürlüğü', 'Marka hissi']
+  : ['Website', 'Search visibility', 'Brand presence'];
+const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected digital system';
+---
+<BaseLayout
+  lang={lang}
+  title={t.meta.title}
+  description={t.meta.description}
+  canonicalPath={locales[lang].homePath}
+  alternatePath={locales[alt].homePath}
+>
+  <Header lang={lang} alternatePath={locales[alt].homePath} revealAfterScroll />
+  <main>
+    <section class="hero-section" data-hero>
+      <canvas class="hero-shader-canvas" data-hero-shader aria-hidden="true"></canvas>
+      <div class="hero-shader-vignette" aria-hidden="true"></div>
+      <div class="container-shell hero-shell">
+        {lang === 'tr' ? (
+          <h1 class="hero-title hero-title-tr" aria-label={`${t.hero.line1} ${t.hero.line2} ${t.hero.line3}`}>
+            <span class="hero-line hero-line-combo">
+              <span class="hero-line-part" data-hero-line>{t.hero.line1}</span>
+              <span class="hero-line-part hero-line-part-blue" data-hero-line>{t.hero.line2}</span>
+            </span>
+            <span class="hero-line hero-line-combo">
+              <span class="hero-line-part" data-hero-line>MARKANIZ</span>
+              <span class="hero-line-part hero-line-part-green" data-hero-line>BÜYÜSÜN</span>
+            </span>
+          </h1>
+        ) : (
+          <h1 class="hero-title hero-title-en" aria-label="Get your business seen. Grow your brand.">
+            <span class="hero-line"><span data-hero-line>GET YOUR BUSINESS <span class="hero-emphasis-blue">SEEN</span></span></span>
+            <span class="hero-line"><span data-hero-line><span class="hero-emphasis-green">GROW</span> YOUR BRAND</span></span>
+          </h1>
+        )}
+
+      </div>
+      <a class="hero-scroll-cue" href="#motion-stage">
+        <span>{lang === 'tr' ? 'Keşfetmek için kaydır' : 'Scroll to explore'}</span><i aria-hidden="true"></i>
+      </a>
+    </section>
+
+    <section id="motion-stage" class="kinetic-stage" aria-label="Mifer Digital motion graphic">
+      <div class="kinetic-marquee kinetic-marquee-top" aria-hidden="true">
+        <div class="kinetic-marquee-track">
+          {[0, 1].map(() => (
+            <div class="kinetic-set">
+              {topMotion.map((word) => <span class="kinetic-unit"><b>{word}</b><i>/</i></span>)}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kinetic-center" data-reveal aria-label="Mifer Digital">
+        <Wordmark variant="kinetic" />
+        <em aria-hidden="true"></em>
+      </div>
+
+      <div class="kinetic-marquee kinetic-marquee-bottom" aria-hidden="true">
+        <div class="kinetic-marquee-track reverse">
+          {[0, 1].map(() => (
+            <div class="kinetic-set">
+              {bottomMotion.map((word) => <span class="kinetic-unit"><b>{word}</b><i>/</i></span>)}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kinetic-meta"><span>ISTANBUL</span><span>MIFER DIGITAL</span></div>
+    </section>
+
+    <section class="intro-section section-pad">
+      <div class="container-shell intro-v161">
+        <div class="section-label section-label-centered section-label-wave intro-label">{t.intro.label}</div>
+        <div class="intro-composition" data-reveal>
+          <div class="intro-stair" aria-label={introSteps.join(', ')}>
+            {introSteps.map((step, index) => <span class={`intro-stair-line intro-stair-${index + 1}`}>{step}</span>)}
+          </div>
+          <div class="intro-unity">
+            
+            <strong>{introUnity}</strong>
+          </div>
+        </div>
+        <div class="intro-process" aria-label={lang === 'tr' ? 'İşletmenize katkısı' : 'Benefits for your business'}>
+          {t.intro.capabilities.map(([title, text], index) => (
+            <article class="intro-process-item" data-reveal style={`--process-index:${index}`}>
+              <strong>{title}</strong>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="services-section section-pad">
+      <div class="container-shell services-v161">
+        <div class="section-label section-label-centered section-label-wave light services-label">{t.services.label}</div>
+        <div class="services-head services-head-v161">
+          <h2 data-reveal>
+            {t.services.title}
+          </h2>
+        </div>
+        <div class="service-list">
+          {t.services.items.map(([title, text, meta], index) => (
+            <article class="service-row" data-reveal style={`--service-index:${index}`}>
+              <h3>{title}</h3>
+              <p>{text}</p>
+              <span class="service-meta">{meta}</span>
+            </article>
+          ))}
+        </div>
+        <a class="services-packages-link" href="#packages">{lang === 'tr' ? 'Kurulum ve destek paketleri' : 'Setup and support packages'} <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section id="work" class="work-section section-pad">
+      <div class="container-shell">
+        <header class="work-heading work-heading-v10">
+          <div class="section-label section-label-centered section-label-plain">{t.work.label}</div>
+          <div class="work-heading-copy">
+            <h2 data-reveal><span>{t.work.titleA}</span><span class="work-heading-accent">{t.work.titleB}</span></h2>
+            <p>{t.work.summary}</p>
+          </div>
+        </header>
+        <div class="work-grid">
+          {demos.map((demo, index) => <DemoCard demo={demo} lang={lang} featured={index === 0} />)}
+        </div>
+        <div class="work-all-wrap"><a class="big-inline-link" data-nav-link data-prefetch-link data-astro-prefetch href={locales[lang].workPath}>{t.work.all}<ArrowUpRight size={22} /></a></div>
+      </div>
+    </section>
+
+    <Packages lang={lang} />
+
+    <section id="approach" class="approach-section section-pad">
+      <div class="container-shell approach-v161">
+        <div id="approach-start" class="approach-head approach-head-v161">
+          <div class="section-label section-label-centered section-label-wave">{t.approach.label}</div>
+          <h2 data-reveal>{t.approach.title}</h2>
+        </div>
+        <div class="approach-manifesto">
+          {t.approach.items.map(([title, text], index) => (
+            <article class="approach-statement" data-reveal style={`--approach-index:${index}`}>
+              <i aria-hidden="true"></i>
+              <h3><a data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, blogPosts[index])}>{title}<ArrowUpRight size={26} aria-hidden="true" /></a></h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section about-v161 section-pad">
+      <div class="container-shell">
+        <div class="section-label section-label-centered section-label-wave light about-label-v161">{t.about.label}</div>
+        <div class="about-hero-v161">
+          <p class="about-kicker-v161">{t.about.kicker}</p>
+          <h2 data-reveal>{t.about.title}</h2>
+        </div>
+        <div class="about-stage-v161">
+          <div class="about-copy-v161" data-reveal>
+            <p>{t.about.body}</p>
+          </div>
+          <div class="about-constellation-v161" data-reveal aria-label={lang === 'tr' ? 'Mifer çalışma alanları' : 'Mifer disciplines'}>
+<div class="about-team-label">{lang === 'tr' ? 'BİRLİKTE ÇALIŞAN DİSİPLİNLER' : 'CONNECTED DISCIPLINES'}</div>
+            {t.about.disciplines.map((discipline, index) => (
+              <span class={`about-discipline-v161 about-discipline-v161-${index + 1}`}>{discipline}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <div class="container-shell contact-shell">
+        <h2 data-reveal><span>{t.contact.titleA}</span><span>{t.contact.titleB}</span></h2>
+        <div class="contact-actions" data-reveal>
+          <a class="contact-action contact-action-mail" href={contactLinks.email}>
+            <span class="contact-action-icon"><Mail size={22} strokeWidth={1.6} /></span>
+            <span><small>E-MAIL</small><strong>{siteConfig.email}</strong></span>
+            <ArrowUpRight size={22} strokeWidth={1.4} />
+          </a>
+
+          {contactLinks.whatsapp ? (
+            <a class="contact-action contact-action-whatsapp" href={contactLinks.whatsapp} target="_blank" rel="noreferrer">
+              <span class="contact-action-icon whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.92 9.92 0 1 0 12.04 2Zm0 17.99a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.08.96.98-3-.2-.31A8.1 8.1 0 1 1 12.04 20Z"/></svg></span>
+              <span><small>WHATSAPP</small><strong>{t.contact.whatsapp}</strong></span>
+              <ArrowUpRight size={22} strokeWidth={1.4} />
+            </a>
+          ) : (
+            <button class="contact-action contact-action-whatsapp is-unavailable" type="button" aria-disabled="true" title={lang === 'tr' ? 'WhatsApp numarası siteConfig dosyasına eklendiğinde aktif olur' : 'Add the WhatsApp number in siteConfig to activate'}>
+              <span class="contact-action-icon whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35ZM12.04 2a9.84 9.84 0 0 0-8.4 14.95L2 22l5.2-1.62A9.92 9.92 0 1 0 12.04 2Zm0 17.99a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.08.96.98-3-.2-.31A8.1 8.1 0 1 1 12.04 20Z"/></svg></span>
+              <span><small>WHATSAPP</small><strong>{t.contact.whatsapp}</strong></span>
+              <ArrowUpRight size={22} strokeWidth={1.4} />
+            </button>
+          )}
+
+          {contactLinks.instagram ? (
+            <a class="contact-action contact-action-instagram" href={contactLinks.instagram} target="_blank" rel="noreferrer">
+              <span class="contact-action-icon"><Instagram size={22} strokeWidth={1.55} /></span>
+              <span><small>INSTAGRAM</small><strong>{t.contact.instagram}</strong></span>
+              <ArrowUpRight size={22} strokeWidth={1.4} />
+            </a>
+          ) : (
+            <button class="contact-action contact-action-instagram is-unavailable" type="button" aria-disabled="true" title={lang === 'tr' ? 'Instagram URL’si siteConfig dosyasına eklendiğinde aktif olur' : 'Add the Instagram URL in siteConfig to activate'}>
+              <span class="contact-action-icon"><Instagram size={22} strokeWidth={1.55} /></span>
+              <span><small>INSTAGRAM</small><strong>{t.contact.instagram}</strong></span>
+              <ArrowUpRight size={22} strokeWidth={1.4} />
+            </button>
+          )}
+        </div>
+        <div class="contact-location">{t.contact.sectionLocation}</div>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

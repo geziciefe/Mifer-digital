@@ -1,0 +1,21 @@
+---
+import type { Locale } from '../data/i18n';
+import '../styles/consent.css';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const tr = lang === 'tr';
+---
+<aside class="consent-banner" data-cookie-banner hidden aria-label={tr ? 'Çerez tercihleri' : 'Cookie preferences'}>
+  <div><strong>{tr ? 'Kontrol sizde.' : 'You are in control.'}</strong><p>{tr ? 'Analitik veya reklam kodu kullanmıyoruz. Demo sayfasındaki Google haritası yalnızca izninizle yüklenir. Tercihinizi 180 gün hatırlarız.' : 'We use no analytics or advertising code. The Google map on the demo page loads only with permission. We remember your choice for 180 days.'}</p></div>
+  <div class="consent-actions"><button type="button" data-cookie-choice="all">{tr ? 'Kabul et' : 'Accept'}</button><button type="button" data-cookie-choice="essential">{tr ? 'Reddet' : 'Reject'}</button><button type="button" data-cookie-settings>{tr ? 'Tercihler' : 'Preferences'}</button></div>
+</aside>
+<dialog class="consent-dialog" data-consent-dialog aria-labelledby="consent-title" data-error={tr ? 'Tercihiniz bu tarayıcıda kaydedilemedi. İsteğe bağlı harita kapalı kaldı.' : 'Your choice could not be saved in this browser. The optional map remains off.'}>
+  <form method="dialog"><header><h2 id="consent-title">{tr ? 'Çerez tercihleri' : 'Cookie preferences'}</h2><button class="consent-close" aria-label={tr ? 'Kapat' : 'Close'}>×</button></header></form>
+  <p>{tr ? 'Site içeriğini görmek için isteğe bağlı hizmetleri açmanız gerekmez.' : 'You do not need to enable optional services to view the website.'}</p>
+  <div class="consent-category"><strong>{tr ? 'Tercih kaydı · her zaman gerekli' : 'Preference record · always necessary'}</strong><p>{tr ? 'mifer-consent-v2: seçiminiz, kayıt zamanı, son geçerlilik zamanı ve politika sürümü tarayıcınızın yerel depolamasında 180 gün tutulur. Form içerikleri burada saklanmaz.' : 'mifer-consent-v2 stores your choice, recording time, expiry time and policy version in local storage for 180 days. Form contents are not stored here.'}</p></div>
+  <div class="consent-category"><label><strong>{tr ? 'Google Haritalar · isteğe bağlı' : 'Google Maps · optional'}</strong><input type="checkbox" data-consent-maps/></label><p>{tr ? 'Yalnızca dişçi demosundaki gömülü haritayı açar. Açıldığında Google’a IP adresi gibi teknik bilgiler iletilebilir ve Google kendi çerezlerini kullanabilir. Google çerezlerinin süreleri ve kontrolü sağlayıcıya bağlıdır.' : 'Enables only the embedded map in the dental demo. Loading it may share technical information such as your IP address with Google, which may use its own cookies. Their lifetimes and controls are determined by Google.'} <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">{tr ? 'Google çerez bilgileri' : 'Google cookie information'} ↗</a></p></div>
+  <p class="consent-detail">{tr ? 'İzni geri aldığınızda gömülü harita kaldırılır ve yeniden yüklenmez. Google alanındaki çerezleri bu site silemez; tarayıcı ayarlarından yönetebilirsiniz. Analitik ve reklam kategorileri kullanılmıyor.' : 'Withdrawing permission removes the embedded map and prevents further loading. This site cannot delete cookies on Google’s domain; manage them in your browser. Analytics and advertising categories are not used.'}</p>
+  <div class="consent-actions"><button type="button" data-cookie-choice="all">{tr ? 'Kabul et' : 'Accept'}</button><button type="button" data-cookie-choice="essential">{tr ? 'Reddet' : 'Reject'}</button><button type="button" data-consent-save>{tr ? 'Seçimimi kaydet' : 'Save my choice'}</button></div>
+  <p class="consent-status" data-consent-status role="status"></p>
+</dialog>
+<script>import '../scripts/consent';</script>
