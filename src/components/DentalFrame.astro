@@ -16,6 +16,7 @@ const sections=['treatments','dentist','clinic','journal','contact'];
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title || `Avelis — ${lang==='tr'?'Nişantaşı Ağız ve Diş Sağlığı':'Dental Care in Nişantaşı'}`}</title>
   <meta name="description" content={c.heroText} /><meta name="theme-color" content="#112d40" />
+  <meta name="robots" content="noindex, follow" /><meta name="googlebot" content="noindex, follow" />
   <link rel="canonical" href={new URL(path,siteConfig.url)} /><link rel="alternate" hreflang={lang==='tr'?'en':'tr'} href={new URL(alternatePath,siteConfig.url)} />
   <link rel="icon" href="/brand/favicon-32.png" />
   <meta property="og:type" content="website" /><meta property="og:title" content={title || 'Avelis — Dental Care, Istanbul'} /><meta property="og:description" content={c.heroText} /><meta property="og:url" content={new URL(path,siteConfig.url)} /><meta property="og:image" content={new URL('/demos/mifer-smile/clinic-hero.webp',siteConfig.url)} /><meta name="twitter:card" content="summary_large_image" />

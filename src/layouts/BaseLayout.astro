@@ -29,17 +29,47 @@ const alternateLocale: Locale = lang === 'tr' ? 'en' : 'tr';
 const alternateUrl = new URL(alternatePath, siteConfig.url).toString();
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: siteConfig.brand,
-  url: siteConfig.url,
-  email: siteConfig.email,
-  areaServed: 'Worldwide',
-  contactPoint: {
-    '@type': 'ContactPoint',
-    email: siteConfig.email,
-    contactType: 'customer service',
-    availableLanguage: ['Turkish', 'English']
-  }
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteConfig.url}/#website`,
+      url: siteConfig.url,
+      name: siteConfig.brand,
+      alternateName: siteConfig.brandAliases,
+      inLanguage: ['tr-TR', 'en'],
+      publisher: { '@id': `${siteConfig.url}/#organization` }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${siteConfig.url}/#organization`,
+      name: siteConfig.brand,
+      alternateName: siteConfig.brandAliases,
+      url: siteConfig.url,
+      email: siteConfig.email,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteConfig.url}/brand/mifer-digital-logo.png`
+      },
+      sameAs: [siteConfig.instagramUrl].filter(Boolean),
+      areaServed: 'Worldwide',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: siteConfig.email,
+        contactType: 'customer service',
+        availableLanguage: ['Turkish', 'English']
+      }
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { '@id': `${siteConfig.url}/#website` },
+      about: { '@id': `${siteConfig.url}/#organization` },
+      inLanguage: locales[lang].htmlLang
+    }
+  ]
 };
 ---
 <!doctype html>
@@ -49,6 +79,8 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
     <meta name="google-site-verification" content="KlbRfK6HM8Dsz0eWRODwJOqd-n7NnD_YhQ6MNQFAG3Q" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={locales[lang].htmlLang} href={canonicalUrl} />

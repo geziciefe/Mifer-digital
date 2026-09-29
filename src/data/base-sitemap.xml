@@ -4,50 +4,24 @@
     <loc>https://miferdigital.com/tr</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://miferdigital.com/tr" />
   </url>
   <url>
     <loc>https://miferdigital.com/en</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://miferdigital.com/tr" />
   </url>
   <url>
     <loc>https://miferdigital.com/tr/demo-calismalar</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/demo-calismalar" />
     <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/demo-work" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://miferdigital.com/tr/demo-calismalar" />
   </url>
   <url>
     <loc>https://miferdigital.com/en/demo-work</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/demo-calismalar" />
     <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/demo-work" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/tr/kuafor-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/kuafor-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/hair-salon-demo" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/en/hair-salon-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/kuafor-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/hair-salon-demo" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/tr/dis-klinigi-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/dis-klinigi-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/dental-clinic-demo" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/en/dental-clinic-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/dis-klinigi-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/dental-clinic-demo" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/tr/insaat-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/insaat-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/construction-demo" />
-  </url>
-  <url>
-    <loc>https://miferdigital.com/en/construction-demo</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://miferdigital.com/tr/insaat-demo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://miferdigital.com/en/construction-demo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://miferdigital.com/tr/demo-calismalar" />
   </url>
 </urlset>

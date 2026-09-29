@@ -21,6 +21,8 @@ const alternateUrl = new URL(alternatePath, origin).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0d0b0a" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="googlebot" content="noindex, follow" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={lang === 'tr' ? 'tr-TR' : 'en'} href={canonicalUrl} />

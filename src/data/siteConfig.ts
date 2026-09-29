@@ -1,5 +1,6 @@
 export const siteConfig = {
   brand: 'Mifer Digital',
+  brandAliases: ['Mifer', 'Mifer Dijital', 'MiferDigital', 'miferdigital.com'],
   domain: 'miferdigital.com',
   url: 'https://miferdigital.com',
   email: 'iletisim@miferdigital.com',

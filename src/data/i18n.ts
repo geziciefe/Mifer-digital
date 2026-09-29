@@ -29,8 +29,8 @@ export const locales: Record<Locale, {
 export const content = {
   tr: {
     meta: {
-      title: 'Mifer Digital | Web Tasarım, SEO ve Dijital Görünürlük',
-      description: 'Mifer Digital; markalara özel web siteleri, SEO altyapısı ve Google görünürlüğü sistemleri geliştirir.'
+      title: 'Mifer Digital | Web Tasarım, SEO ve Google Görünürlüğü',
+      description: 'Mifer Digital, İstanbul merkezli web tasarım ve dijital görünürlük stüdyosudur. Markalara özel web siteleri, SEO altyapısı ve Google görünürlüğü çözümleri geliştirir.'
     },
     nav: {
       work: 'Çalışmalar',
@@ -139,8 +139,8 @@ export const content = {
   },
   en: {
     meta: {
-      title: 'Mifer Digital | Web Design, SEO & Digital Visibility',
-      description: 'Mifer Digital builds bespoke websites, SEO foundations and Google visibility systems for ambitious brands.'
+      title: 'Mifer Digital | Web Design, SEO & Google Visibility',
+      description: 'Mifer Digital is an Istanbul-based digital studio building bespoke websites, SEO foundations and Google visibility systems for ambitious brands.'
     },
     nav: {
       work: 'Work',

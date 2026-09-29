@@ -42,6 +42,20 @@ test('all main pages and both languages of all three demos are generated', () =>
   }
 });
 
+test('brand structured data exposes Mifer search-name variants without changing the canonical brand', () => {
+  for (const route of ['/tr', '/en']) {
+    const page = pageFor(route);
+    const jsonLd = page.nodes
+      .filter(n => n.tagName === 'script' && attr(n, 'type') === 'application/ld+json')
+      .map(n => text(n))
+      .join('\n');
+    assert.match(jsonLd, /\"name\":\"Mifer Digital\"/, `${route}: canonical brand name`);
+    for (const alias of ['Mifer', 'Mifer Dijital', 'MiferDigital', 'miferdigital.com']) {
+      assert.ok(jsonLd.includes(`\"${alias}\"`), `${route}: missing brand alias ${alias}`);
+    }
+  }
+});
+
 test('all local navigation, language links and fragments resolve', () => {
   for (const page of pages) for (const node of page.nodes) {
     const href = attr(node, 'href');
