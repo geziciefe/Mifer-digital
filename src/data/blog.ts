@@ -1,7 +1,7 @@
 import { blogGuides } from './blogGuides';
 import type { Locale } from './i18n';
 
-type Article = { slug: string; title: string; summary: string; cta?: string; target?: 'packages' | 'services'; sections: { title: string; paragraphs: string[]; source?: { label: string; url: string }; table?: { headers: string[]; rows: string[][] } }[] };
+type Article = { slug: string; title: string; summary: string; cta?: string; target?: 'packages' | 'process'; sections: { title: string; paragraphs: string[]; source?: { label: string; url: string }; table?: { headers: string[]; rows: string[][] } }[] };
 export type BlogPost = { tr: Article; en: Article };
 export const blogPath = (lang: Locale, post: BlogPost) => `/${lang}/blog/${post[lang].slug}`;
 export const blogPosts: BlogPost[] = [

@@ -41,7 +41,7 @@ const theme = {
     </ul>
     <div class="work-status">
       {demo.status === 'live' && demoUrl ? (
-        <a class="work-demo-link" href={demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]} (${lang === 'tr' ? 'demo, yeni sekmede açılır' : 'demo, opens in a new tab'})`}>{demo.action[lang]} · {lang === 'tr' ? 'Yeni sekme' : 'New tab'}<ArrowUpRight size={19} /></a>
+        <a class="work-demo-link" href={demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]}`}>{demo.action[lang]}<ArrowUpRight size={19} /></a>
       ) : <span>{t.work.coming}</span>}
     </div>
   </div>

@@ -2,7 +2,7 @@
 import { ArrowUpRight, ArrowRight, ChevronDown, Menu, X } from 'lucide-astro';
 import DemoReturn from '../components/DemoReturn.astro';
 import { constructionCopy, constructionPaths, constructionProjects, projectPath } from '../data/construction';
-import { siteConfig } from '../data/siteConfig';
+import { pageUrl, siteConfig } from '../data/siteConfig';
 import type { Locale } from '../data/i18n';
 import '../styles/construction-demo.css';
 interface Props { lang: Locale; title?: string; description?: string; path?: string; alternatePath?: string; }
@@ -18,19 +18,23 @@ const sectionIds = ['projects', 'expertise', 'company', 'contact'];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#202722" />
-    <meta name="robots" content="noindex, follow" />
-    <meta name="googlebot" content="noindex, follow" />
     <title>{title || c.title}</title>
     <meta name="description" content={description || c.description} />
-    <link rel="canonical" href={new URL(path, siteConfig.url)} />
-    <link rel="alternate" hreflang={lang === 'tr' ? 'en' : 'tr'} href={new URL(alternatePath, siteConfig.url)} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={pageUrl(path)} />
+    <link rel="alternate" hreflang={lang === 'tr' ? 'en' : 'tr'} href={pageUrl(alternatePath)} />
     <link rel="icon" href="/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title || c.title} />
     <meta property="og:description" content={description || c.description} />
-    <meta property="og:url" content={new URL(path, siteConfig.url)} />
+    <meta property="og:url" content={pageUrl(path)} />
     <meta property="og:image" content={new URL('/demos/kavren/kavakli-1536.webp', siteConfig.url)} />
+    <meta property="og:image:alt" content={lang === 'tr' ? 'Kavren Yapı inşaat demo sitesi' : 'Kavren Yapı construction demo website'} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title || c.title} />
+    <meta name="twitter:description" content={description || c.description} />
+    <meta name="twitter:image" content={new URL('/demos/kavren/kavakli-1536.webp', siteConfig.url)} />
   </head>
   <body class="kv-body">
     <a class="kv-skip" href="#main">{lang === 'tr' ? 'İçeriğe geç' : 'Skip to content'}</a>

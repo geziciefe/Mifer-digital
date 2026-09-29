@@ -46,6 +46,7 @@ export function Waves({
     const linesRef = useRef<Point[][]>([])  // 替换any为Point[][]
     const noiseRef = useRef<((x: number, y: number) => number) | null>(null)  // 替换any为具体的函数类型
     const rafRef = useRef<number | null>(null)
+    const timeRef = useRef(0)
     const boundingRef = useRef<DOMRect | null>(null)
 
     // Initialization
@@ -105,13 +106,6 @@ export function Waves({
         if (!svgRef.current || !boundingRef.current) return
 
         const { width, height } = boundingRef.current
-        linesRef.current = []
-
-        // Clear existing paths
-        pathsRef.current.forEach(path => {
-            path.remove()
-        })
-        pathsRef.current = []
 
         // Use smaller spacing to generate more lines and points for smoother results
         const xGap = 8  // Reduced horizontal spacing
@@ -128,21 +122,27 @@ export function Waves({
 
         // Create vertical lines
         for (let i = 0; i < totalLines; i++) {
-            const points: Point[] = []
+            const points: Point[] = linesRef.current[i] ?? []
+            // Keep the vertical lattice stable when a disclosure changes height.
+            const originY = points[0]?.y ?? yStart
 
             for (let j = 0; j < totalPoints; j++) {
-                const point: Point = {
+                const point: Point = points[j] ?? {
                     x: xStart + xGap * i,
-                    y: yStart + yGap * j,
+                    y: originY + yGap * j,
                     wave: { x: 0, y: 0 },
                     cursor: { x: 0, y: 0, vx: 0, vy: 0 },
                 }
 
-                points.push(point)
+                point.x = xStart + xGap * i
+                points[j] = point
             }
+            points.length = totalPoints
 
-            // Create SVG path
-            const path = document.createElementNS(
+            // Reuse mounted paths: never clear the visible SVG during resizing.
+            let path = pathsRef.current[i]
+            if (!path) {
+              path = document.createElementNS(
                 'http://www.w3.org/2000/svg',
                 'path'
             )
@@ -153,17 +153,24 @@ export function Waves({
             path.setAttribute('stroke-width', '1')
 
             svgRef.current.appendChild(path)
-            pathsRef.current.push(path)
+              pathsRef.current[i] = path
+            }
 
-            // Add points
-            linesRef.current.push(points)
+            linesRef.current[i] = points
         }
+        pathsRef.current.splice(totalLines).forEach(path => path.remove())
+        linesRef.current.length = totalLines
     }
 
     // Resize handler
     const onResize = () => {
+        const previous = boundingRef.current
         setSize()
+        if (previous?.width === boundingRef.current?.width && previous?.height === boundingRef.current?.height) return
         setLines()
+        // Draw in the same observer callback, at the current animation phase.
+        movePoints(timeRef.current)
+        drawLines()
     }
 
     // Mouse handler
@@ -285,6 +292,7 @@ export function Waves({
 
     // Animation logic
     const tick = (time: number) => {
+        timeRef.current = time
         const { current: mouse } = mouseRef
 
         // Smooth mouse movement

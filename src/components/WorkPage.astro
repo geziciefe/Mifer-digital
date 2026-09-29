@@ -2,6 +2,7 @@
 import { ArrowDown, ArrowUpRight, ArrowLeft } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
+import DemoNote from './DemoNote.astro';
 import Footer from './Footer.astro';
 import { demos } from '../data/demos';
 import { content, locales, type Locale } from '../data/i18n';
@@ -23,7 +24,7 @@ const chapters = [
 ];
 ---
 <BaseLayout lang={lang} title={`${tr?'Çalışmalar':'Work'} | Mifer Digital`} description={t.workPage.summary} canonicalPath={locales[lang].workPath} alternatePath={locales[alt].workPath}>
-  <Header lang={lang} alternatePath={locales[alt].workPath}/>
+  <Header lang={lang} alternatePath={locales[alt].workPath} keepVisibleOnMobile/>
   <main class="work-exhibition" data-work-exhibition>
     <section class="wx-intro" aria-labelledby="wx-title">
       <div class="wx-intro-top"><span>MIFER DIGITAL / {tr?'SEÇİLİ ÇALIŞMALAR':'SELECTED WORK'}</span></div>
@@ -37,12 +38,13 @@ const chapters = [
         <div class="wx-chapter-heading" data-reveal><p>{demos[i].sector[lang]}</p><h2 id={`${chapter.id}-title`}>{chapter.name}</h2><span class="wx-chapter-theme" aria-hidden="true">{chapter.word}</span></div>
         <a class="wx-project-window" href={demos[i].liveUrl![lang]} target="_blank" rel="noopener noreferrer" aria-label={`${chapter.name} — ${demos[i].action[lang]}`} data-reveal>
           <img class="wx-primary-image" src={chapter.image} srcset={sources[i]} sizes="(max-width:760px) 90vw, 75vw" alt={chapter.imageAlt} width={i===0?1000:1536} height={i===0?1500:1024} loading="lazy" decoding="async"/>
-          <span class="wx-window-caption"><span>{demos[i].action[lang]} · {tr ? 'Yeni sekme' : 'New tab'}</span><ArrowUpRight size={25}/></span>
+          <span class="wx-window-caption"><span>{demos[i].action[lang]}</span><ArrowUpRight size={25}/></span>
         </a>
         <div class="wx-chapter-foot" data-reveal><div><h3>{chapter.caption}</h3><p>{chapter.description}</p><small>{chapter.disciplines}</small></div><figure><img src={chapter.detail} alt={tr?`${chapter.name} tasarımından bir detay`:`A detail from ${chapter.name}`} width="600" height="400" loading="lazy" decoding="async"/><figcaption>{tr?'AYRINTIDA SAKLI.':'IN THE DETAILS.'}</figcaption></figure></div>
       </section>)}</div>
     </div>
     <section class="wx-outro"><p>{tr?'Sıradaki farklı dünya':'The next different world'}</p><button type="button" data-contact-open>{tr?'Sizin markanız.':'Your brand.'}<ArrowUpRight/></button><a href={locales[lang].homePath} data-nav-link data-prefetch-link data-astro-prefetch><ArrowLeft size={19}/>{t.workPage.back}</a></section>
+    <div class="container-shell wx-demo-disclosure"><DemoNote lang={lang} /></div>
   </main>
   <Footer lang={lang}/>
   <script>
@@ -67,3 +69,4 @@ const chapters = [
     document.addEventListener('astro:page-load',initWorkIndex);
   </script>
 </BaseLayout>
+<style>.wx-demo-disclosure { --demo-note-color: #9aaba5; padding-bottom: 28px; }</style>

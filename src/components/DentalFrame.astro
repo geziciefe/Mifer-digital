@@ -1,7 +1,7 @@
 ---
 import { ArrowLeft, ArrowUpRight, Phone, Menu, X } from 'lucide-astro';
 import { dentalCopy, dentalPaths, type DentalLang } from '../data/dental';
-import { siteConfig } from '../data/siteConfig';
+import { pageUrl, siteConfig } from '../data/siteConfig';
 import '../styles/dental-demo.css';
 import CookieBanner from './CookieBanner.astro';
 import DemoReturn from './DemoReturn.astro';
@@ -15,11 +15,10 @@ const sections=['treatments','dentist','clinic','journal','contact'];
  <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title || `Avelis — ${lang==='tr'?'Nişantaşı Ağız ve Diş Sağlığı':'Dental Care in Nişantaşı'}`}</title>
-  <meta name="description" content={c.heroText} /><meta name="theme-color" content="#112d40" />
-  <meta name="robots" content="noindex, follow" /><meta name="googlebot" content="noindex, follow" />
-  <link rel="canonical" href={new URL(path,siteConfig.url)} /><link rel="alternate" hreflang={lang==='tr'?'en':'tr'} href={new URL(alternatePath,siteConfig.url)} />
-  <link rel="icon" href="/brand/favicon-32.png" />
-  <meta property="og:type" content="website" /><meta property="og:title" content={title || 'Avelis — Dental Care, Istanbul'} /><meta property="og:description" content={c.heroText} /><meta property="og:url" content={new URL(path,siteConfig.url)} /><meta property="og:image" content={new URL('/demos/mifer-smile/clinic-hero.webp',siteConfig.url)} /><meta name="twitter:card" content="summary_large_image" />
+  <meta name="description" content={c.heroText} /><meta name="robots" content="noindex, nofollow" /><meta name="theme-color" content="#112d40" />
+  <link rel="canonical" href={pageUrl(path)} /><link rel="alternate" hreflang={lang==='tr'?'en':'tr'} href={pageUrl(alternatePath)} />
+  <link rel="icon" href="/brand/favicon-32.png" /><link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
+  <meta property="og:type" content="website" /><meta property="og:title" content={title || 'Avelis — Dental Care, Istanbul'} /><meta property="og:description" content={c.heroText} /><meta property="og:url" content={pageUrl(path)} /><meta property="og:image" content={new URL('/demos/mifer-smile/clinic-hero.webp',siteConfig.url)} /><meta property="og:image:alt" content={lang==='tr'?'Avelis Dental Care diş kliniği demo sitesi':'Avelis Dental Care clinic demo website'} /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title || 'Avelis — Dental Care, Istanbul'} /><meta name="twitter:description" content={c.heroText} /><meta name="twitter:image" content={new URL('/demos/mifer-smile/clinic-hero.webp',siteConfig.url)} />
  </head>
  <body class="av-body">
   <a class="av-skip" href="#main">{lang==='tr'?'İçeriğe geç':'Skip to content'}</a>

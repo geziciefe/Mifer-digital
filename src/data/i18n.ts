@@ -29,12 +29,12 @@ export const locales: Record<Locale, {
 export const content = {
   tr: {
     meta: {
-      title: 'Mifer Digital | Web Tasarım, SEO ve Google Görünürlüğü',
-      description: 'Mifer Digital, İstanbul merkezli web tasarım ve dijital görünürlük stüdyosudur. Markalara özel web siteleri, SEO altyapısı ve Google görünürlüğü çözümleri geliştirir.'
+      title: 'Mifer Digital | Web Tasarım, SEO ve Dijital Görünürlük',
+      description: 'Mifer Digital; markalara özel web siteleri, SEO altyapısı ve Google görünürlüğü sistemleri geliştirir.'
     },
     nav: {
       work: 'Çalışmalar',
-      services: 'Hizmetler',
+      services: 'Süreç',
       approach: 'Yaklaşım',
       about: 'Biz',
       contact: 'İletişim',
@@ -60,13 +60,14 @@ export const content = {
       ]
     },
     services: {
-      label: 'Hizmetler',
-      title: 'Web sitesi, görünürlük ve destek.',
+      label: "Süreç",
+      title: "Projeniz nasıl ilerler?",
       items: [
-        ['Web tasarım ve geliştirme', 'İşletmenize özel sayfa tasarımı, içerik yerleşimi ve mobil uyumlu site geliştirme. Ziyaretçinin bilgiye ve iletişime kolayca ulaşacağı bir yapı.', 'TASARIM · GELİŞTİRME'],
-        ['Google ve yerel görünürlük', 'Uygun işletmeler için Google İşletme Profili kurulumu veya düzenlenmesi; kategori, konum, çalışma saatleri ve iletişim bilgilerinin tutarlılığı.', 'İŞLETME PROFİLİ · HARİTALAR'],
-        ['Bakım ve geliştirme', 'Yayın sonrası içerik ve görsel güncellemeleri, performans kontrolleri ve ihtiyaç duyulan yeni özellikler. Kapsam, işletmenizin ihtiyacına göre belirlenir.', 'GÜNCELLEME · DESTEK'],
-        ['SEO ve arama görünürlüğü', 'Sayfa başlıkları, açıklamalar, içerik hiyerarşisi ve teknik kontroller. Arama motorlarının sitenizi anlamasını destekleyen temel düzenlemeler.', 'İÇERİK · TEKNİK ALTYAPI']
+        ["Tanışma", "İlk görüşme, işletmenizde ve projeyi yürütecek Mifer ekibiyle gerçekleşir. İşinizin günlük akışı, müşterileriniz ve web sitesinden beklentileriniz yerinde konuşulur. Mevcut site, sosyal medya ve iletişim kanalları da bu görüşmenin parçasıdır.", "YERİNDE GÖRÜŞME", "İşletmenizin ihtiyaçları ve projenin amacı.", "Tanışma"],
+        ["Planlama", "Görüşmede öne çıkan ihtiyaçlar; sayfa yapısı, içerik ve iletişim yollarıyla birlikte bir proje planına dönüşür. Teslim kapsamı, takvim, içerikleri kimin sağlayacağı ve onay noktaları bu aşamada belirlenir.", "KAPSAM · TAKVİM", "Kapsamı, takvimi ve sorumlulukları belli bir plan.", "Planlama"],
+        ["Tasarım ve yapım", "Markanızın görsel dili ve sayfa düzeni şekillenir; tasarım, çalışan bir web sitesine dönüşür. Mobil görünüm, hız, bağlantılar ve iletişim akışları geliştirme boyunca kontrol edilir.", "TASARIM · GELİŞTİRME", "İncelemenize hazır, çalışan bir web sitesi.", "Tasarım"],
+        ["Sizin kontrolünüz", "Site, yayına alınmadan önce incelemeniz için paylaşılır. Değişmesini istediğiniz alanlar birlikte değerlendirilir. Anlaşılan kapsam içindeki düzenlemelerin ardından son hâli onayınıza sunulur.", "GERİ BİLDİRİM · ONAY", "Geri bildirimlerinizle tamamlanan ve onayladığınız site.", "Kontrol"],
+        ["Yayın ve aktif destek", "Onaylanan site, alan adı ve arama altyapısı kontrollerinin ardından yayına açılır. Seçtiğiniz pakete göre bakım, güncellemeler ve düzenli destek devam eder. Yeni ihtiyaçların takibi yine projede çalışan ekiptedir.", "YAYIN · DESTEK", "Yayındaki siteniz ve devam eden ekip desteği.", "Yayın"]
       ]
     },
     work: {
@@ -81,7 +82,7 @@ export const content = {
     },
     approach: {
       label: 'Yaklaşım',
-      title: 'İlk görüşmeden yayına.',
+      title: 'Sürecin arkasındaki kararlar.',
       items: [
         ['Netleştiririz', 'İşletmenizi ve müşterilerinizi tanır; sitenin amacını, içeriğini ve önceliklerini birlikte belirleriz.'],
         ['Tasarlarız', 'Bu kararları sayfa düzenine, markanızın görsel diline ve ziyaretçinin izleyeceği anlaşılır bir yola dönüştürürüz.'],
@@ -139,12 +140,12 @@ export const content = {
   },
   en: {
     meta: {
-      title: 'Mifer Digital | Web Design, SEO & Google Visibility',
-      description: 'Mifer Digital is an Istanbul-based digital studio building bespoke websites, SEO foundations and Google visibility systems for ambitious brands.'
+      title: 'Mifer Digital | Web Design, SEO & Digital Visibility',
+      description: 'Mifer Digital builds bespoke websites, SEO foundations and Google visibility systems for ambitious brands.'
     },
     nav: {
       work: 'Work',
-      services: 'Services',
+      services: 'Process',
       approach: 'Approach',
       about: 'About',
       contact: 'Contact',
@@ -170,13 +171,14 @@ export const content = {
       ]
     },
     services: {
-      label: 'Services',
-      title: 'Websites, visibility and support.',
+      label: "Process",
+      title: "Your project, step by step.",
       items: [
-        ['Web design and development', 'Custom page design, content layouts and responsive development. A website that makes information easy to find and contact easy to make.', 'DESIGN · DEVELOPMENT'],
-        ['Google and local visibility', 'Google Business Profile setup or updates for eligible businesses, with consistent categories, location, opening hours and contact details.', 'BUSINESS PROFILE · MAPS'],
-        ['Maintenance and development', 'Content and image updates, performance checks and new features after launch. The scope is agreed around what your business needs.', 'UPDATES · SUPPORT'],
-        ['SEO and search visibility', 'Page titles, descriptions, content hierarchy and technical checks. Practical foundations that help search engines understand your website.', 'CONTENT · TECHNICAL FOUNDATIONS']
+        ["Meeting you", "The first conversation takes place at your business with the Mifer team responsible for your project. It is a chance to discuss how the business works, who your customers are and what you need from the website. Your existing site, social accounts and contact channels are part of the conversation.", "AT YOUR BUSINESS", "An understanding of your needs and the purpose of the project.", "Meet"],
+        ["Planning", "The priorities from that conversation become a plan for the pages, content and contact journeys. Scope, timing, content responsibilities and approval points are agreed at this stage.", "SCOPE · SCHEDULE", "An agreed plan, schedule and responsibilities.", "Plan"],
+        ["Design and build", "Your visual identity and page layouts take shape, then become a working website. Mobile layouts, performance, links and contact journeys are checked throughout development.", "DESIGN · DEVELOPMENT", "A working website ready for you to review.", "Create"],
+        ["Your review", "The website is shared with you before launch. Any changes you would like are reviewed together. Once the adjustments within the agreed scope are complete, the final version is submitted for your approval.", "FEEDBACK · APPROVAL", "A finished website that reflects your feedback and approval.", "Review"],
+        ["Launch and ongoing support", "The approved site goes live after checks on the domain and search foundations. Maintenance, updates and regular support continue through your chosen plan. The team that worked on your project remains your point of contact.", "LAUNCH · SUPPORT", "Your live website and continued support from the team.", "Launch"]
       ]
     },
     work: {
@@ -191,7 +193,7 @@ export const content = {
     },
     approach: {
       label: 'Approach',
-      title: 'From first conversation to launch.',
+      title: 'The decisions behind the process.',
       items: [
         ['Clarify', 'We get to know your business and customers, then agree on the purpose, content and priorities of the website.'],
         ['Design', 'We turn those decisions into page layouts, a visual language for your brand and a clear journey for visitors.'],

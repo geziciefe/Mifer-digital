@@ -1,0 +1,35 @@
+---
+import { ArrowDown, ArrowUpRight, Check } from 'lucide-astro';
+import { content, type Locale } from '../data/i18n';
+import '../styles/process.css';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+const tr = lang === 'tr';
+const copy = content[lang].services;
+const numerals = ['I', 'II', 'III', 'IV', 'V'];
+---
+<section id="process" class="process-section section-pad" data-process aria-labelledby="process-title">
+  <div class="container-shell process-layout">
+    <header class="process-overview" data-reveal>
+      <div class="process-eyebrow">{copy.label}</div>
+      <h2 id="process-title">{copy.title}</h2>
+      <p>{tr ? 'Kapsam ve takvim başlangıçta belirlenir. Tasarım ve içerikle ilgili kararlar, sizin geri bildiriminizle son hâlini alır.' : 'Scope and timing are agreed at the start. Your feedback shapes the decisions about design and content.'}</p>
+      <nav class="process-map" aria-label={tr ? 'Süreç adımları' : 'Project steps'}>
+        {copy.items.map((item, i) => <a href={`#process-step-${i + 1}`} data-section-link={`process-step-${i + 1}`} aria-current={i === 0 ? 'step' : undefined}><span>{numerals[i]}</span><small>{item[4]}</small></a>)}
+      </nav>
+      <div class="process-position" aria-hidden="true"><span data-process-count>I</span><span>/ V</span><ArrowDown size={27} strokeWidth={1.3} /></div>
+      <a class="process-packages-link" href="#paketler">{tr ? 'Kurulum ve destek paketleri' : 'Setup and support plans'}<ArrowUpRight size={18} aria-hidden="true" /></a>
+    </header>
+    <ol class="process-steps">
+      {copy.items.map(([title, text, meta, outcome], i) => <li id={`process-step-${i + 1}`} class:list={['process-step', { 'is-current': i === 0 }]} data-process-step>
+        <span class="process-node" aria-hidden="true"><span class="process-node-label">{numerals[i]}</span></span>
+        <div class="process-step-body" data-reveal>
+          <span class="process-meta">{meta}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+          <div class="process-outcome"><Check size={17} strokeWidth={1.7} aria-hidden="true"/><p><span>{tr ? 'Bu aşamanın çıktısı' : 'The outcome'}</span>{outcome}</p></div>
+        </div>
+      </li>)}
+    </ol>
+  </div>
+</section>

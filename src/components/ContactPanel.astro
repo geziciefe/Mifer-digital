@@ -7,12 +7,13 @@ import { contactLinks, siteConfig } from '../data/siteConfig';
 interface Props { lang: Locale; }
 const { lang } = Astro.props;
 const t = content[lang].contactForm;
+const contactHome = lang === 'tr' && Astro.url.pathname === '/' ? '/' : (lang === 'tr' ? '/tr' : '/en');
 ---
 <div id="contact-panel" inert class="contact-panel" aria-hidden="true" data-recipient={siteConfig.email} data-mail-subject={t.mailSubject} data-mail-fields={JSON.stringify(t.mailFields)}>
   <div class="contact-panel-backdrop" data-contact-close></div>
   <section class="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title">
     <header class="contact-dialog-header">
-      <a class="contact-dialog-brand" href={lang === 'tr' ? '/tr' : '/en'} aria-label="Mifer Digital">
+      <a class="contact-dialog-brand" href={contactHome} aria-label="Mifer Digital">
         <Logo compact class="contact-dialog-mark" />
         <span>MIFER DIGITAL</span>
       </a>

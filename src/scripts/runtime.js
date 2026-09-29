@@ -1,4 +1,6 @@
 import { initPackages } from './packages';
+import { initHeroType } from './heroType';
+import { initProcess } from './process';
 /* Mifer runtime: one lightweight lifecycle for both normal loads and Astro client navigation. */
 let pageController;
 let firstPageLoad = true;
@@ -13,14 +15,65 @@ function scheduleTimeout(callback, delay, signal) {
   return id;
 }
 
-// Astro owns navigation, history and scroll restoration. No custom history entries.
-function initNavigationUX(signal) {
+// Astro owns route navigation and history. Same-page section links are intercepted
+// to keep the address bar clean. Pricing keeps its native, shareable fragment.
+function initNavigationUX(signal, reducedMotion = false) {
   qsa('a[data-nav-link]').forEach(anchor => {
     if (anchor.target === '_blank' || anchor.hasAttribute('download')) return;
     anchor.addEventListener('pointerdown', () => {
       anchor.classList.add('is-pressing');
       scheduleTimeout(() => anchor.classList.remove('is-pressing'), 150, signal);
     }, { passive: true, signal });
+  });
+
+  qsa('a[data-section-link]').forEach(anchor => {
+    if (anchor.target === '_blank' || anchor.hasAttribute('download')) return;
+    anchor.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const id = anchor.dataset.sectionLink;
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (target) {
+        event.preventDefault();
+        anchor.classList.add('is-activating');
+        target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        scheduleTimeout(() => anchor.classList.remove('is-activating'), reducedMotion ? 80 : 520, signal);
+        if (window.location.hash) {
+          window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`);
+        }
+        return;
+      }
+      try { window.sessionStorage.setItem('mifer-section-target', id); } catch (_) {}
+    }, { signal });
+  });
+
+  qsa('a[href*="#"]').forEach(anchor => {
+    if (anchor.target === '_blank' || anchor.hasAttribute('download')) return;
+    // Let the browser/Astro own smooth scrolling and back/forward history here.
+    if (new URL(anchor.href, window.location.href).hash === '#paketler') return;
+    anchor.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const url = new URL(anchor.href, window.location.href);
+      const sameDocument = url.origin === window.location.origin
+        && url.pathname === window.location.pathname
+        && url.search === window.location.search
+        && Boolean(url.hash && url.hash !== '#');
+      if (!sameDocument) return;
+
+      const id = decodeURIComponent(url.hash.slice(1));
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+      anchor.classList.add('is-activating');
+      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      scheduleTimeout(() => anchor.classList.remove('is-activating'), reducedMotion ? 80 : 520, signal);
+
+      // The remaining section links retain their existing clean-address behavior.
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`);
+      }
+    }, { signal });
   });
 }
 function initHeroShader(signal, reducedMotion, saveData) {
@@ -228,7 +281,8 @@ function initHeader(signal) {
       return;
     }
 
-    if (y < 24) offset = 0;
+    if (header.hasAttribute('data-keep-visible-mobile') && window.innerWidth <= 760) offset = 0;
+    else if (y < 24) offset = 0;
     else if (delta > 0) offset = Math.min(headerHeight + 8, offset + delta * 0.72);
     else if (delta < 0) offset = Math.max(0, offset + delta * 1.18);
 
@@ -250,6 +304,7 @@ function initHeader(signal) {
   window.addEventListener('scroll', onScroll, { passive: true, signal });
   window.addEventListener('resize', onResize, { passive: true, signal });
   updateHeader();
+  requestAnimationFrame(() => document.documentElement.classList.add('mifer-header-ready'));
 }
 
 function initReveal(signal, reducedMotion) {
@@ -419,6 +474,25 @@ function initContact(signal) {
   }, { signal });
 }
 
+function restoreDeferredSectionScroll(reducedMotion) {
+  const pricingLink = window.location.hash === '#paketler';
+  let id = pricingLink ? 'paketler' : '';
+  try {
+    const deferred = window.sessionStorage.getItem('mifer-section-target') || '';
+    if (deferred) window.sessionStorage.removeItem('mifer-section-target');
+    if (!id) id = deferred;
+  } catch (_) {}
+  if (!id) return;
+  const target = document.getElementById(id);
+  if (!target) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    if (!pricingLink && window.location.hash) {
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`);
+    }
+  }));
+}
+
 function initPage() {
   if (pageController) pageController.abort();
   pageController = new AbortController();
@@ -430,18 +504,45 @@ function initPage() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = Boolean(navigator.connection && navigator.connection.saveData);
 
+  initHeroType(signal);
   initHeroShader(signal, reducedMotion, saveData);
   initHeader(signal);
   initNavigationUX(signal, reducedMotion, saveData);
+  restoreDeferredSectionScroll(reducedMotion);
   initReveal(signal, reducedMotion);
   initParallax(signal, reducedMotion, saveData);
   initMagnetic(signal, reducedMotion, saveData);
   initMotionBudget(signal, reducedMotion, saveData);
   initContact(signal);
   initPackages(signal, reducedMotion, saveData);
+  initProcess(signal, reducedMotion, saveData);
 }
 
 let progressTimer;
+let loaderHideTimer;
+const ROUTE_LOADER_MIN_MS = 900;
+
+const routeLoader = () => document.querySelector('[data-route-loader]');
+const showRouteLoader = () => {
+  const loader = routeLoader();
+  if (!loader) return;
+  clearTimeout(loaderHideTimer);
+  loader.hidden = false;
+  loader.setAttribute('aria-hidden', 'true');
+  requestAnimationFrame(() => loader.classList.add('is-visible'));
+};
+const hideRouteLoader = (immediate = false) => {
+  const loader = routeLoader();
+  if (!loader) return;
+  clearTimeout(loaderHideTimer);
+  loader.classList.remove('is-visible');
+  if (immediate) {
+    loader.hidden = true;
+    return;
+  }
+  loaderHideTimer = window.setTimeout(() => { loader.hidden = true; }, 360);
+};
+
 const endProgress = () => {
   clearTimeout(progressTimer);
   document.documentElement.classList.remove('is-navigating');
@@ -451,20 +552,29 @@ const endProgress = () => {
 };
 document.addEventListener('astro:before-preparation', event => {
   document.documentElement.classList.add('is-client-nav', 'is-navigating');
+  showRouteLoader();
   const bar = document.querySelector('[data-route-progress]');
   bar?.style.setProperty('--route-progress', '.75');
   bar?.classList.add('is-running');
   clearTimeout(progressTimer);
-  progressTimer = window.setTimeout(endProgress, 8000);
+  progressTimer = window.setTimeout(() => { endProgress(); hideRouteLoader(); }, 8000);
   const original = event.loader;
   event.loader = async () => {
-    try { await original(); }
-    catch (error) { endProgress(); throw error; }
+    try {
+      await Promise.all([
+        original(),
+        new Promise(resolve => window.setTimeout(resolve, ROUTE_LOADER_MIN_MS))
+      ]);
+    } catch (error) {
+      endProgress();
+      hideRouteLoader();
+      throw error;
+    }
   };
 });
-document.addEventListener('astro:before-swap', () => { pageController?.abort(); });
-document.addEventListener('astro:page-load', () => { initPage(); endProgress(); });
-window.addEventListener('pageshow', endProgress);
+document.addEventListener('astro:before-swap', () => { document.documentElement.classList.remove('mifer-header-ready'); pageController?.abort(); });
+document.addEventListener('astro:page-load', () => { initPage(); endProgress(); hideRouteLoader(); });
+window.addEventListener('pageshow', () => { endProgress(); hideRouteLoader(true); });
 document.addEventListener('visibilitychange', () => {
   document.documentElement.classList.toggle('is-page-hidden', document.hidden);
 });

@@ -42,20 +42,6 @@ test('all main pages and both languages of all three demos are generated', () =>
   }
 });
 
-test('brand structured data exposes Mifer search-name variants without changing the canonical brand', () => {
-  for (const route of ['/tr', '/en']) {
-    const page = pageFor(route);
-    const jsonLd = page.nodes
-      .filter(n => n.tagName === 'script' && attr(n, 'type') === 'application/ld+json')
-      .map(n => text(n))
-      .join('\n');
-    assert.match(jsonLd, /\"name\":\"Mifer Digital\"/, `${route}: canonical brand name`);
-    for (const alias of ['Mifer', 'Mifer Dijital', 'MiferDigital', 'miferdigital.com']) {
-      assert.ok(jsonLd.includes(`\"${alias}\"`), `${route}: missing brand alias ${alias}`);
-    }
-  }
-});
-
 test('all local navigation, language links and fragments resolve', () => {
   for (const page of pages) for (const node of page.nodes) {
     const href = attr(node, 'href');
@@ -100,7 +86,7 @@ test('every demo page has exactly one shared localized Back to Mifer control', (
     assert.equal(attr(controls[0], 'href'), `/${lang}#work`);
     assert.match(text(controls[0]), lang === 'tr' ? /Mifer’e dön/ : /Back to Mifer/);
   }
-  for (const route of ['/tr', '/en']) assert.equal(pageFor(route).nodes.filter(n => has(n, 'data-mifer-demo-return')).length, 0);
+  for (const route of ['/', '/tr', '/en']) assert.equal(pageFor(route).nodes.filter(n => has(n, 'data-mifer-demo-return')).length, 0);
 });
 
 test('new construction experience replaces the previous design in both languages', () => {
@@ -201,33 +187,92 @@ test('Work is a distinct linked exhibition while homepage keeps its selected-wor
     assert.equal(withClass(work, 'work-card').length, 0);
     assert.equal(withClass(work, 'wx-project-window').length, 3);
     assert.equal(withClass(work, 'wx-chapter').length, 3);
-    assert.equal(withClass(pageFor(`/${lang}`), 'work-card').length, 3);
+    assert.equal(withClass(pageFor(`/${lang}`), 'work-premium-card').length, 3);
     if (lang === 'en') assert.doesNotMatch(text(work.nodes.find(n => n.tagName === 'body')), /\bworks\b/i);
   }
 });
 
-test('Mifer v1.6 editorial sections render without legacy sequence numbers or misleading controls', () => {
+test('Mifer editorial sections and the five-step project journey render with working destinations', () => {
   for (const route of ['/tr', '/en']) {
     const page = pageFor(route);
     const intro = withClass(page, 'intro-process')[0];
-    const services = withClass(page, 'service-list')[0];
+    const process = withClass(page, 'process-steps')[0];
     const approach = withClass(page, 'approach-manifesto')[0];
     const about = withClass(page, 'about-constellation-v161')[0];
     assert.ok(intro, `${route}: editorial intro process`);
-    assert.ok(services, `${route}: services`);
+    assert.equal(process?.tagName, 'ol', `${route}: ordered project journey`);
     assert.ok(approach, `${route}: editorial approach`);
     assert.ok(about, `${route}: about disciplines`);
     assert.doesNotMatch(text(intro), /\b0[1234]\b/, `${route}: intro numbering`);
-    assert.doesNotMatch(text(services), /\b0[1234]\b/, `${route}: services numbering`);
+    assert.equal(withClass(page, 'process-step').length, 5, `${route}: five process steps`);
+    assert.equal(withClass(page, 'process-outcome').length, 5, `${route}: a concrete outcome for each step`);
     assert.doesNotMatch(text(approach), /\b0[1234]\b/, `${route}: approach numbering`);
     assert.equal(withClass(page, 'service-action').length, 0, `${route}: no fake service buttons`);
-    assert.equal(withClass(page, 'service-meta').length, 4, `${route}: service metadata`);
+    assert.equal(withClass(page, 'process-meta').length, 5, `${route}: process metadata`);
     assert.equal(withClass(page, 'approach-statement').length, 4, `${route}: four approach statements`);
     assert.equal(withClass(page, 'about-discipline-v161').length, 4, `${route}: four connected disciplines`);
-    assert.equal(withClass(page, 'work-demo-note').length, 0, `${route}: no selected-work demo label`);
+    assert.equal(withClass(page, 'work-demo-disclosure').length, 1, `${route}: one selected-work demo note`);
     const location = text(withClass(page, 'contact-location')[0]).trim();
     assert.equal(location, route === '/tr' ? 'Maltepe, İstanbul' : 'Maltepe, Istanbul');
   }
-  assert.equal(withClass(pageFor('/tr/demo-calismalar'), 'work-demo-note').length, 0);
-  assert.equal(withClass(pageFor('/en/demo-work'), 'work-demo-note').length, 0);
+  assert.equal(withClass(pageFor('/tr/demo-calismalar'), 'work-demo-disclosure').length, 1);
+  assert.equal(withClass(pageFor('/en/demo-work'), 'work-demo-disclosure').length, 1);
+});
+
+test('brand search aliases are present in structured data', () => {
+  for (const route of ['/tr', '/en']) {
+    const page = pageFor(route);
+    const jsonLd = page.nodes
+      .filter(n => n.tagName === 'script' && attr(n, 'type') === 'application/ld+json')
+      .map(n => text(n).trim())
+      .filter(Boolean)
+      .map(value => JSON.parse(value));
+    const graph = jsonLd.flatMap(value => Array.isArray(value['@graph']) ? value['@graph'] : [value]);
+    const website = graph.find(value => value['@type'] === 'WebSite');
+    const organization = graph.find(value => value['@type'] === 'Organization');
+    assert.ok(website, `${route}: WebSite structured data`);
+    assert.ok(organization, `${route}: Organization structured data`);
+    for (const alias of ['Mifer', 'Mifer Dijital', 'MiferDigital', 'miferdigital.com']) {
+      assert.ok(website.alternateName?.includes(alias), `${route}: WebSite alias ${alias}`);
+      assert.ok(organization.alternateName?.includes(alias), `${route}: Organization alias ${alias}`);
+    }
+  }
+});
+
+
+test('SEO canonicals use trailing slashes and Mifer x-default points to /tr/', () => {
+  for (const route of ['/tr', '/en', '/tr/demo-calismalar', '/en/demo-work', '/tr/blog', '/en/blog']) {
+    const page = pageFor(route);
+    assert.ok(page, route);
+    const canonical = page.nodes.find(n => attr(n, 'rel') === 'canonical');
+    assert.ok(canonical, `${route}: canonical`);
+    assert.match(attr(canonical, 'href'), /\/$/, `${route}: trailing slash canonical`);
+  }
+  for (const route of ['/tr', '/en']) {
+    const page = pageFor(route);
+    const xDefault = page.nodes.find(n => attr(n, 'rel') === 'alternate' && attr(n, 'hreflang') === 'x-default');
+    assert.equal(attr(xDefault, 'href'), 'https://miferdigital.com/tr/');
+  }
+});
+
+test('all demo-site pages are noindex, nofollow while portfolio pages remain indexable', () => {
+  for (const page of demoPages) {
+    const robots = page.nodes.find(n => attr(n, 'name') === 'robots');
+    assert.equal(attr(robots, 'content'), 'noindex, nofollow', page.route);
+  }
+  for (const route of ['/tr/demo-calismalar', '/en/demo-work']) {
+    const page = pageFor(route);
+    assert.equal(page.nodes.some(n => attr(n, 'name') === 'robots' && /noindex/i.test(attr(n, 'content') || '')), false, route);
+  }
+});
+
+test('sitemap contains only canonical Mifer pages and excludes demo-site routes', () => {
+  const sitemapFile = path.join(root, 'sitemap.xml');
+  assert.ok(fs.existsSync(sitemapFile), 'sitemap.xml exists');
+  const xml = fs.readFileSync(sitemapFile, 'utf8');
+  assert.doesNotMatch(xml, /\/(?:tr\/(?:kuafor-demo|dis-klinigi-demo|insaat-demo)|en\/(?:hair-salon-demo|dental-clinic-demo|construction-demo))(?:\/|<)/);
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
+  assert.ok(locs.length >= 4, 'sitemap has Mifer pages');
+  locs.forEach(url => assert.match(url, /\/$/, `${url}: trailing slash sitemap URL`));
+  for (const url of ['https://miferdigital.com/tr/', 'https://miferdigital.com/en/', 'https://miferdigital.com/tr/demo-calismalar/', 'https://miferdigital.com/en/demo-work/']) assert.ok(locs.includes(url), url);
 });

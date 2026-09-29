@@ -1,0 +1,12 @@
+---
+import type { Locale } from '../data/i18n';
+interface Props { lang: Locale; }
+const { lang } = Astro.props;
+---
+<p class="work-demo-disclosure">{lang === 'tr'
+  ? 'Demo çalışmalardır. Gerçek projelere daha fazla zaman ayrılır; her ayrıntı işletmeye özel hazırlanır.'
+  : 'These are demo projects. Client work receives more time and detailed attention, with each element tailored to the business.'}</p>
+<style>
+  .work-demo-disclosure { max-width: 68ch; margin: 30px 0 0 auto; color: var(--demo-note-color,#64717d); font-size: 10px; font-weight: 400; line-height: 1.7; text-align: right; letter-spacing: 0; }
+  @media (max-width: 600px) { .work-demo-disclosure { max-width: 42ch; margin-top: 22px; } }
+</style>

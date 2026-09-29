@@ -1,12 +1,15 @@
 ---
-import { ArrowUpRight, Mail, Instagram } from 'lucide-astro';
+import { ArrowUpRight, Mail, Instagram, ChevronLeft, ChevronRight } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Packages from './Packages.astro';
+import Process from './Process.astro';
+import DemoNote from './DemoNote.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import DemoCard from './DemoCard.astro';
 import Wordmark from './Wordmark.astro';
 import { blogPosts, blogPath } from '../data/blog';
+import { blogGuides } from '../data/blogGuides';
+import { getGuideMeta } from '../data/blogMeta';
 import { demos } from '../data/demos';
 import { content, locales, type Locale } from '../data/i18n';
 import { contactLinks, siteConfig } from '../data/siteConfig';
@@ -115,26 +118,7 @@ const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected dig
       </div>
     </section>
 
-    <section id="services" class="services-section section-pad">
-      <div class="container-shell services-v161">
-        <div class="section-label section-label-centered section-label-wave light services-label">{t.services.label}</div>
-        <div class="services-head services-head-v161">
-          <h2 data-reveal>
-            {t.services.title}
-          </h2>
-        </div>
-        <div class="service-list">
-          {t.services.items.map(([title, text, meta], index) => (
-            <article class="service-row" data-reveal style={`--service-index:${index}`}>
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <span class="service-meta">{meta}</span>
-            </article>
-          ))}
-        </div>
-        <a class="services-packages-link" href="#packages">{lang === 'tr' ? 'Kurulum ve destek paketleri' : 'Setup and support packages'} <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
+    <Process lang={lang} />
 
     <section id="work" class="work-section section-pad">
       <div class="container-shell">
@@ -145,10 +129,21 @@ const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected dig
             <p>{t.work.summary}</p>
           </div>
         </header>
-        <div class="work-grid">
-          {demos.map((demo, index) => <DemoCard demo={demo} lang={lang} featured={index === 0} />)}
+        <div class="work-premium-grid">
+          {demos.map((demo, index) => (
+            <a class={`work-premium-card work-premium-card-${index + 1}`} href={demo.liveUrl?.[lang]} target="_blank" rel="noopener noreferrer" aria-label={`${demo.title[lang]} — ${demo.action[lang]}`}>
+              <span class="work-premium-media">
+                {demo.thumbnail && <img src={demo.thumbnail} alt="" width="1200" height="900" loading="lazy" decoding="async" />}
+              </span>
+              <span class="work-premium-info">
+                <span><small>{demo.sector[lang]}</small><strong>{demo.title[lang]}</strong></span>
+                <ArrowUpRight size={22} aria-hidden="true" />
+              </span>
+            </a>
+          ))}
         </div>
         <div class="work-all-wrap"><a class="big-inline-link" data-nav-link data-prefetch-link data-astro-prefetch href={locales[lang].workPath}>{t.work.all}<ArrowUpRight size={22} /></a></div>
+        <DemoNote lang={lang} />
       </div>
     </section>
 
@@ -188,6 +183,41 @@ const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected dig
             {t.about.disciplines.map((discipline, index) => (
               <span class={`about-discipline-v161 about-discipline-v161-${index + 1}`}>{discipline}</span>
             ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-journal section-pad" aria-labelledby="home-journal-title">
+      <div class="container-shell home-journal-inner">
+        <header class="home-journal-head">
+          <div>
+            <div class="section-label section-label-plain">{lang === 'tr' ? 'Mifer notları' : 'Mifer notes'}</div>
+            <h2 id="home-journal-title">{lang === 'tr' ? 'Dijital kararları daha net alın.' : 'Make clearer digital decisions.'}</h2>
+          </div>
+          <a data-nav-link data-prefetch-link data-astro-prefetch href={`${locales[lang].homePath}/blog`}>{lang === 'tr' ? 'Tüm yazılar' : 'All articles'}<ArrowUpRight size={18} /></a>
+        </header>
+
+        <div class="home-journal-carousel" data-home-journal>
+          <div class="home-journal-controls" aria-label={lang === 'tr' ? 'Blog yazılarını değiştir' : 'Browse blog articles'}>
+            <button type="button" data-journal-prev aria-label={lang === 'tr' ? 'Önceki yazı' : 'Previous article'}><ChevronLeft size={20} /></button>
+            <button type="button" data-journal-next aria-label={lang === 'tr' ? 'Sonraki yazı' : 'Next article'}><ChevronRight size={20} /></button>
+          </div>
+          <div class="home-journal-stage" data-journal-track tabindex="0" aria-live="polite">
+            {blogGuides.map((entry, index) => {
+              const meta = getGuideMeta(index, lang);
+              return <article class:list={["home-journal-card", { "is-active": index === 0 }]} data-journal-card data-index={index} hidden={index !== 0}>
+                <a class="home-journal-media" data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, entry)} tabindex={index === 0 ? "0" : "-1"}>
+                  <img src={meta.art} alt="" width="1200" height="720" loading="lazy" decoding="async" />
+                </a>
+                <div class="home-journal-copy">
+                  <div class="home-journal-meta"><span>{meta.category}</span><span>{String(index + 1).padStart(2, '0')} / {String(blogGuides.length).padStart(2, '0')}</span></div>
+                  <h3><a data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, entry)} tabindex={index === 0 ? "0" : "-1"}>{entry[lang].title}</a></h3>
+                  <p>{entry[lang].summary}</p>
+                  <a class="home-journal-read" data-nav-link data-prefetch-link data-astro-prefetch href={blogPath(lang, entry)} tabindex={index === 0 ? "0" : "-1"}>{lang === 'tr' ? 'Yazıyı oku' : 'Read article'}<ArrowUpRight size={17} /></a>
+                </div>
+              </article>;
+            })}
           </div>
         </div>
       </div>
@@ -236,4 +266,55 @@ const introUnity = lang === 'tr' ? 'Tek bir dijital sistem' : 'One connected dig
     </section>
   </main>
   <Footer lang={lang} />
+
+  <script>
+    function initHomeJournal() {
+      document.querySelectorAll<HTMLElement>('[data-home-journal]').forEach(root => {
+        if (root.dataset.ready) return;
+        root.dataset.ready = 'true';
+        const track = root.querySelector<HTMLElement>('[data-journal-track]');
+        const prev = root.querySelector<HTMLButtonElement>('[data-journal-prev]');
+        const next = root.querySelector<HTMLButtonElement>('[data-journal-next]');
+        const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-journal-card]'));
+        if (!track || !prev || !next || cards.length === 0) return;
+
+        let active = Math.max(0, cards.findIndex(card => !card.hidden));
+        let touchStartX: number | null = null;
+
+        const show = (index: number) => {
+          active = (index + cards.length) % cards.length;
+          cards.forEach((card, cardIndex) => {
+            const isActive = cardIndex === active;
+            card.hidden = !isActive;
+            card.classList.toggle('is-active', isActive);
+            card.querySelectorAll<HTMLElement>('a, button').forEach(control => {
+              control.tabIndex = isActive ? 0 : -1;
+            });
+          });
+        };
+        const step = (direction: number) => show(active + direction);
+
+        prev.addEventListener('click', () => step(-1));
+        next.addEventListener('click', () => step(1));
+        track.addEventListener('keydown', event => {
+          if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+          if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+        });
+        track.addEventListener('touchstart', event => {
+          touchStartX = event.touches[0]?.clientX ?? null;
+        }, { passive: true });
+        track.addEventListener('touchend', event => {
+          if (touchStartX === null) return;
+          const endX = event.changedTouches[0]?.clientX ?? touchStartX;
+          const delta = endX - touchStartX;
+          touchStartX = null;
+          if (Math.abs(delta) > 44) step(delta < 0 ? 1 : -1);
+        }, { passive: true });
+
+        show(active);
+      });
+    }
+    initHomeJournal();
+    document.addEventListener('astro:page-load', initHomeJournal);
+  </script>
 </BaseLayout>

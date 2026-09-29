@@ -15,6 +15,13 @@ export const siteConfig = {
   instagramUrl: 'https://www.instagram.com/miferdigital/' as string
 } as const;
 
+export const pagePath = (pathname: string) => {
+  const clean = pathname.split(/[?#]/, 1)[0] || '/';
+  return clean === '/' ? '/' : `${clean.replace(/\/+$/, '')}/`;
+};
+
+export const pageUrl = (pathname: string) => new URL(pagePath(pathname), `${siteConfig.url}/`).toString();
+
 export const contactLinks = {
   email: `mailto:${siteConfig.email}`,
   whatsapp: siteConfig.whatsappNumber

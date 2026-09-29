@@ -1,10 +1,14 @@
 ---
 import '../styles/global.css';
 import '../styles/work-showcase.css';
-import { siteConfig } from '../data/siteConfig';
+import { pageUrl, siteConfig } from '../data/siteConfig';
 import { locales, type Locale } from '../data/i18n';
 import CookieBanner from '../components/CookieBanner.astro';
+import Logo from '../components/Logo.astro';
+import Wordmark from '../components/Wordmark.astro';
 import { ClientRouter } from 'astro:transitions';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import interLatinExt from '@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2?url';
 
 interface Props {
   lang?: Locale;
@@ -13,20 +17,22 @@ interface Props {
   canonicalPath?: string;
   alternatePath?: string;
   article?: boolean;
+  noindex?: boolean;
 }
 
 const {
   lang = 'tr',
   article = false,
+  noindex = false,
   title = 'Mifer Digital',
   description = 'Mifer Digital — independent digital studio in Istanbul.',
   canonicalPath = locales[lang].homePath,
   alternatePath = locales[lang === 'tr' ? 'en' : 'tr'].homePath
 } = Astro.props;
 
-const canonicalUrl = new URL(canonicalPath, siteConfig.url).toString();
+const canonicalUrl = pageUrl(canonicalPath);
 const alternateLocale: Locale = lang === 'tr' ? 'en' : 'tr';
-const alternateUrl = new URL(alternatePath, siteConfig.url).toString();
+const alternateUrl = pageUrl(alternatePath);
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -77,35 +83,51 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatinExt} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="googlebot" content="index, follow, max-image-preview:large" />
-    <meta name="google-site-verification" content="KlbRfK6HM8Dsz0eWRODwJOqd-n7NnD_YhQ6MNQFAG3Q" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={locales[lang].htmlLang} href={canonicalUrl} />
     <link rel="alternate" hreflang={locales[alternateLocale].htmlLang} href={alternateUrl} />
-    <link rel="alternate" hreflang="x-default" href={`${siteConfig.url}/tr`} />
+    <link rel="alternate" hreflang="x-default" href={pageUrl('/tr')} />
     <link rel="prefetch" href={alternatePath} />
     <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
     <meta property="og:type" content={article ? "article" : "website"} />
     <meta property="og:locale" content={locales[lang].ogLocale} />
     <meta property="og:site_name" content={siteConfig.brand} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={`${siteConfig.url}/brand/mifer-logo.png`} />
+    <meta property="og:image" content={`${siteConfig.url}/og.png`} />
+    <meta property="og:image:alt" content="Mifer Digital" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteConfig.url}/og.png`} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <title>{title}</title>
-    <script is:inline>document.documentElement.classList.add('mifer-js');</script>
+    <script is:inline>document.documentElement.classList.add('mifer-js', 'hero-font-pending');</script>
     <ClientRouter fallback="swap" />
   </head>
   <body>
     <div class="route-progress" data-route-progress aria-hidden="true" transition:persist="mifer-route-progress"><span></span></div>
+    <div class="route-loader" data-route-loader data-mode="work" hidden aria-hidden="true" transition:persist="mifer-route-loader">
+      <div class="route-loader-scene">
+        <span class="route-loader-ring" aria-hidden="true"></span>
+        <span class="route-loader-orb" aria-hidden="true"></span>
+        <div class="route-loader-lockup">
+          <Logo compact class="route-loader-mark" />
+          <Wordmark class="route-loader-wordmark" />
+          <span class="route-loader-line" aria-hidden="true"></span>
+          <span class="route-loader-kicker">MIFER DIGITAL</span>
+        </div>
+      </div>
+    </div>
     <slot />
     <CookieBanner lang={lang} />
     <script>

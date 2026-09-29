@@ -1,0 +1,178 @@
+<div
+  id="particles-js-packages"
+  class="particles-bg"
+  aria-hidden="true"
+  style="position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 16% 14%, rgba(39,72,103,.16), transparent 34%),radial-gradient(circle at 84% 32%, rgba(33,79,149,.11), transparent 32%),linear-gradient(145deg,#07090d 0%,#0b1017 54%,#080d13 100%);"
+></div>
+
+<script>
+  const INSTANCE_ID = 'particles-js-packages';
+  let observer: IntersectionObserver | null = null;
+  let active = false;
+  let inRange = false;
+  let libraryReady = Boolean((window as any).particlesJS);
+  let scriptEl: HTMLScriptElement | null = null;
+  let pointerController: AbortController | null = null;
+
+  const destroyParticles = () => {
+    const pJSDom = (window as any).pJSDom;
+    if (Array.isArray(pJSDom) && pJSDom.length) {
+      pJSDom.forEach((instance: any) => {
+        try { instance?.pJS?.fn?.vendors?.destroypJS?.(); } catch {}
+      });
+      (window as any).pJSDom = [];
+    }
+    document.getElementById(INSTANCE_ID)?.querySelectorAll('canvas').forEach((canvas) => canvas.remove());
+    pointerController?.abort();
+    pointerController = null;
+    active = false;
+  };
+
+  const initParticles = () => {
+    if (!(window as any).particlesJS || active || !inRange) return;
+    const host = document.getElementById(INSTANCE_ID);
+    if (!host) return;
+    host.querySelectorAll('canvas').forEach((canvas) => canvas.remove());
+
+    (window as any).particlesJS(INSTANCE_ID, {
+      particles: {
+        number: { value: 82, density: { enable: true, value_area: 980 } },
+        color: { value: '#8aa0b5' },
+        shape: { type: 'circle', stroke: { width: 0.35, color: '#9aafc2' } },
+        opacity: {
+          value: 0.34,
+          random: true,
+          anim: { enable: true, speed: 0.35, opacity_min: 0.12 },
+        },
+        size: {
+          value: 2.35,
+          random: true,
+          anim: { enable: true, speed: 0.45, size_min: 0.8 },
+        },
+        line_linked: {
+          enable: true,
+          distance: 170,
+          color: '#60758a',
+          opacity: 0.18,
+          width: 0.8,
+        },
+        move: {
+          enable: true,
+          speed: 0.62,
+          random: true,
+          straight: false,
+          out_mode: 'bounce',
+        },
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'grab' },
+          onclick: { enable: false, mode: 'push' },
+          resize: true,
+        },
+        modes: {
+          grab: { distance: 220, line_linked: { opacity: 0.52 } },
+          push: { particles_nb: 3 },
+          repulse: { distance: 180, duration: 0.4 },
+        },
+      },
+      retina_detect: true,
+    });
+    active = true;
+
+    // The visual layer intentionally ignores pointer events so it can never block
+    // package CTAs. Feed pointer coordinates into particles.js ourselves instead.
+    pointerController?.abort();
+    pointerController = new AbortController();
+    const section = host.closest('.packages-section');
+    if (section) {
+      const updatePointer = (event: PointerEvent) => {
+        const rect = host.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const instances = (window as any).pJSDom;
+        if (!Array.isArray(instances)) return;
+        instances.forEach((instance: any) => {
+          const pJS = instance?.pJS;
+          if (!pJS?.interactivity?.mouse) return;
+          const ratio = pJS.canvas?.pxratio || 1;
+          pJS.interactivity.mouse.pos_x = x * ratio;
+          pJS.interactivity.mouse.pos_y = y * ratio;
+          pJS.interactivity.mouse.status = 'mousemove';
+        });
+      };
+      const clearPointer = () => {
+        const instances = (window as any).pJSDom;
+        if (!Array.isArray(instances)) return;
+        instances.forEach((instance: any) => {
+          const mouse = instance?.pJS?.interactivity?.mouse;
+          if (!mouse) return;
+          mouse.pos_x = null;
+          mouse.pos_y = null;
+          mouse.status = 'mouseleave';
+        });
+      };
+      section.addEventListener('pointermove', updatePointer as EventListener, { passive: true, signal: pointerController.signal });
+      section.addEventListener('pointerleave', clearPointer, { signal: pointerController.signal });
+    }
+  };
+
+  const ensureLibrary = () => {
+    if ((window as any).particlesJS) {
+      libraryReady = true;
+      initParticles();
+      return;
+    }
+
+    scriptEl = document.querySelector<HTMLScriptElement>('script[data-mifer-particles="true"]');
+    if (!scriptEl) {
+      scriptEl = document.createElement('script');
+      scriptEl.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
+      scriptEl.async = true;
+      scriptEl.dataset.miferParticles = 'true';
+      document.body.appendChild(scriptEl);
+    }
+
+    scriptEl.addEventListener('load', () => {
+      libraryReady = true;
+      initParticles();
+    }, { once: true });
+  };
+
+  const cleanup = () => {
+    observer?.disconnect();
+    observer = null;
+    pointerController?.abort();
+    pointerController = null;
+    inRange = false;
+    destroyParticles();
+  };
+
+  const mountParticles = () => {
+    cleanup();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const host = document.getElementById(INSTANCE_ID);
+    if (!host) return;
+
+    observer = new IntersectionObserver(([entry]) => {
+      inRange = Boolean(entry?.isIntersecting);
+      if (inRange) {
+        if (libraryReady) initParticles();
+        else ensureLibrary();
+      } else if (active) {
+        destroyParticles();
+      }
+    }, { rootMargin: '600px 0px 600px 0px' });
+
+    observer.observe(host);
+  };
+
+  document.addEventListener('astro:before-swap', cleanup);
+  document.addEventListener('astro:page-load', mountParticles);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountParticles, { once: true });
+  } else {
+    mountParticles();
+  }
+</script>
